@@ -5,18 +5,17 @@ var recordsadmin = JSON.parse(fs.readFileSync('./modals/users/users.json', 'utf8
 exports.findById = function (id, cb) {
   process.nextTick(function () {
 
-    let firstquery = "select TOP 1 * USERS where isnull(deactivated,0) != 1 and userid='" + id + "'";
-
-    var request = new sql.Request();
-    request.query(firstquery, function (err, recordset) {
-
+    let firstquery = "select * FROM USERS where IFNULL(deactivated,0) != 1 and userid='" + id + "'" + " LIMIT 1";
+    con.query(firstquery, function (err, result, fields) {
+      if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
       var records = [];
       for (var i = 0, len = recordsadmin.length; i < len; ++i) {
         records.push(recordsadmin[i]);
       }
-      if (recordset && recordset.recordset && recordset.recordset.length) {
-        records.push(recordset.recordset[0]);
+      if (result && result.length) {
+        records.push(result[0]);
       }
+
       for (var i = 0, len = records.length; i < len; i++) {
         var record = records[i];
         if (record.userid === id) {
@@ -30,16 +29,17 @@ exports.findById = function (id, cb) {
 
 exports.findByUsername = function (username, cb) {
   process.nextTick(function () {
-    let firstquery = "select TOP 1 * FROM USERS where isnull(deactivated,0) != 1 and username='" + username + "'";
+    let firstquery = "select * FROM USERS where IFNULL(deactivated,0) != 1 and username='" + username + "'" + " LIMIT 1";
 
-    var request = new sql.Request();
-    request.query(firstquery, function (err, recordset) {
+    con.query(firstquery, function (err, result, fields) {
+      if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
       var records = [];
       for (var i = 0, len = recordsadmin.length; i < len; ++i) {
         records.push(recordsadmin[i]);
       }
-      if (recordset && recordset.recordset && recordset.recordset.length) {
-        records.push(recordset.recordset[0]);
+
+      if (result && result.length) {
+        records.push(result[0]);
       }
 
       for (var i = 0, len = records.length; i < len; i++) {
@@ -55,11 +55,12 @@ exports.findByUsername = function (username, cb) {
 
 exports.findAllUsers = function (cb) {
   process.nextTick(function () {
-    let firstquery = "select * FROM CHARTAPP.dbo.USERS"
-    var request = new sql.Request();
-    request.query(firstquery, function (err, recordset) {
-      if (recordset && recordset.recordset && recordset.recordset.length) {
-        return cb(null, recordset.recordset);
+    let firstquery = "select * FROM USERS"
+
+    con.query(firstquery, function (err, result, fields) {
+      if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
+      if (result && result.length) {
+        return cb(null, result);
       }
       else {
         return cb(err, null);
@@ -75,22 +76,21 @@ exports.createUser = function (user, cb) {
     user.displayname = user.displayname ? [].concat(user.displayname) : [''];
     user.email = user.email ? [].concat(user.email) : [''];
 
-    let firstquery = "INSERT INTO CHARTAPP.dbo.USERS (username,userpassword,displayname,email,deactivated) VALUES ("
+    let firstquery = "INSERT INTO USERS (username,userpassword,displayname,email,deactivated) VALUES ("
       + "'" + user.username[0] + "',"
       + "'" + user.password[0] + "',"
       + "'" + user.displayname[0] + "',"
-      + "'" + user.email[0] + "'," 
+      + "'" + user.email[0] + "',"
       + "'" + "0" + "'"
       + ")";
 
-    var request = new sql.Request();
-    request.query(firstquery, function (err, recordset) {
-
+    con.query(firstquery, function (err, result) {
+      //console.log(result);
       if (err) {
         return cb(err, null);
       }
-      else if (recordset && recordset.rowsAffected) {
-        return cb(null, recordset.rowsAffected);
+      else if (result && result.insertId) {
+        return cb(null, result.insertId);
       }
     });
   });
@@ -111,7 +111,7 @@ exports.saveAllUsers = function (users, cb) {
 
     var firstquery = '';
     for (var i = 0, len = users.userid.length; i < len; i++) {
-      firstquery += "UPDATE CHARTAPP.dbo.USERS set"
+      firstquery += "UPDATE USERS set"
         + " displayname='"
         + addescape(users.displayname[i]) + "',"
         + " email='"
@@ -123,12 +123,10 @@ exports.saveAllUsers = function (users, cb) {
         + " where userid=" + users.userid[i] + ";";
     }
 
-
-
-    var request = new sql.Request();
-    request.query(firstquery, function (err, recordset) {
-      if (recordset && recordset.rowsAffected) {
-        return cb(null, recordset.rowsAffected);
+    con.query(firstquery, function (err, result) {
+      console.log(result);
+      if (result && result.changedRows) {
+        return cb(null, result.changedRows);
       }
       else {
         return cb(err, null);

@@ -1,7 +1,7 @@
 module.exports = {
     getLoginPage: (req, res) => {
         res.render('login.ejs', {
-            title: 'Welcome to Chart App',
+            title: 'Welcome to MSPO APP',
             user: req.user,
             errorFlash: req.flash('error')
         });

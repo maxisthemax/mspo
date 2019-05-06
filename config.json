@@ -1,11 +1,6 @@
 {
-    "user": "sa",
-    "password": "password",
-    "server": "localhost",
-    "driver": "msnodesqlv8",
-    "database": "MSPO",
-    "options": {
-        "trustedConnection": "true"
-    },
-    "timezone": "utc"
+    "host"     : "localhost",
+    "user"     : "msporoot",
+    "password" : "x1c8ZjLJF61whp6Q",
+    "database" : "mspo"
 }

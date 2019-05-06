@@ -1,16 +1,17 @@
-const sql = require("mssql");
+var mysql = require('mysql');
 const config = require('./config.json');
 
 //  connect to database
-sql.connect(config, function (err) {
+
+var con = mysql.createConnection(config);
+
+con.connect(function (err) {
     if (err) {
-        throw err;
+        console.error('error connecting: ' + err.stack);
+        return;
     }
-    else {
-        console.log('Connected to database');
-    }
+
+    console.log('connected as id ' + con.threadId);
 });
 
-module.exports = sql;
-
-
+module.exports = con;

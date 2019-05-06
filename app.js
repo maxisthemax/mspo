@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
-var sql = require('./db');
-global.sql = sql;
+var con = require('./db');
+global.con = con;
 
 var flash = require('express-flash');
 var session = require('express-session');
@@ -28,7 +28,7 @@ var app = express();
 
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 7000;
 app.set('port', port);
 
 
@@ -133,36 +133,4 @@ app.get('/query', querysearch);
 
 app.listen(port, function () {
   console.log('Our app is running on http://localhost:' + port);
-});
-
-var test = 1;
-var sch_day = '';
-var sch_week = '';
-var sch_month = '';
-
-if (test == 1) {
-  sch_day = '0 42 * * * *';
-  sch_week = '0 43 * * * *';
-  sch_month = '0 44 * * * *';
-} else {
-  sch_day = '0 1 * * *';
-  sch_week = '0 2 * * 1';
-  sch_month = '0 3 1 * *';
-}
-
-// var schTypeConfigDay = {seconds: 30};
-var jday = schedulerun.scheduleJob(sch_day, function () {
-  openurl.open('http://localhost:5000/runschedule/1');
-});
-
-// var schTypeConfigWeek = {seconds: 40};
-var jWeek = schedulerun.scheduleJob(sch_week, function () {
-  //var jWeek = schedulerun.scheduleJob('00 48 * * * *', function(){  
-  openurl.open('http://localhost:5000/runschedule/2');
-});
-
-// var schTypeConfigMonth = {seconds: 40};
-var jMonth = schedulerun.scheduleJob(sch_month, function () {
-  //var jMonth = schedulerun.scheduleJob('00 49 * * * *', function(){  
-  openurl.open('http://localhost:5000/runschedule/3');
 });
