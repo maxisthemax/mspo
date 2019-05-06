@@ -1,8 +1,11 @@
+var cust = require("../modals/customers");
 module.exports = {
     getCustomersPage: (req, res) => {
-        res.render('customers.ejs', {
-            successFlash: req.flash('success'),
-            errorFlash: req.flash('error'),
+        cust.customers.queryAllCustomers(null, function (err, customers) {
+            console.log(customers);
+            res.render('customers.ejs', {
+                customers: customers,
+            });
         });
     },
 };
