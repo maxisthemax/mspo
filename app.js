@@ -18,7 +18,7 @@ const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 
 const { getHomePage } = require('./routes/index');
-const { getAdminPage, postAdminPage, postDabaseConnection, saveUsers, createUser } = require('./routes/admin');
+const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
 
 const { querysearch } = require('./routes/query');
@@ -120,8 +120,6 @@ app.get('/logout', getLogout);
 /* admin */
 app.all('/admin/*', requiresAdmin());
 app.get('/admin', requiresAdmin(), getAdminPage);
-app.post('/admin', requiresAdmin(), postAdminPage);
-app.get('/admin/testconnection', ensureLoggedIn('/login'), postDabaseConnection);
 app.post('/admin/user/createUser', ensureLoggedIn('/login'), createUser);
 app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 /* admin */

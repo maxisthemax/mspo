@@ -3,8 +3,7 @@
 
 <div class="container-fluid">
     <div class="tab">
-        <button class="tablinks" onclick="openTabs(event, 'user')">Users</button>   
-        <button class="tablinks" onclick="openTabs(event, 'dbsetup')">Database Setup</button>
+        <button class="tablinks" onclick="openTabs(event, 'user')">Users</button>
     </div>
     <div class="" style="border:1px solid">
          <div id="user" class="tabcontent">
@@ -63,26 +62,6 @@
             
             <!-- Default form contact -->
         </div>    
-        <div id="dbsetup" class="tabcontent"> 
-            <!-- Default form contact -->
-            <form class="p-5" name="dbsetup" method="POST" action="/admin">
-
-                <p class="h4 mb-4">Database Setup</p>
-
-                <!-- DB username -->
-                <label for="textInput">Database Username</label>
-                <input type="text" id="dbuser" name="dbuser" class="form-control mb-4" placeholder="Example : sa" value="<%= config.user %>">   
-
-                <!-- DB password -->
-                <label for="textInput">Database Password</label>
-                <input type="password" id="dbpassword" name="dbpassword" class="form-control mb-4" placeholder="" value="<%= config.password %>">   
-
-                <!-- Send button -->
-                <button class="btn btn-primary btn-block" type="submit">Save & Connect</button>        
-                <button class="btn btn-primary btn-block btn-success p-2" href="/admin/testconnection">Test Connection</button>  
-            </form>
-            <!-- Default form contact -->
-        </div>
   
     </div>
 </div>

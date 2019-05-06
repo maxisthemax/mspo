@@ -124,7 +124,7 @@ exports.saveAllUsers = function (users, cb) {
     }
 
     con.query(firstquery, function (err, result) {
-      console.log(result);
+      //console.log(result);
       if (result && result.length) {
         return cb(null, result);
       }

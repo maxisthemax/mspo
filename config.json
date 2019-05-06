@@ -1,7 +1,1 @@
-{
-    "host"     : "localhost",
-    "user"     : "msporoot",
-    "password" : "x1c8ZjLJF61whp6Q",
-    "database" : "mspo",
-    "multipleStatements": "true"
-}
+{"host":"localhost","user":"msporoot","password":"x1c8ZjLJF61whp6Q","database":"mspo","multipleStatements":"true"}
