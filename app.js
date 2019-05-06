@@ -21,6 +21,7 @@ const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
 
+const { getCustomersPage } = require('./routes/customers');
 const { querysearch } = require('./routes/query');
 
 // Create a new Express application.
@@ -123,6 +124,11 @@ app.get('/admin', requiresAdmin(), getAdminPage);
 app.post('/admin/user/createUser', ensureLoggedIn('/login'), createUser);
 app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 /* admin */
+
+/* customers */
+app.all('/customers/*', ensureLoggedIn('/login'));
+app.get('/customers',  getCustomersPage);
+/* customers */
 
 /* test */
 app.get('/test');

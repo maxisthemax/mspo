@@ -1,0 +1,105 @@
+<% include partials/header.ejs %>
+<h2></h2>
+
+<div class="container-fluid">
+    <div class="tab">
+        <button class="tablinks" onclick="openTabs(event, 'customers')">Customers</button>
+    </div>
+    <div class="" style="border:1px solid">
+      <div id="customers" class="tabcontent table-responsive text-nowrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Heading</th>
+              <th scope="col">Heading</th>
+              <th scope="col">Heading</th>
+              <th scope="col">Heading</th>
+              <th scope="col">Heading</th>
+              <th scope="col">Heading</th>
+              <th scope="col">Heading</th>
+              <th scope="col">Heading</th>
+              <th scope="col">Heading</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>4, Jalan Pelapik C U8/C, Bukit Jelutong, 40150 Shah Alam, Bukit Jelutong</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+              <td>Cell</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div> 
+    </div>
+</div>
+<% include partials/footer.ejs %>
+
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+</body>
+
+</html>
+
+<script>
+function openTabs(evt, tabname) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabname).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+$( document ).ready(function() {
+  $(function(){
+      $('a').each(function(){
+          if ($(this).prop('href') == window.location.href) {
+              $(this).addClass('active'); $(this).parents('li').addClass('active');
+          }
+      });
+  });
+  document.getElementsByClassName('tablinks')[0].click();
+
+});  
+</script>
