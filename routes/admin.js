@@ -60,14 +60,15 @@ module.exports = {
         });
     },
     saveUsers: (req, res) => {
-        db.users.saveAllUsers(req.body, function (err, users) {
-            if (users) {
-                if (users.length)
-                    req.flash('success', 'User Data Saved');
-            } else {
+        db.users.saveAllUsers(req.body, function (err, changedRows) {
+            console.log(changedRows)
+            if (err)
                 req.flash('error', 'Unable to Save User Data');
-            }
+            else if (changedRows)
+                req.flash('success', 'User Data Saved');
+
             res.redirect('/admin');
+
         });
     },
     createUser: (req, res) => {

@@ -125,8 +125,8 @@ exports.saveAllUsers = function (users, cb) {
 
     con.query(firstquery, function (err, result) {
       console.log(result);
-      if (result && result.changedRows) {
-        return cb(null, result.changedRows);
+      if (result && result.length) {
+        return cb(null, result);
       }
       else {
         return cb(err, null);
