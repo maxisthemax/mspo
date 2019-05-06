@@ -1,0 +1,167 @@
+<% include partials/header.ejs %>
+<h2></h2>
+
+<div class="container-fluid">
+    <div class="tab">
+        <button class="tablinks" onclick="openTabs(event, 'user')">Users</button>   
+        <button class="tablinks" onclick="openTabs(event, 'dbsetup')">Database Setup</button>
+    </div>
+    <div class="" style="border:1px solid">
+         <div id="user" class="tabcontent">
+            <!-- Default form contact -->
+            <form class="p-5" name="user" method="POST" action="/admin/user/saveUsers">
+
+                <p class="h4 mb-4">Users</p>
+                <!-- Server -->
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Display Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Admin</th>
+                    
+                    <th scope="col">Deactivated</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                <% if(allusers){ for(var i = 0; i < allusers.length; i++) {%>
+                    <% if (allusers[i].deactivated == 1){%><tr class="w3-red"><%} else {%><tr><%}%>                  
+                        <th scope="row"><%= allusers[i].userid %></th>         
+                        <td><%= allusers[i].username %></td>
+                        <td class="editDisplayName"><%= allusers[i].displayname %></td>
+                        <td class="editEmail"><%= allusers[i].email %></td>
+                        <td class="editAdmin"><% if (allusers[i].administrator == 1){%>Yes<%} else {%>No<%}%></td>
+
+                        <td class="editDeactivated"><% if (allusers[i].deactivated == 1){%>Yes<%} else {%>No<%}%></td>
+
+                        <td><input onclick="changetoedit(this,<%= allusers[i].userid %>);" type="button" value="Edit"></td>
+                    </tr>
+                <% }} %>    
+                </tbody>
+              </table>
+              <button id=saveuserbutton class="btn btn-primary btn-block" type="submit" style="display:none;">Save</button>   
+            </form>
+            <form class="p-5" name="user" method="POST" action="/admin/user/createUser">
+                 <p class="h4 mb-4">Create New User</p>
+                <label for="textInput">Username</label>
+                <input type="text" id="username" name="username" class="form-control mb-4" required placeholder="Enter Your Username Here">
+                
+                <label for="textInput">Password</label>
+                <input type="password" id="password" name="password" class="form-control mb-4" required placeholder="Enter Your Password Here">
+                
+                <label for="textInput">Display Name</label>
+                <input type="text" id="displayname" name="displayname" class="form-control mb-4" required placeholder="Enter Your Display Name Here">
+
+                <label for="textInput">Email</label>
+                <input type="text" id="email" name="email" class="form-control mb-4" placeholder="Enter Your Email Here">
+
+                <button class="btn btn-primary btn-block" type="submit">Create New User</button>       
+            </form>
+            
+            <!-- Default form contact -->
+        </div>    
+        <div id="dbsetup" class="tabcontent"> 
+            <!-- Default form contact -->
+            <form class="p-5" name="dbsetup" method="POST" action="/admin">
+
+                <p class="h4 mb-4">Database Setup</p>
+
+                <!-- Server -->
+                <label for="textInput">Server</label>
+                <input type="text" id="server" name="server" class="form-control mb-4" placeholder="Example : 127.0.0.1 or localhost" value="<%= config.server %>">
+
+                <!-- DB username -->
+                <label for="textInput">Database Username</label>
+                <input type="text" id="dbuser" name="dbuser" class="form-control mb-4" placeholder="Example : sa" value="<%= config.user %>">   
+
+                <!-- DB password -->
+                <label for="textInput">Database Password</label>
+                <input type="password" id="dbpassword" name="dbpassword" class="form-control mb-4" placeholder="" value="<%= config.password %>">   
+
+                <!-- Send button -->
+                <button class="btn btn-primary btn-block" type="submit">Save & Connect</button>        
+                <button class="btn btn-primary btn-block btn-success p-2" href="/admin/testconnection">Test Connection</button>  
+            </form>
+            <!-- Default form contact -->
+        </div>
+  
+    </div>
+</div>
+<% include partials/footer.ejs %>
+
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+</body>
+
+</html>
+
+<script>
+function openTabs(evt, tabname) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabname).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+function changetoedit(obj,userid) {
+    var html_displayname = $(obj).parents('tr').find('td.editDisplayName').html();
+    var html_email = $(obj).parents('tr').find('td.editEmail').html();
+    var html_admin = $(obj).parents('tr').find('td.editAdmin').html();
+    var html_deactivated = $(obj).parents('tr').find('td.editDeactivated').html();
+
+    var input_displayname = $('<input type="text" name="displayname"/>');
+    var input_email = $('<input type="text" name="email"/>');
+    var input_admin = $('<select name="admin"><option value = 1>Yes</option><option value = 0>No</option></select>');
+    var input_deactivated = $('<select name="deactivated"><option value = 1>Yes</option><option value = 0>No</option></select>');
+
+
+    input_displayname.val(html_displayname);
+    input_email.val(html_email);
+    html_admin = (html_admin == "Yes")?1:0; 
+    html_deactivated = (html_deactivated == "Yes")?1:0; 
+    
+    input_deactivated.val(html_deactivated);
+    input_admin.val(html_admin);
+
+    var inputhiddenuserid = $('<input type="hidden" name="userid" value="'+userid+'"/>');
+
+    $(obj).parents('tr').find('td.editDisplayName').html(input_displayname)
+    $(obj).parents('tr').find('td.editEmail').html(input_email);
+    $(obj).parents('tr').find('td.editAdmin').html(input_admin);
+    $(obj).parents('tr').find('td.editDeactivated').html(input_deactivated);
+    $(obj).parents('tr').find('td.editDisplayName').append(inputhiddenuserid);
+
+    obj.style.display = 'none';
+    $('#saveuserbutton').show();  
+}
+
+$( document ).ready(function() {
+  $(function(){
+      $('a').each(function(){
+          if ($(this).prop('href') == window.location.href) {
+              $(this).addClass('active'); $(this).parents('li').addClass('active');
+          }
+      });
+  });
+  document.getElementsByClassName('tablinks')[0].click();
+
+ $(function(){
+    $('input[type="text"]').change(function(){
+        this.value = $.trim(this.value);
+    });
+  }); 
+});  
+</script>

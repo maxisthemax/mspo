@@ -1,0 +1,309 @@
+<script src="../amcharts4/core.js"></script>
+<script src="../amcharts4/charts.js"></script>
+<script src="../amcharts4/themes/animated.js"></script>
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
+
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#chartdiv {
+  width: 100%;
+  height: 700px;
+}
+
+</style>
+
+<form name="generatePDF" id="generatePDF" method="POST" action="/generatePDF">
+  <div id='chartdiv'>
+  </div>
+  <input type=hidden name=base64pdf id=base64pdf>
+  <input type=hidden name=schtype id=schtype value="<%= schtype %>">
+</form>
+
+<script> 
+var chart;
+var valueAxis;
+var dateAxis;
+var series = [];
+var tagkeys = [];
+var xlinerange;
+var xseriesrange;
+var urldata = <%- JSON.stringify(urldata) %>;
+chart = am4core.create("chartdiv", am4charts.XYChart);
+$(function() {
+  
+    var results = <%- JSON.stringify(datas) %>;
+    
+    
+    chart.preloader.disabled = false;
+    var title = chart.titles.create();
+    title.text = "TREND";
+    title.fontSize = 25;
+    title.marginBottom = 30;
+
+    chart.dataDateFormat = "yyyy-mm-dd hh-mm-ss";
+    if (results) {
+
+      for (var key in results[0]) {
+        if (key != "DateAndTime") {
+          tagkeys.push(key);
+        }
+      }
+    }
+
+    chart.data = generateChartData(results);
+
+   
+    // Set input format for the dates
+    chart.dateFormatter.inputDateFormat = "yyyy-mm-dd hh-mm-ss";
+    
+    // Create axes
+    dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    //dateAxis.baseInterval = {
+    //  "timeUnit": "second",
+    //  "count": 1
+    //} 
+    dateAxis.title.text = "Date & Time";
+    //dateAxis.renderer.grid.template.location = 0;
+    dateAxis.renderer.minGridDistance = 30;
+    dateAxis.dateFormats.setKey("second", "ss");
+    
+    dateAxis.periodChangeDateFormats.setKey("hour", "[bold]MMM dd hh:mm");
+    dateAxis.renderer.labels.template.location = 0.0001;
+    dateAxis.startLocation = 0;
+    dateAxis.endLocation = 1;
+    dateAxis.renderer.axisFills.template.disabled = true;
+    dateAxis.renderer.ticks.template.disabled = true;
+    dateAxis.renderer.labels.template.rotation = 90;
+    dateAxis.renderer.labels.template.verticalCenter = "middle";
+    dateAxis.renderer.labels.template.horizontalCenter = "left";
+  
+    valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text="Value";
+    valueAxis.tooltip.disabled = true;
+    valueAxis.renderer.minWidth = 35;
+    valueAxis.renderer.axisFills.template.disabled = true;
+    valueAxis.renderer.ticks.template.disabled = true;
+
+    for (var i = 0; i < tagkeys.length; i++) {  
+      //console.log(tagkeys[i]);
+      createAxisAndSeries(tagkeys[i], tagkeys[i], false, "circle",i);
+    }
+
+
+    chart.legend = new am4charts.Legend();
+
+    chart.events.on("ready", function (action) {
+      setTimeout(
+        function() {
+          generatePDF();
+        }, 5000);
+    });
+
+  // dateAxis.events.on("ready", function(ev) {
+  //   chart.events.on("ready", function(ev) {
+  //     console.log("Series hidden: 1");
+  //   }, this)
+  // }, this)
+
+
+
+    // chart.events.on("ready", function(ev) {
+    //   generatePDF();
+    // }, this);
+
+    // series[0].events.on("ready", function(ev) {
+
+    //   series[1].events.on("ready", function(ev) {
+
+    //     series[2].events.on("ready", function(ev) {
+
+    //       console.log(444);
+    
+    // }, this);
+    
+    // }, this);
+    
+    // }, this);
+
+
+    //console.log(123);  
+});  
+
+function generateChartData(results) {
+  //var chartData = [];
+  for (var i = 0; i < results.length; i++) {
+      var offset = new Date().getTimezoneOffset()*60*1000;
+      var newDate = new Date(Date.parse(results[i].DateAndTime) + offset);
+      
+      for (var j = 0; j < tagkeys.length; j++) {
+        if (results[i][tagkeys[0]] > results[i][tagkeys[1]])
+          results[i]['alertcolor']=chart.colors.getIndex(5);
+        else if (results[i][tagkeys[0]] < results[i][tagkeys[2]])
+          results[i]['alertcolor']=chart.colors.getIndex(10);
+        else
+          results[i]['alertcolor']=chart.colors.getIndex(1);;
+      }
+      results[i].DateAndTime = newDate;
+
+  }
+  return results;
+}
+
+function createAxisAndSeries(field, name, opposite, bullet,index) {
+  //var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  
+  series[index] = chart.series.push(new am4charts.LineSeries());
+  
+  series[index].dataFields.valueY = field;
+  series[index].dataFields.dateX = "DateAndTime";
+  series[index].strokeWidth = 2;
+  series[index].yAxis = valueAxis;
+  series[index].name = name;
+  series[index].tooltipText = "{name}: [bold]{valueY}[/]";
+  //series[index].tensionX = 0.8;
+  series[index].minBulletDistance = 10;
+
+  var interfaceColors = new am4core.InterfaceColorSet();
+  
+  switch(bullet) {
+    case "triangle":
+      var bullet = series[index].bullets.push(new am4charts.Bullet());
+      bullet.width = 12;
+      bullet.height = 12;
+      bullet.horizontalCenter = "middle";
+      bullet.verticalCenter = "middle";
+      
+      var triangle = bullet.createChild(am4core.Triangle);
+      triangle.stroke = interfaceColors.getFor("background");
+      triangle.strokeWidth = 2;
+      triangle.direction = "top";
+      triangle.width = 12;
+      triangle.height = 12;
+      triangle.propertyFields.stroke = "alertcolor";
+      break;
+    case "rectangle":
+      var bullet = series[index].bullets.push(new am4charts.Bullet());
+      bullet.width = 10;
+      bullet.height = 10;
+      bullet.horizontalCenter = "middle";
+      bullet.verticalCenter = "middle";
+
+      var rectangle = bullet.createChild(am4core.Rectangle);
+      rectangle.stroke = interfaceColors.getFor("background");
+      rectangle.strokeWidth = 2;
+      rectangle.width = 10;
+      rectangle.height = 10;
+
+      break;
+    default:
+      var bullet = series[index].bullets.push(new am4charts.CircleBullet());
+      bullet.circle.stroke = interfaceColors.getFor("background");
+      bullet.circle.strokeWidth = 2;
+      // if (index == 0){
+      //   bullet.circle.propertyFields.stroke = "alertcolor";
+      //   bullet.circle.propertyFields.fill = "alertcolor";
+      // }  
+      break;
+  }
+  if (index == 0){
+    //series[index].fillOpacity = 0.7;
+    //series[index].propertyFields.fill = "color";
+    //series[index].propertyFields.stroke = "alertcolor";
+  }  
+    // valueAxis.renderer.line.strokeOpacity = 1;
+    // valueAxis.renderer.line.strokeWidth = 2;
+    // valueAxis.renderer.line.stroke = series.stroke;
+    // valueAxis.renderer.labels.template.fill = series.stroke;
+    // valueAxis.renderer.opposite = opposite;
+    // valueAxis.renderer.grid.template.disabled = true;
+}
+
+function generatePDF() {
+  
+  Promise.all([
+    chart.exporting.pdfmake,
+    chart.exporting.getImage("png")
+  ]).then(function(res) { 
+    
+    var pdfMake = res[0];
+    
+    // pdfmake is ready
+    // Create document template
+    var doc = {
+      pageSize: "A4",
+      pageOrientation: "portrait",
+      pageMargins: [30, 30, 30, 30],
+      content: []
+    };
+    
+    doc.content.push({
+      text: "TREND REPORT",
+      fontSize: 20,
+      bold: true,
+      margin: [0, 20, 0, 15]
+    });
+
+    doc.content.push({
+      image: res[1],
+      width: 530
+    });
+    
+    // doc.content.push({
+    //     columns: [
+    //     {
+    //       width: '10%',
+    //       fontSize: 8,
+    //       text: 'Tage Name'
+    //     },
+    //     {
+    //       width: 'auto',
+    //       fontSize: 8,
+    //       text: tagkeys
+    //     }
+    //   ],
+    //   columnGap: 10
+    // });
+ 
+    doc.content.push({
+        columns: [
+        {
+          width: '10%',
+          fontSize: 8,
+          text: 'From'
+        },
+        {
+          width: 'auto',
+          fontSize: 8,
+          text: urldata.from
+        }
+      ],
+      columnGap: 10
+    });
+        
+    doc.content.push({
+        columns: [
+        {
+          width: '10%',
+          fontSize: 8,
+          text: 'To'
+        },
+        {
+          width: 'auto',
+          fontSize: 8,
+          text: urldata.to
+        }
+      ],
+      columnGap: 10
+    });
+      pdfMake.createPdf(doc).getBase64((data) => {
+          $('#base64pdf').val(data);
+          console.log(data);
+          $('#generatePDF').submit();
+      });
+      //pdfMake.createPdf(doc).download("report.pdf");
+    });
+}
+</script>

@@ -1,0 +1,11 @@
+{
+    "user": "sa",
+    "password": "password",
+    "server": "localhost",
+    "driver": "msnodesqlv8",
+    "database": "MSPO",
+    "options": {
+        "trustedConnection": "true"
+    },
+    "timezone": "utc"
+}
