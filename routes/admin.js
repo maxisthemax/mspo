@@ -37,8 +37,8 @@ module.exports = {
                 res.redirect('/admin');
             } else {
                 db.users.createUser(req.body, function (err, users) {
-                    console.log(users);
-                    console.log(err);
+                    //console.log(users);
+                    //console.log(err);
                     req.flash('success', 'Account Created');
                     res.redirect('/admin');
 

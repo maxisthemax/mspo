@@ -40,7 +40,7 @@ module.exports = {
                         trendmontharr.push({ monthfullpath: monthnew, monthfilename: path.basename(monthnew) });
                     }
                     trend_dir['month'] = trendmontharr;
-                    console.log(trend_dir['day']);
+                    //console.log(trend_dir['day']);
                     res.render('home.ejs', {
                         user: req.user,
                         successFlash: req.flash('success'),
