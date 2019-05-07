@@ -1,69 +1,75 @@
 <% include partials/header.ejs %>
 <h2></h2>
-
+<style>
+.accordion-toggle:hover {
+      text-decoration: none;
+    }
+</style>
 <div class="container-fluid">
     <div class="tab">
         <button class="tablinks" onclick="openTabs(event, 'customers')">Customers</button>
     </div>
     <div class="" style="border:1px solid">
-      <div id="customers" class="tabcontent table-responsive text-nowrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-              <th scope="col">Heading</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>4, Jalan Pelapik C U8/C, Bukit Jelutong, 40150 Shah Alam, Bukit Jelutong</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-              <td>Cell</td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="customers" class="tabcontent table-responsive text-nowrap">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Customers List</h3>
+                </div>
+                <div class="panel-body">
+                    <table id="custtable" class="table table-condensed" style="border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                              <th colspan=4><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name"></th>
+                            <tr>
+                            <tr>
 
-      </div> 
+                                <th>&nbsp;</th>
+                                <th>Customer No</th>
+                                <th>Customer Name</th>
+                                <th>Customer IC</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% if(customers){ for(var i = 0; i < customers.length; i++) {%>  
+                              <tr data-toggle="collapse" data-target="#<%= customers[i].custId %>" class="accordion-toggle">
+                                  <td><button class="btn btn-primary btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                                  <td><%= customers[i].custNo %></td>
+                                  <td><%= customers[i].custName %></td>
+                                  <td><%= customers[i].custIC %></td>
+                              </tr>
+                              <tr>
+                                  <td colspan="12">
+                                      <div class="accordian-body collapse" id="<%= customers[i].custId %>">
+                                          <table class="table table-striped">
+                                              <thead>
+                                                  <tr>
+                                                      <td width="20%">Address 1</td>
+                                                      <td><%= customers[i].custAdd1 %></td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td>Address 2</td>
+                                                      <td><%= customers[i].custAdd2 %></td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td>Address 3</td>
+                                                      <td><%= customers[i].custAdd3 %></td>
+                                                  </tr>
+ 
+                                              </thead>
+                                          </table>
+                                      </div>
+                                  </td>
+                              </tr>
+                            <% }} %>                               
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
     </div>
+
 </div>
 <% include partials/footer.ejs %>
 
@@ -77,29 +83,59 @@
 </html>
 
 <script>
-function openTabs(evt, tabname) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
+    function openTabs(evt, tabname) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabname).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            $('a').each(function () {
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active'); $(this).parents('li').addClass('active');
+                }
+            });
+        });
+        document.getElementsByClassName('tablinks')[0].click();
+
+    });  
+
+$('.collapse').on('shown.bs.collapse', function(){
+  $(this).closest('tr').prev().children('td:first').children('button').children('i').removeClass('.fa fa-plus').addClass('.fa fa-minus');
+}).on('hidden.bs.collapse', function(){
+  $(this).closest('tr').prev().children('td:first').children('button').children('i').removeClass('.fa fa-minus').addClass('.fa fa-plus');
+});
+
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("custtable");
+  tr = table.querySelectorAll('tr.accordion-toggle');
+
+  $('#custtable .accordian-body').collapse('hide');
+  
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[2];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
   }
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  document.getElementById(tabname).style.display = "block";
-  evt.currentTarget.className += " active";
 }
-
-$( document ).ready(function() {
-  $(function(){
-      $('a').each(function(){
-          if ($(this).prop('href') == window.location.href) {
-              $(this).addClass('active'); $(this).parents('li').addClass('active');
-          }
-      });
-  });
-  document.getElementsByClassName('tablinks')[0].click();
-
-});  
 </script>
+
+

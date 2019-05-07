@@ -142,4 +142,4 @@ function addescape(str) {
     strconv = strconv.replace("'", "''");
   }
   return strconv;
-} 
+}

@@ -8,21 +8,11 @@ var session = require('express-session');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var db = require('./modals/users');
-var schedulerun = require('node-schedule');
-var openurl = require("openurl");
-const request = require('request');
-
-var morgan = require('morgan');
-var cookieParser = require('cookie-parser');
-const fileUpload = require('express-fileupload');
-const bodyParser = require('body-parser');
 
 const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
-
 const { getCustomersPage } = require('./routes/customers');
-const { querysearch } = require('./routes/query');
 
 // Create a new Express application.
 var app = express();
@@ -60,14 +50,6 @@ passport.deserializeUser(function (id, cb) {
     cb(null, user);
   });
 });
-
-
-
-
-
-
-
-
 
 // set the view engine to ejs
 app.set('views', __dirname + '/views'); // set express to look in this folder to render our view
@@ -126,13 +108,12 @@ app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 /* admin */
 
 /* customers */
-app.all('/customers/*', ensureLoggedIn('/login'));
+app.all('/customers*', ensureLoggedIn('/login'));
 app.get('/customers',  getCustomersPage);
 /* customers */
 
 /* test */
-app.get('/test');
-app.get('/query', querysearch);
+
 /* test */
 
 app.listen(port, function () {
