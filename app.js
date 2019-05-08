@@ -12,7 +12,7 @@ var db = require('./modals/users');
 const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
-const { getCustomersPage } = require('./routes/customers');
+const { getCustomersPage, createCustomer } = require('./routes/customers');
 
 // Create a new Express application.
 var app = express();
@@ -110,6 +110,7 @@ app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 /* customers */
 app.all('/customers*', ensureLoggedIn('/login'));
 app.get('/customers',  getCustomersPage);
+app.post('/customers/createcustomer',  createCustomer);
 /* customers */
 
 /* test */
