@@ -2,8 +2,8 @@
 
 <div class="container-fluid">
     <div class="tab">
-        <button class="tablinks" onclick="openTabs(event, 'customers')">Customers</button>
-        <button class="tablinks" onclick="openTabs(event, 'createcustomer')">Create Customer</button>
+        <button class="tablinks" onclick="openTabs(event, 'customers')" value=customers>Customers</button>
+        <button class="tablinks" onclick="openTabs(event, 'createcustomer')" value=createcustomer>Create Customer</button>
     </div>
     <div class="" style="border:1px solid">
         <div id="customers" class="tabcontent">
@@ -117,6 +117,7 @@
     }
     document.getElementById(tabname).style.display = "block";
     evt.currentTarget.className += " active";
+    localStorage.setItem('activeTab', tabname);
     }
 
     $(document).ready(function () {
@@ -127,8 +128,17 @@
                 }
             });
         });
-        document.getElementsByClassName('tablinks')[0].click();
 
+        tablinks = document.getElementsByClassName('tablinks');
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab == '') {
+            tablinks[0].click();
+        } else {
+            for (i = 0; i < tablinks.length; i++) {
+                if (tablinks[i].value == activeTab)
+                tablinks[i].click();
+            }
+        }
     });
 
     $(document).ready(function () {
