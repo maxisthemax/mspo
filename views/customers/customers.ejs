@@ -125,7 +125,7 @@
     }
     document.getElementById(tabname).style.display = "block";
     evt.currentTarget.className += " active";
-    localStorage.setItem('activeTab', tabname);
+    localStorage.setItem('activeCusTab', tabname);
     }
 
     $(document).ready(function () {
@@ -138,13 +138,13 @@
         });
 
         tablinks = document.getElementsByClassName('tablinks');
-        var activeTab = localStorage.getItem('activeTab');
-        console.log(activeTab);
-        if (activeTab === null) {
+        var activeCusTab = localStorage.getItem('activeCusTab');
+        console.log(activeCusTab);
+        if (activeCusTab === null) {
             tablinks[0].click();
         } else {
             for (i = 0; i < tablinks.length; i++) {
-                if (tablinks[i].value == activeTab)
+                if (tablinks[i].value == activeCusTab)
                 tablinks[i].click();
             }
         }

@@ -1,0 +1,71 @@
+
+<% include partials/header.ejs %>
+
+<script src="vendor/ejs/ejs.js"></script>
+
+<div class="container-fluid">
+    <div class="tab">
+        <button class="tablinks" onclick="openTabs(event, 'company')" value=company>Company</button>
+    </div>
+    <div class="" style="border:1px solid">
+        <div id="company" class="tabcontent">
+            <div class="panel-heading">
+                <h3>Company Name</h3>
+            </div>
+            <div class="panel-body">
+                <table id="companyview" class="display" cellspacing="0" width="100%">
+
+                </table>
+            </div>
+            <!-- /#page-content-wrapper -->
+        </div>
+
+    </div>
+</div>
+<% include partials/footer.ejs %>
+
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>
+<script>
+    function openTabs(evt, tabname) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabname).style.display = "block";
+    evt.currentTarget.className += " active";
+    localStorage.setItem('activeCompTab', tabname);
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            $('a').each(function () {
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active'); $(this).parents('li').addClass('active');
+                }
+            });
+        });
+
+        tablinks = document.getElementsByClassName('tablinks');
+        var activeCompTab = localStorage.getItem('activeCompTab');
+        console.log(activeCompTab);
+        if (activeCompTab === null) {
+            tablinks[0].click();
+        } else {
+            for (i = 0; i < tablinks.length; i++) {
+                if (tablinks[i].value == activeCompTab)
+                tablinks[i].click();
+            }
+        }
+    });
+</script>
