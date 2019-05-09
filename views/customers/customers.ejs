@@ -1,4 +1,7 @@
+
 <% include partials/header.ejs %>
+
+<script src="vendor/ejs/ejs.js"></script>
 
 <div class="container-fluid">
     <div class="tab">
@@ -17,9 +20,11 @@
                             <th>Customer No</th>
                             <th>Customer Name</th>
                             <th>Customer IC</th>
+                            <th>Customer Tel.</th>
                             <th class="none">Address 1</th>
                             <th class="none">Address 2</th>
                             <th class="none">Address 3</th>
+                            <th class="none">Cust Id</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -27,9 +32,11 @@
                             <th>Customer No</th>
                             <th>Customer Name</th>
                             <th>Customer IC</th>
+                            <th>Customer Tel.</th>
                             <th>Address 1</th>
                             <th>Address 2</th>
                             <th>Address 3</th>
+                            <th>Cust Id</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -38,9 +45,11 @@
                             <td><%= customers[i].custNo %></td>
                             <td><%= customers[i].custName %></td>
                             <td><%= customers[i].custIC %></td>
+                            <td><%= customers[i].custTel %></td>
                             <td><%= customers[i].custAdd1 %></td>
                             <td><%= customers[i].custAdd2 %></td>
                             <td><%= customers[i].custAdd3 %></td>
+                            <td><%= customers[i].custId %></td>
                         </tr>
                         <% }} %>
                     </tbody>
@@ -65,17 +74,17 @@
                     <div class="row">
                         <div class="col-sm-6">                
                             <label for="textInput">Customer IC</label>
-                            <input type="text" id="custic" name="custic" class="form-control mb-4" placeholder="Enter Customer IC Here">
+                            <input type="text" id="custic" name="custic" class="form-control mb-4" required placeholder="Enter Customer IC Here">
                         </div>
                         <div class="col-sm-6">    
                             <label for="textInput">Customer Tel.</label>
-                            <input type="text" id="custtel" name="custtel" class="form-control mb-4" required placeholder="Enter Customer Name Here">                        
+                            <input type="text" id="custtel" name="custtel" class="form-control mb-4" placeholder="Enter Customer Name Here">                        
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">                
                             <label for="textInput">Address 1</label>
-                            <input type="text" id="custadd1" name="custadd1" class="form-control mb-4" placeholder="Enter Customer Address Here">
+                            <input type="text" id="custadd1" name="custadd1" class="form-control mb-4" required placeholder="Enter Customer Address Here">
                         </div>
                         <div class="col-sm-6">    
                             <label for="textInput">Address 2</label>
@@ -85,7 +94,7 @@
                     <div class="row">
                         <div class="col-sm-6">                
                             <label for="textInput">Address 3</label>
-                            <input type="text" id="custadd3" name="custadd3" class="form-control mb-4" placeholder="Enter Customer Address Here">
+                            <input type="text" id="custadd3" name="custadd3" class="form-control mb-4" required placeholder="Enter Customer Address Here">
                         </div>
                     </div>                                        
                 <button class="btn btn-primary btn-block" type="submit">Create New Customer</button>       
@@ -103,7 +112,6 @@
 </body>
 
 </html>
-
 <script>
     function openTabs(evt, tabname) {
     var i, tabcontent, tablinks;
@@ -131,7 +139,8 @@
 
         tablinks = document.getElementsByClassName('tablinks');
         var activeTab = localStorage.getItem('activeTab');
-        if (activeTab == '') {
+        console.log(activeTab);
+        if (activeTab === null) {
             tablinks[0].click();
         } else {
             for (i = 0; i < tablinks.length; i++) {
@@ -140,28 +149,5 @@
             }
         }
     });
-
-    $(document).ready(function () {
-
-        var table = $('#customerview').DataTable({
-            dom: 'Blfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-            'responsive': true
-        });
-
-        // Handle click on "Expand All" button
-        $('#btn-show-all-children').on('click', function () {
-            // Expand row details
-            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
-        });
-
-        // Handle click on "Collapse All" button
-        $('#btn-hide-all-children').on('click', function () {
-            // Collapse row details
-            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
-        });
-    });
-
 </script>
+<% include customers/customersjs.ejs %>

@@ -2,7 +2,7 @@ exports.queryAllCustomers = function (body, cb) {
   process.nextTick(function () {
     var firstquery = "SELECT * FROM `customers` WHERE 1 ORDER BY custId";
     con.query(firstquery, function (err, result, fields) {
-      if (!err) result = (JSON.parse(JSON.stringify(result)));
+      if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.length) {
         return cb(null, result);
       }
@@ -37,10 +37,8 @@ exports.createCustomer = function (cust, cb) {
       + "" + "CURRENT_TIMESTAMP"
       + ")";
     con.query(firstquery, function (err, result, fields) {
-      console.log(result);
-      console.log(err);
-      if (!err) result = (JSON.parse(JSON.stringify(result)));
-      if (result && result.length) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.insertId) {
         return cb(null, result);
       }
       else {
@@ -50,33 +48,42 @@ exports.createCustomer = function (cust, cb) {
   });
 }
 
-exports.createUser = function (user, cb) {
+
+exports.editCustomer = function (cust, cb) {
   process.nextTick(function () {
-    user.username = user.username ? [].concat(user.username) : [''];
-    user.password = user.password ? [].concat(user.password) : [''];
-    user.displayname = user.displayname ? [].concat(user.displayname) : [''];
-    user.email = user.email ? [].concat(user.email) : [''];
 
-    let firstquery = "INSERT INTO USERS (username,userpassword,displayname,email,deactivated) VALUES ("
-      + "'" + user.username[0] + "',"
-      + "'" + user.password[0] + "',"
-      + "'" + user.displayname[0] + "',"
-      + "'" + user.email[0] + "',"
-      + "'" + "0" + "'"
-      + ")";
+    cust.custid = cust.custid ? [].concat(cust.custid) : [''];
+    cust.custno = cust.custno ? [].concat(cust.custno) : [''];
+    cust.custname = cust.custname ? [].concat(cust.custname) : [''];
+    cust.custic = cust.custic ? [].concat(cust.custic) : [''];
+    cust.custtel = cust.custtel ? [].concat(cust.custtel) : [''];
+    cust.custadd1 = cust.custadd1 ? [].concat(cust.custadd1) : [''];
+    cust.custadd2 = cust.custadd2 ? [].concat(cust.custadd2) : [''];
+    cust.custadd3 = cust.custadd3 ? [].concat(cust.custadd3) : [''];
+    
 
-    con.query(firstquery, function (err, result) {
+    let firstquery = "UPDATE `customers` SET"
+      + "`custNo` = '" + cust.custno[0] + "',"
+      + "`custName` ='" + cust.custname[0] + "',"
+      + "`custIC` = '" + cust.custic[0] + "',"
+      + "`custTel` = '" + cust.custtel[0] + "',"
+      + "`custAdd1` = '" + cust.custadd1[0] + "',"
+      + "`custAdd2` = '" + cust.custadd2[0] + "',"
+      + "`custAdd3` = '" + cust.custadd3[0] + "'"            
+      + " where custId=" + cust.custid[0];
+
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
       //console.log(result);
-      if (err) {
-        return cb(err, null);
+      if (result) {
+        return cb(null, result);
       }
-      else if (result && result.insertId) {
-        return cb(null, result.insertId);
+      else {
+        return cb(err, null);
       }
     });
   });
 }
-
 function addescape(str) {
   var strconv = '';
   strconv = str;

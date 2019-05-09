@@ -1,0 +1,57 @@
+<script> 
+$(document).ready(function () {
+        var editcusthtml = <%- JSON.stringify(editcustomerhtml)%>;
+
+        var table = $('#customerview').DataTable({
+            dom: 'Blfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "responsive": {
+                "details": {
+                    "renderer": function ( api, rowIdx, columns ) {
+                        // Show hidden columns in row details
+                        var data = $.map( columns, function ( col, i ) {
+                            return col.hidden 
+                            ? '<tr><td>'+col.title+':</td> '+
+                                '<td>'+col.data+'</td></tr>' 
+                            : '';
+                        } ).join('');
+                            var htm = ejs.render(editcusthtml,{cust: columns});
+                            console.log(htm);
+                            data = $('<table width="100%"/>').append( data ).prop('outerHTML');
+                            
+                            // Extra: Show custom content
+                            data += '<div class="container-fluid">';  
+                            data += htm;
+                            //console.log(html);
+                            data += '';
+//                         console.log(data);
+// console.log(api.cell(rowIdx, 0).data());
+//                         // Extra: Show "Name" in row details
+//                         data += '<tr><td>Name:</td><td>' + api.cell(rowIdx, 0).data() + '</td></tr>';
+//                         // Generate a table
+//                         data = $('<table width="100%"/>').append( data ).prop('outerHTML');
+                        
+//                         // Extra: Show custom content
+//                         data += '<div class="content-custom">Custom content</div>';
+                            data += '</div>';  
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function () {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function () {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+    });
+</script>

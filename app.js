@@ -12,7 +12,7 @@ var db = require('./modals/users');
 const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
-const { getCustomersPage, createCustomer } = require('./routes/customers');
+const { getCustomersPage, createCustomer, editCustomer } = require('./routes/customers');
 
 // Create a new Express application.
 var app = express();
@@ -52,7 +52,7 @@ passport.deserializeUser(function (id, cb) {
 });
 
 // set the view engine to ejs
-app.set('views', __dirname + '/views'); // set express to look in this folder to render our view
+app.set('views', [path.join(__dirname, 'views'), path.join(__dirname, 'views/partials/')]); // set express to look in this folder to render our view
 app.set('view engine', 'ejs'); // configure template engine
 app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
 // app.use(require('morgan')('combined'));
@@ -111,6 +111,7 @@ app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 app.all('/customers*', ensureLoggedIn('/login'));
 app.get('/customers',  getCustomersPage);
 app.post('/customers/createcustomer',  createCustomer);
+app.post('/customers/editcustomer',  editCustomer);
 /* customers */
 
 /* test */
