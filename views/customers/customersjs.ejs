@@ -41,7 +41,7 @@ $(document).ready(function () {
                             data = $('<table width="100%"/>').append( data ).prop('outerHTML');
                             
                             // Extra: Show custom content
-                            data += '<div class="container-fluid">';  
+                            data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  
                             data += htm;
                             //console.log(html);
                             data += '';
@@ -54,7 +54,7 @@ $(document).ready(function () {
                         
 //                         // Extra: Show custom content
 //                         data += '<div class="content-custom">Custom content</div>';
-                            data += '</div>';  
+                            data += '</div><br><br>';  
                         return data;
                     }
                 }
