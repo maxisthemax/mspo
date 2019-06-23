@@ -1,0 +1,13 @@
+<style>
+.btnpadding {
+    margin: 10px;
+}
+</style>
+<div id="customerbuttons" class="p-5">
+    <p class="h4 mb-4">Actions</p>
+    <div class="row">
+        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/customers/<%= cust[7].data%>';" >Edit This Customer</button>
+        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/customers/doc/<%= cust[7].data%>';" >View This Customer Documents</button>
+    </div>
+</div>
+

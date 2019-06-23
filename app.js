@@ -5,18 +5,21 @@ global.con = con;
 
 var flash = require('express-flash');
 var session = require('express-session');
+var busboyBodyParser = require('busboy-body-parser');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var db = require('./modals/users');
 
+
+
 const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
-const { getCustomersPage, createCustomer, editCustomer } = require('./routes/customers');
+const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage,getCustomerDocPage,uploadCustomerDocuments } = require('./routes/customers');
 const { getCompanyPage } = require('./routes/company');
 // Create a new Express application.
 var app = express();
-
+app.use(busboyBodyParser({ multi: true }));
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
 var port = process.env.PORT || 7000;
@@ -109,14 +112,19 @@ app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 
 /* customers */
 app.all('/customers*', ensureLoggedIn('/login'));
-app.get('/customers',  getCustomersPage);
-app.post('/customers/createcustomer',  createCustomer);
-app.post('/customers/editcustomer',  editCustomer);
+app.get('/customers', getCustomersPage);
+app.get('/customers/:custid', getEditCustomersPage);
+app.get('/customers/doc/:custid', getCustomerDocPage);
+
+app.post('/customers/doc/', uploadCustomerDocuments);
+
+app.post('/customers/createcustomer', createCustomer);
+app.post('/customers/editcustomer', editCustomer);
 /* customers */
 
 /* company */
 app.all('/company*', ensureLoggedIn('/login'));
-app.get('/company',  getCompanyPage);
+app.get('/company', getCompanyPage);
 /* company */
 
 /* test */

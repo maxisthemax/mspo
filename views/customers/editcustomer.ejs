@@ -1,46 +1,66 @@
+<% include partials/header.ejs %>
+<div id="editcustomer" class="container-fluid">
+    <div class="" style="border:1px solid">
+        <form class="p-5" name="user" method="POST" action="/customers/editcustomer">
+            <p class="h4 mb-4">Edit Customer</p>
 
-<div id="editcustomer">
-<form class="p-5" name="user" method="POST" action="/customers/editcustomer">
-    <p class="h4 mb-4">Edit Customer</p>
-        <div class="row">
-            <div class="col-sm-5">                
-                <label for="textInput">Customer No</label>
-                <input type="text" id="custno" name="custno" class="form-control mb-4" required placeholder="Enter Customer No Here" value="<%= cust[0].data%>">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="textInput">Customer No</label>
+                    <input type="text" id="custno" name="custno" class="form-control mb-4" required
+                        placeholder="Enter Customer No Here" value="<%= customer[0].custNo%>">
+                </div>
+                <div class="col-sm-6">
+                    <label for="textInput">Customer Name</label>
+                    <input type="text" id="custname" name="custname" class="form-control mb-4" required
+                        placeholder="Enter Customer Name Here" value="<%= customer[0].custName%>">
+                </div>
             </div>
-            <div class="col-sm-5">    
-                <label for="textInput">Customer Name</label>
-                <input type="text" id="custname" name="custname" class="form-control mb-4" required placeholder="Enter Customer Name Here" value="<%= cust[1].data%>">                        
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="textInput">Customer IC</label>
+                    <input type="text" id="custic" name="custic" class="form-control mb-4" required
+                        placeholder="Enter Customer IC Here" value="<%= customer[0].custIC%>">
+                </div>
+                <div class="col-sm-6">
+                    <label for="textInput">Customer Tel.</label>
+                    <input type="text" id="custtel" name="custtel" class="form-control mb-4" required
+                        placeholder="Enter Customer Name Here" value="<%= customer[0].custTel%>">
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-5">                
-                <label for="textInput">Customer IC</label>
-                <input type="text" id="custic" name="custic" class="form-control mb-4" required placeholder="Enter Customer IC Here" value="<%= cust[2].data%>">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="textInput">Address 1</label>
+                    <input type="text" id="custadd1" name="custadd1" class="form-control mb-4"
+                        placeholder="Enter Customer Address Here" value="<%= customer[0].custAdd1%>">
+                </div>
+                <div class="col-sm-6">
+                    <label for="textInput">Address 2</label>
+                    <input type="text" id="custadd2" name="custadd2" class="form-control mb-4"
+                        placeholder="Enter Customer Address Here" value="<%= customer[0].custAdd2%>">
+                </div>
             </div>
-            <div class="col-sm-5">    
-                <label for="textInput">Customer Tel.</label>
-                <input type="text" id="custtel" name="custtel" class="form-control mb-4" required placeholder="Enter Customer Name Here" value="<%= cust[3].data%>">                        
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="textInput">Address 3</label>
+                    <input type="text" id="custadd3" name="custadd3" class="form-control mb-4"
+                        placeholder="Enter Customer Address Here" value="<%= customer[0].custAdd3%>">
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-5">                
-                <label for="textInput">Address 1</label>
-                <input type="text" id="custadd1" name="custadd1" class="form-control mb-4" placeholder="Enter Customer Address Here" value="<%= cust[4].data%>">
-            </div>
-            <div class="col-sm-5">    
-                <label for="textInput">Address 2</label>
-                <input type="text" id="custadd2" name="custadd2" class="form-control mb-4" placeholder="Enter Customer Address Here" value="<%= cust[5].data%>">                        
-            </div>
-        </div>    
-        <div class="row">
-            <div class="col-sm-5">                
-                <label for="textInput">Address 3</label>
-                <input type="text" id="custadd3" name="custadd3" class="form-control mb-4" placeholder="Enter Customer Address Here" value="<%= cust[6].data%>">
-            </div>
-        </div> 
 
-        <input type="hidden" id="custid" name="custid" value="<%= cust[7].data%>">
-                                    
-    <button class="btn btn-primary btn-block" type="submit">Save Customer</button>       
-</form>
+            <input type="hidden" id="custid" name="custid" value="<%= customer[0].custId%>">
+
+            <button class="btn btn-primary btn-block" type="submit">Save Customer</button>
+
+        </form>
+    </div>
 </div>
+
+<% include partials/footer.ejs %>
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>

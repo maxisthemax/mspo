@@ -1,12 +1,9 @@
-
 <% include partials/header.ejs %>
-
-<script src="vendor/ejs/ejs.js"></script>
-
 <div class="container-fluid">
     <div class="tab">
         <button class="tablinks" onclick="openTabs(event, 'customers')" value=customers>Customers</button>
-        <button class="tablinks" onclick="openTabs(event, 'createcustomer')" value=createcustomer>Create Customer</button>
+        <button class="tablinks" onclick="openTabs(event, 'createcustomer')" value=createcustomer>Create
+            Customer</button>
     </div>
     <div class="" style="border:1px solid">
         <div id="customers" class="tabcontent">
@@ -40,7 +37,7 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -48,46 +45,62 @@
         </div>
 
         <div id="createcustomer" class="tabcontent">
-            <form class="p-5" name="user" method="POST" action="/customers/createcustomer">
+            <form class="p-5" name="user" method="POST" action="/customers/createcustomer"
+                enctype="multipart/form-data">
                 <p class="h4 mb-4">Create New Customer</p>
-                    <div class="row">
-                        <div class="col-sm-6">                
-                            <label for="textInput">Customer No</label>
-                            <input type="text" id="custno" name="custno" class="form-control mb-4" required placeholder="Enter Customer No Here">
-                        </div>
-                        <div class="col-sm-6">    
-                            <label for="textInput">Customer Name</label>
-                            <input type="text" id="custname" name="custname" class="form-control mb-4" required placeholder="Enter Customer Name Here">                        
-                        </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Customer No</label>
+                        <input type="text" id="custno" name="custno" class="form-control mb-4" required
+                            placeholder="Enter Customer No Here">
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">                
-                            <label for="textInput">Customer IC</label>
-                            <input type="text" id="custic" name="custic" class="form-control mb-4" required placeholder="Enter Customer IC Here">
-                        </div>
-                        <div class="col-sm-6">    
-                            <label for="textInput">Customer Tel.</label>
-                            <input type="text" id="custtel" name="custtel" class="form-control mb-4" placeholder="Enter Customer Name Here">                        
-                        </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Customer Name</label>
+                        <input type="text" id="custname" name="custname" class="form-control mb-4" required
+                            placeholder="Enter Customer Name Here">
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">                
-                            <label for="textInput">Address 1</label>
-                            <input type="text" id="custadd1" name="custadd1" class="form-control mb-4" required placeholder="Enter Customer Address Here">
-                        </div>
-                        <div class="col-sm-6">    
-                            <label for="textInput">Address 2</label>
-                            <input type="text" id="custadd2" name="custadd2" class="form-control mb-4" required placeholder="Enter Customer Address Here">                        
-                        </div>
-                    </div>    
-                    <div class="row">
-                        <div class="col-sm-6">                
-                            <label for="textInput">Address 3</label>
-                            <input type="text" id="custadd3" name="custadd3" class="form-control mb-4" required placeholder="Enter Customer Address Here">
-                        </div>
-                    </div>                                        
-                <button class="btn btn-primary btn-block" type="submit">Create New Customer</button>       
-            </form>            
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Customer IC</label>
+                        <input type="text" id="custic" name="custic" class="form-control mb-4" required
+                            placeholder="Enter Customer IC Here">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Customer Tel.</label>
+                        <input type="text" id="custtel" name="custtel" class="form-control mb-4"
+                            placeholder="Enter Customer Name Here">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Address 1</label>
+                        <input type="text" id="custadd1" name="custadd1" class="form-control mb-4" required
+                            placeholder="Enter Customer Address Here">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Address 2</label>
+                        <input type="text" id="custadd2" name="custadd2" class="form-control mb-4" required
+                            placeholder="Enter Customer Address Here">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Address 3</label>
+                        <input type="text" id="custadd3" name="custadd3" class="form-control mb-4" required
+                            placeholder="Enter Customer Address Here">
+                    </div>
+                </div>
+                <p class="h4 mb-4">Upload Document Here</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="icupload">IC Photo</label><br>
+                        <input type="file" name="icupload" multiple="multiple"><br>
+                    </div>
+                </div>
+                <p class="h4 mb-4"></p>
+                <button class="btn btn-primary btn-block" type="submit">Create New Customer</button>
+            </form>
         </div>
 
     </div>
@@ -103,18 +116,18 @@
 </html>
 <script>
     function openTabs(evt, tabname) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabname).style.display = "block";
-    evt.currentTarget.className += " active";
-    localStorage.setItem('activeCusTab', tabname);
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabname).style.display = "block";
+        evt.currentTarget.className += " active";
+        localStorage.setItem('activeCusTab', tabname);
     }
 
     $(document).ready(function () {
@@ -134,7 +147,7 @@
         } else {
             for (i = 0; i < tablinks.length; i++) {
                 if (tablinks[i].value == activeCusTab)
-                tablinks[i].click();
+                    tablinks[i].click();
             }
         }
     });

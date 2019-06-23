@@ -13,6 +13,22 @@ exports.queryAllCustomers = function (body, cb) {
   });
 }
 
+exports.queryCustomers = function (custid, cb) {
+  process.nextTick(function () {
+    var firstquery = `SELECT * FROM customers WHERE 1 and custId=${custid} ORDER BY custId`;
+    con.query(firstquery, function (err, result, fields) {
+      console.log(result);
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.length) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
 exports.createCustomer = function (cust, cb) {
   process.nextTick(function () {
 
