@@ -16,7 +16,10 @@ const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
 const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage,getCustomerDocPage,uploadCustomerDocuments } = require('./routes/customers');
+const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments,createLand,editLand } = require('./routes/lands');
 const { getCompanyPage } = require('./routes/company');
+
+
 // Create a new Express application.
 var app = express();
 app.use(busboyBodyParser({ multi: true }));
@@ -115,12 +118,21 @@ app.all('/customers*', ensureLoggedIn('/login'));
 app.get('/customers', getCustomersPage);
 app.get('/customers/:custid', getEditCustomersPage);
 app.get('/customers/doc/:custid', getCustomerDocPage);
-
 app.post('/customers/doc/', uploadCustomerDocuments);
-
 app.post('/customers/createcustomer', createCustomer);
 app.post('/customers/editcustomer', editCustomer);
 /* customers */
+
+/* lands */
+app.all('/lands*', ensureLoggedIn('/login'));
+app.get('/lands', getLandsPage);
+app.get('/lands/:landid', getEditLandsPage);
+app.get('/lands/doc/:landid', getLandsDocPage);
+app.post('/lands/doc/', uploadLandDocuments);
+app.post('/lands/createcustomer', createLand);
+app.post('/lands/editcustomer', editLand);
+/* lands */
+
 
 /* company */
 app.all('/company*', ensureLoggedIn('/login'));

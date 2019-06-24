@@ -1,5 +1,14 @@
 var mysql = require('mysql');
-const config = {"host":"us-cdbr-iron-east-02.cleardb.net","user":"bc87d1f61f506e","password":"7252eff05e0cad1","database":"heroku_cb104ca2b7e8ce0","multipleStatements":"true"};
+var config = {};
+var debug;
+debug = 1
+
+if (debug == 1)
+config = {"host":"localhost","user":"root","password":"","database":"mspo","multipleStatements":"true"};
+else
+config = {"host":"us-cdbr-iron-east-02.cleardb.net","user":"bc87d1f61f506e","password":"7252eff05e0cad1","database":"heroku_cb104ca2b7e8ce0","multipleStatements":"true"};
+
+
 
 //  connect to database
 
