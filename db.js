@@ -1,9 +1,9 @@
-var mysql = require('mysql');
-const config = require('./config.json');
+import { createConnection } from 'mysql';
+import config, { CLEARDB_DATABASE_URL } from './config.json';
 
 //  connect to database
 
-var con = mysql.createConnection(config);
+var con = createConnection(config);
 
 con.connect(function (err) {
     if (err) {
@@ -15,7 +15,7 @@ con.connect(function (err) {
 });
 handleDisconnect(con);
 
-function handleDisconnect(conn) {
+function handleDisconnect(con) {
     con.on('error', function (err) {
         if (!err.fatal) {
             return;
@@ -25,12 +25,12 @@ function handleDisconnect(conn) {
             throw err;
         }
         console.log('Re-connecting lost connection: ' + err.stack);
-        conn = mysqlDriver.createConnection(config.CLEARDB_DATABASE_URL);
+        con = createConnection(CLEARDB_DATABASE_URL);
         handleDisconnect(con);
-        conn.connect();
+        con.connect();
     });
 }
 handleDisconnect(con);
 
-module.exports = con;
+export default con;
 
