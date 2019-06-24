@@ -22,8 +22,8 @@ var app = express();
 app.use(busboyBodyParser({ multi: true }));
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
-var port = process.env.PORT || 7000;
-app.set('port', port);
+// var port = process.env.PORT || 7000;
+// app.set('port', port);
 
 
 
@@ -131,6 +131,7 @@ app.get('/company', getCompanyPage);
 
 /* test */
 
-app.listen(port, function () {
-  console.log('Our app is running on http://localhost:' + port);
+var server = app.listen(process.env.PORT || 5000, function () {
+  var port = server.address().port;
+  console.log("Express is working on port " + port);
 });
