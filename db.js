@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-const config = require('./config.json');
+const config = {"host":"us-cdbr-iron-east-02.cleardb.net","user":"bc87d1f61f506e","password":"7252eff05e0cad1","database":"heroku_cb104ca2b7e8ce0","multipleStatements":"true"};
 
 //  connect to database
 
@@ -25,7 +25,7 @@ function handleDisconnect(con) {
             throw err;
         }
         console.log('Re-connecting lost connection: ' + err.stack);
-        con = mysql.createConnection(config.CLEARDB_DATABASE_URL);
+        con = mysql.createConnection(config);
         handleDisconnect(con);
         con.connect();
     });
