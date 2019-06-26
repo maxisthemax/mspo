@@ -8,7 +8,7 @@
          <div id="user" class="tabcontent">
             <!-- Default form contact -->
             <form class="p-5" name="user" method="POST" action="/admin/user/saveUsers">
-
+                <p class="h4 mb-4"><%=allusers[0].coName%></p>
                 <p class="h4 mb-4">Users</p>
                 <!-- Server -->
                 <table class="table">
@@ -26,14 +26,14 @@
                 </thead>
                 <tbody>
                 <% if(allusers){ for(var i = 0; i < allusers.length; i++) {%>
-                    <% if (allusers[i].deactivated == 1){%><tr class="w3-red"><%} else {%><tr><%}%>                  
+                    <% if (allusers[i].userdeactivated == 1){%><tr class="w3-red"><%} else {%><tr><%}%>                  
                         <th scope="row"><%= allusers[i].userid %></th>         
                         <td><%= allusers[i].username %></td>
                         <td class="editDisplayName"><%= allusers[i].displayname %></td>
                         <td class="editEmail"><%= allusers[i].email %></td>
                         <td class="editAdmin"><% if (allusers[i].administrator == 1){%>Yes<%} else {%>No<%}%></td>
 
-                        <td class="editDeactivated"><% if (allusers[i].deactivated == 1){%>Yes<%} else {%>No<%}%></td>
+                        <td class="editDeactivated"><% if (allusers[i].userdeactivated == 1){%>Yes<%} else {%>No<%}%></td>
 
                         <td><input onclick="changetoedit(this,<%= allusers[i].userid %>);" type="button" value="Edit"></td>
                     </tr>

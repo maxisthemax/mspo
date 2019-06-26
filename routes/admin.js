@@ -2,7 +2,7 @@ const fs = require('fs');
 var db = require('../modals/users');
 module.exports = {
     getAdminPage: (req, res) => {
-        db.users.findAllUsers(function (err, users) {
+        db.users.findAllUsers(req.user.coid,function (err, users) {
             fs.readFile("config.json", "utf8", (err, config) => {
                 res.render('admin.ejs', {
                     user: req.user,
@@ -36,7 +36,7 @@ module.exports = {
                 req.flash('error', 'Same Username Detected');
                 res.redirect('/admin');
             } else {
-                db.users.createUser(req.body, function (err, users) {
+                db.users.createUser(req, function (err, users) {
                     //console.log(users);
                     //console.log(err);
                     req.flash('success', 'Account Created');

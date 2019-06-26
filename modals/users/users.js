@@ -53,9 +53,9 @@ exports.findByUsername = function (username, cb) {
   });
 }
 
-exports.findAllUsers = function (cb) {
+exports.findAllUsers = function (coid, cb) {
   process.nextTick(function () {
-    let firstquery = "select * FROM USERS"
+    let firstquery = `select a.*,b.*,a.deactivated as userdeactivated,b.deactivated as companydeactivated FROM USERS a LEFT JOIN company b on a.coid = b.coid where b.coid =${coid}`
 
     con.query(firstquery, function (err, result, fields) {
       if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
@@ -69,21 +69,24 @@ exports.findAllUsers = function (cb) {
   });
 }
 
-exports.createUser = function (user, cb) {
+exports.createUser = function (req, cb) {
+  var coid = req.user.coid;
+  var user = req.body;
   process.nextTick(function () {
     user.username = user.username ? [].concat(user.username) : [''];
     user.password = user.password ? [].concat(user.password) : [''];
     user.displayname = user.displayname ? [].concat(user.displayname) : [''];
     user.email = user.email ? [].concat(user.email) : [''];
 
-    let firstquery = "INSERT INTO USERS (username,userpassword,displayname,email,deactivated) VALUES ("
+    let firstquery = "INSERT INTO USERS (username,userpassword,displayname,email,deactivated,coid) VALUES ("
       + "'" + user.username[0] + "',"
       + "'" + user.password[0] + "',"
       + "'" + user.displayname[0] + "',"
       + "'" + user.email[0] + "',"
-      + "'" + "0" + "'"
+      + "'" + "0" + "',"
+      + "" + coid + ""
       + ")";
-
+    console.log(firstquery);
     con.query(firstquery, function (err, result) {
       //console.log(result);
       if (err) {

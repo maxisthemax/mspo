@@ -12,7 +12,7 @@ module.exports = {
         var htmlContent = fs.readFileSync('./views/customers/customersbutton.ejs', 'utf8');
 
 
-        cust.customers.queryAllCustomers(null, function (err, customers) {
+        cust.customers.queryAllCustomers(req.user.coid, function (err, customers) {
 
             res.render('customers/customers.ejs', {
                 successFlash: req.flash('success'),
@@ -80,7 +80,7 @@ module.exports = {
     },
 
     createCustomer: (req, res) => {
-        cust.customers.createCustomer(req.body, function (err, customer) {
+        cust.customers.createCustomer(req, function (err, customer) {
             if (err) {
                 if (err.code == "ER_DUP_ENTRY") {
                     req.flash('error', 'Customer Already Exist');

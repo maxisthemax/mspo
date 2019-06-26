@@ -1,2 +1,20 @@
-[{ "userid": 999, "username": "max", "userpassword": "test123", "displayname": "Max Admin", "emails": "", "administrator" : 1 }
-  , { "userid": 998, "username": "may", "userpassword": "test123", "displayname": "May Admin", "emails": "", "administrator" : 1 }]
+[
+  {
+    "userid": 999,
+    "username": "max",
+    "userpassword": "test123",
+    "displayname": "Max Admin",
+    "emails": "",
+    "administrator": 1,
+    "coid": 1
+  },
+  {
+    "userid": 998,
+    "username": "may",
+    "userpassword": "test123",
+    "displayname": "May Admin",
+    "emails": "",
+    "administrator": 1,
+    "coid": 1
+  }
+]

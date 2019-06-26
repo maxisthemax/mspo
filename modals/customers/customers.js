@@ -1,6 +1,6 @@
-exports.queryAllCustomers = function (body, cb) {
+exports.queryAllCustomers = function (coid, cb) {
   process.nextTick(function () {
-    var firstquery = "SELECT * FROM `customers` WHERE 1 ORDER BY custId";
+    var firstquery = `SELECT * FROM customers WHERE coid = ${coid} ORDER BY custId`;
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.length) {
@@ -29,7 +29,9 @@ exports.queryCustomers = function (custid, cb) {
   });
 }
 
-exports.createCustomer = function (cust, cb) {
+exports.createCustomer = function (req, cb) {
+  var coid = req.user.coid;
+  var cust = req.body;
   process.nextTick(function () {
 
     cust.custno = cust.custno ? [].concat(cust.custno) : [''];
@@ -39,16 +41,17 @@ exports.createCustomer = function (cust, cb) {
     cust.custadd1 = cust.custadd1 ? [].concat(cust.custadd1) : [''];
     cust.custadd2 = cust.custadd2 ? [].concat(cust.custadd2) : [''];
     cust.custadd3 = cust.custadd3 ? [].concat(cust.custadd3) : [''];
-    
 
-    let firstquery = "INSERT INTO `customers` (`custNo`, `custName`, `custIC`, `custTel`, `custAdd1`, `custAdd2`, `custAdd3`, `deactivated`, `createDate`) VALUES ("
+
+    let firstquery = "INSERT INTO `customers` (`coid`,`custNo`, `custName`, `custIC`, `custTel`, `custAdd1`, `custAdd2`, `custAdd3`, `deactivated`, `createDate`) VALUES ("
+      + "" + coid + ","
       + "'" + cust.custno[0] + "',"
       + "'" + cust.custname[0] + "',"
       + "'" + cust.custic[0] + "',"
       + "'" + cust.custtel[0] + "',"
       + "'" + cust.custadd1[0] + "',"
       + "'" + cust.custadd2[0] + "',"
-      + "'" + cust.custadd3[0] + "',"            
+      + "'" + cust.custadd3[0] + "',"
       + "'" + "0" + "',"
       + "" + "CURRENT_TIMESTAMP"
       + ")";
@@ -76,7 +79,7 @@ exports.editCustomer = function (cust, cb) {
     cust.custadd1 = cust.custadd1 ? [].concat(cust.custadd1) : [''];
     cust.custadd2 = cust.custadd2 ? [].concat(cust.custadd2) : [''];
     cust.custadd3 = cust.custadd3 ? [].concat(cust.custadd3) : [''];
-    
+
 
     let firstquery = "UPDATE `customers` SET"
       + "`custNo` = '" + cust.custno[0] + "',"
@@ -85,7 +88,7 @@ exports.editCustomer = function (cust, cb) {
       + "`custTel` = '" + cust.custtel[0] + "',"
       + "`custAdd1` = '" + cust.custadd1[0] + "',"
       + "`custAdd2` = '" + cust.custadd2[0] + "',"
-      + "`custAdd3` = '" + cust.custadd3[0] + "'"            
+      + "`custAdd3` = '" + cust.custadd3[0] + "'"
       + " where custId=" + cust.custid[0];
 
     con.query(firstquery, function (err, result, fields) {
