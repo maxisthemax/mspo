@@ -5,7 +5,7 @@ var recordsadmin = JSON.parse(fs.readFileSync('./modals/users/users.json', 'utf8
 exports.findById = function (id, cb) {
   process.nextTick(function () {
 
-    let firstquery = "select * FROM USERS where IFNULL(deactivated,0) != 1 and userid='" + id + "'" + " LIMIT 1";
+    let firstquery = "select * FROM USERS where IFNULL(deactivated,0) != 1 and userId='" + id + "'" + " LIMIT 1";
     con.query(firstquery, function (err, result, fields) {
       if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
       var records = [];
@@ -18,7 +18,7 @@ exports.findById = function (id, cb) {
 
       for (var i = 0, len = records.length; i < len; i++) {
         var record = records[i];
-        if (record.userid === id) {
+        if (record.userId === id) {
           return cb(null, record);
         }
       }
@@ -53,9 +53,9 @@ exports.findByUsername = function (username, cb) {
   });
 }
 
-exports.findAllUsers = function (coid, cb) {
+exports.findAllUsers = function (coId, cb) {
   process.nextTick(function () {
-    let firstquery = `select a.*,b.*,a.deactivated as userdeactivated,b.deactivated as companydeactivated FROM USERS a LEFT JOIN company b on a.coid = b.coid where b.coid =${coid}`
+    let firstquery = `select a.*,b.*,a.deactivated as userdeactivated,b.deactivated as companydeactivated FROM USERS a LEFT JOIN company b on a.coId = b.coId where b.coId =${coId}`
 
     con.query(firstquery, function (err, result, fields) {
       if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
@@ -70,7 +70,7 @@ exports.findAllUsers = function (coid, cb) {
 }
 
 exports.createUser = function (req, cb) {
-  var coid = req.user.coid;
+  var coId = req.user.coId;
   var user = req.body;
   process.nextTick(function () {
     user.username = user.username ? [].concat(user.username) : [''];
@@ -78,13 +78,13 @@ exports.createUser = function (req, cb) {
     user.displayname = user.displayname ? [].concat(user.displayname) : [''];
     user.email = user.email ? [].concat(user.email) : [''];
 
-    let firstquery = "INSERT INTO USERS (username,userpassword,displayname,email,deactivated,coid) VALUES ("
+    let firstquery = "INSERT INTO USERS (username,userpassword,displayname,email,deactivated,coId) VALUES ("
       + "'" + user.username[0] + "',"
       + "'" + user.password[0] + "',"
       + "'" + user.displayname[0] + "',"
       + "'" + user.email[0] + "',"
       + "'" + "0" + "',"
-      + "" + coid + ""
+      + "" + coId + ""
       + ")";
     console.log(firstquery);
     con.query(firstquery, function (err, result) {
@@ -109,11 +109,11 @@ exports.saveAllUsers = function (users, cb) {
     users.email = users.email ? [].concat(users.email) : [''];
     users.displayname = users.displayname ? [].concat(users.displayname) : [''];
 
-    users.userid = users.userid ? [].concat(users.userid) : [''];
+    users.userId = users.userId ? [].concat(users.userId) : [''];
 
 
     var firstquery = '';
-    for (var i = 0, len = users.userid.length; i < len; i++) {
+    for (var i = 0, len = users.userId.length; i < len; i++) {
       firstquery += "UPDATE USERS set"
         + " displayname='"
         + addescape(users.displayname[i]) + "',"
@@ -123,7 +123,7 @@ exports.saveAllUsers = function (users, cb) {
         + addescape(users.admin[i]) + "',"
         + " deactivated='"
         + addescape(users.deactivated[i]) + "'"
-        + " where userid=" + users.userid[i] + ";";
+        + " where userId=" + users.userId[i] + ";";
     }
 
     con.query(firstquery, function (err, result) {

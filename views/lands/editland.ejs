@@ -1,0 +1,71 @@
+<% include partials/header.ejs %>
+<div id="editland" class="container-fluid">
+    <div class="" style="border:1px solid">
+        <form class="p-5" name="land" method="POST" action="/lands/editland">
+            <p class="h4 mb-4">Edit land</p>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="textInput">Lot No</label>
+                    <input type="text" id="lotNo" name="lotNo" class="form-control mb-4" required
+                        value="<%= land[0].lotNo%>">
+                </div>
+                <div class="col-sm-6">
+                    <label for="textInput">Title No</label>
+                    <input type="text" id="titleNo" name="titleNo" class="form-control mb-4" required
+                        value="<%= land[0].titleNo%>">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="textInput">Customer Name</label>
+                    <input type="text" id="custId" name="custId" class="form-control mb-4" required
+                        value="<%= land[0].custId%>">
+                </div>
+                <div class="col-sm-6">
+                    <label for="textInput">Area (hektar)</label>
+                    <input type="text" id="area" name="area" class="form-control mb-4" required
+                        value="<%= land[0].area%>">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="textInput">Usage Of Land</label>
+                    <input type="text" id="landadd1" name="landadd1" class="form-control mb-4"
+                        placeholder="Enter land Address Here" value="<%= land[0].usageOfLand%>">
+                </div>
+                <div class="col-sm-6">
+                    <label for="textInput">Type Of Condition</label>
+                    <input type="text" id="landadd2" name="landadd2" class="form-control mb-4"
+                        placeholder="Enter land Address Here" value="<%= land[0].typeOfCondition%>">
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="textInput">Longitude</label>
+                        <input type="text" id="gpsLocationLng" name="gpsLocationLng" class="form-control mb-4" required
+                        value="<%= land[0].gpsLocationLng%>">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="textInput">Latitude</label>
+                        <input type="text" id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4" required
+                        value="<%= land[0].gpsLocationLng%>">
+                    </div>                    
+                </div>    
+
+            <input type="hidden" id="landid" name="landid" value="<%= land[0].lotId%>">
+
+            <button class="btn btn-primary btn-block" type="submit">Save land</button>
+
+        </form>
+    </div>
+</div>
+
+<% include partials/footer.ejs %>
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>

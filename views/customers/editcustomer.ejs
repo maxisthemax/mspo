@@ -1,7 +1,7 @@
 <% include partials/header.ejs %>
 <div id="editcustomer" class="container-fluid">
     <div class="" style="border:1px solid">
-        <form class="p-5" name="user" method="POST" action="/customers/editcustomer">
+        <form class="p-5" name="customer" method="POST" action="/customers/editcustomer">
             <p class="h4 mb-4">Edit Customer</p>
 
             <div class="row">
@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <input type="hidden" id="custid" name="custid" value="<%= customer[0].custId%>">
+            <input type="hidden" id="custId" name="custId" value="<%= customer[0].custId%>">
 
             <button class="btn btn-primary btn-block" type="submit">Save Customer</button>
 

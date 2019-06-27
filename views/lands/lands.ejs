@@ -1,0 +1,145 @@
+<% include partials/header.ejs %>
+<div class="container-fluid">
+    <div class="tab">
+        <button class="tablinks" onclick="openTabs(event, 'lands')" value=lands>Lands</button>
+        <button class="tablinks" onclick="openTabs(event, 'createland')" value=createland>Create
+            Lands</button>
+    </div>
+    <div class="" style="border:1px solid">
+        <div id="lands" class="tabcontent">
+            <div class="panel-heading">
+                <h3>lands List</h3>
+            </div>
+            <div class="panel-body">
+                <table id="landview" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Lot No</th>
+                            <th>Title No</th>
+                            <th>Customer</th>
+                            <th>Area</th>
+                            <th class="none">Usage of Land</th>
+                            <th class="none">Type of Condition</th>
+                            <th class="none">Gps Location</th>
+                            <th class="none">Lot Id</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Lot No</th>
+                            <th>Title No</th>
+                            <th>Customer</th>
+                            <th>Area</th>
+                            <th>Usage of Land</th>
+                            <th>Type of Condition</th>
+                            <th>Gps Location</th>
+                            <th>Lot Id</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /#page-content-wrapper -->
+        </div>
+
+        <div id="createland" class="tabcontent">
+            <form class="p-5" name="user" method="POST" action="/lands/createland"
+                enctype="multipart/form-data">
+                <p class="h4 mb-4">Create New land</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Lot No</label>
+                        <input type="text" id="lotNo" name="lotNo" class="form-control mb-4" required
+                            placeholder="Enter Lot No Here">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Title No</label>
+                        <input type="text" id="titleNo" name="titleNo" class="form-control mb-4" required>
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Customer Name</label>
+                        <input type="text" id="custId" name="custId" class="form-control mb-4" required>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Area (hektar)</label>
+                        <input type="text" id="area" name="area" class="form-control mb-4">
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-6">
+                        <label for="textInput">Usage Of Land</label>
+                        <input type="text" id="usageOfLand" name="usageOfLand" class="form-control mb-4" required>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Type Of Condition</label>
+                        <input type="text" id="typeOfCondition" name="typeOfCondition" class="form-control mb-4" required>
+                    </div>                    
+                </div>             
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="textInput">Longitude</label>
+                        <input type="text" id="gpsLocationLng" name="gpsLocationLng" class="form-control mb-4" required>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="textInput">Latitude</label>
+                        <input type="text" id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4" required>
+                    </div>                    
+                </div>                
+                <button class="btn btn-primary btn-block" type="submit">Create New land</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+<% include partials/footer.ejs %>
+
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>
+<script>
+    function openTabs(evt, tabname) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabname).style.display = "block";
+        evt.currentTarget.className += " active";
+        localStorage.setItem('activeCusTab_lands', tabname);
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            $('a').each(function () {
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active'); $(this).parents('li').addClass('active');
+                }
+            });
+        });
+
+        tablinks = document.getElementsByClassName('tablinks');
+        var activeCusTab_lands = localStorage.getItem('activeCusTab_lands');
+        if (activeCusTab_lands === null) {
+            tablinks[0].click();
+        } else {
+            for (i = 0; i < tablinks.length; i++) {
+                if (tablinks[i].value == activeCusTab_lands)
+                    tablinks[i].click();
+            }
+        }
+    });
+</script>
+<% include lands/landsjs.ejs %>

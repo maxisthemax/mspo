@@ -1,6 +1,6 @@
-exports.queryAllCustomers = function (coid, cb) {
+exports.queryAllCustomers = function (coId, cb) {
   process.nextTick(function () {
-    var firstquery = `SELECT * FROM customers WHERE coid = ${coid} ORDER BY custId`;
+    var firstquery = `SELECT * FROM customers WHERE coId = ${coId} ORDER BY custId`;
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.length) {
@@ -13,9 +13,9 @@ exports.queryAllCustomers = function (coid, cb) {
   });
 }
 
-exports.queryCustomers = function (custid, cb) {
+exports.queryCustomers = function (custId, cb) {
   process.nextTick(function () {
-    var firstquery = `SELECT * FROM customers WHERE 1 and custId=${custid} ORDER BY custId`;
+    var firstquery = `SELECT * FROM customers WHERE 1 and custId=${custId} ORDER BY custId`;
     con.query(firstquery, function (err, result, fields) {
       console.log(result);
       if (result) result = JSON.parse(JSON.stringify(result));
@@ -30,7 +30,7 @@ exports.queryCustomers = function (custid, cb) {
 }
 
 exports.createCustomer = function (req, cb) {
-  var coid = req.user.coid;
+  var coId = req.user.coId;
   var cust = req.body;
   process.nextTick(function () {
 
@@ -43,8 +43,8 @@ exports.createCustomer = function (req, cb) {
     cust.custadd3 = cust.custadd3 ? [].concat(cust.custadd3) : [''];
 
 
-    let firstquery = "INSERT INTO `customers` (`coid`,`custNo`, `custName`, `custIC`, `custTel`, `custAdd1`, `custAdd2`, `custAdd3`, `deactivated`, `createDate`) VALUES ("
-      + "" + coid + ","
+    let firstquery = "INSERT INTO `customers` (`coId`,`custNo`, `custName`, `custIC`, `custTel`, `custAdd1`, `custAdd2`, `custAdd3`, `deactivated`, `createDate`) VALUES ("
+      + "" + coId + ","
       + "'" + cust.custno[0] + "',"
       + "'" + cust.custname[0] + "',"
       + "'" + cust.custic[0] + "',"
@@ -71,7 +71,7 @@ exports.createCustomer = function (req, cb) {
 exports.editCustomer = function (cust, cb) {
   process.nextTick(function () {
 
-    cust.custid = cust.custid ? [].concat(cust.custid) : [''];
+    cust.custId = cust.custId ? [].concat(cust.custId) : [''];
     cust.custno = cust.custno ? [].concat(cust.custno) : [''];
     cust.custname = cust.custname ? [].concat(cust.custname) : [''];
     cust.custic = cust.custic ? [].concat(cust.custic) : [''];
@@ -89,7 +89,7 @@ exports.editCustomer = function (cust, cb) {
       + "`custAdd1` = '" + cust.custadd1[0] + "',"
       + "`custAdd2` = '" + cust.custadd2[0] + "',"
       + "`custAdd3` = '" + cust.custadd3[0] + "'"
-      + " where custId=" + cust.custid[0];
+      + " where custId=" + cust.custId[0];
 
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));

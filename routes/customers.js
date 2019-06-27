@@ -12,7 +12,7 @@ module.exports = {
         var htmlContent = fs.readFileSync('./views/customers/customersbutton.ejs', 'utf8');
 
 
-        cust.customers.queryAllCustomers(req.user.coid, function (err, customers) {
+        cust.customers.queryAllCustomers(req.user.coId, function (err, customers) {
 
             res.render('customers/customers.ejs', {
                 successFlash: req.flash('success'),
@@ -23,7 +23,7 @@ module.exports = {
         });
     },
     getEditCustomersPage: (req, res) => {
-        cust.customers.queryCustomers(req.params.custid, function (err, customer) {
+        cust.customers.queryCustomers(req.params.custId, function (err, customer) {
 
             res.render('customers/editcustomer.ejs', {
                 successFlash: req.flash('success'),
@@ -33,7 +33,7 @@ module.exports = {
         });
     },
     getCustomerDocPage: (req, res) => {
-        var custdoc = `public/customers/doc/${req.params.custid}`;
+        var custdoc = `public/customers/doc/${req.params.custId}`;
         var cusdirarray = [];
         getDirectories(custdoc, function (err, dir) {
             for (var i = 0; i < dir.length; i++) {
@@ -52,7 +52,7 @@ module.exports = {
                 successFlash: req.flash('success'),
                 errorFlash: req.flash('error'),
                 custdir: cusdirarray,
-                custid: req.params.custid
+                custId: req.params.custId
             });
         });
     },
@@ -60,7 +60,7 @@ module.exports = {
 
     uploadCustomerDocuments: (req, res) => {
         console.log(req);
-        var filefolder = "public/customers/doc/" + req.body.custid;
+        var filefolder = "public/customers/doc/" + req.body.custId;
         if (!fs.existsSync(filefolder)) {
             mkdirp(filefolder, function (err) {
                 if (err) console.error(err)
@@ -71,12 +71,12 @@ module.exports = {
             fs.writeFile(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
                 if (err) {
                     //console.log(err);
-                    res.redirect(`/customers/doc/${req.body.custid}`);
+                    res.redirect(`/customers/doc/${req.body.custId}`);
                 } else {
-                    res.redirect(`/customers/doc/${req.body.custid}`);
+                    res.redirect(`/customers/doc/${req.body.custId}`);
                 }
             });
-        } else { res.redirect(`/customers/doc/${req.body.custid}`); }
+        } else { res.redirect(`/customers/doc/${req.body.custId}`); }
     },
 
     createCustomer: (req, res) => {

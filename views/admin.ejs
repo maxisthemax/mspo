@@ -27,7 +27,7 @@
                 <tbody>
                 <% if(allusers){ for(var i = 0; i < allusers.length; i++) {%>
                     <% if (allusers[i].userdeactivated == 1){%><tr class="w3-red"><%} else {%><tr><%}%>                  
-                        <th scope="row"><%= allusers[i].userid %></th>         
+                        <th scope="row"><%= allusers[i].userId %></th>         
                         <td><%= allusers[i].username %></td>
                         <td class="editDisplayName"><%= allusers[i].displayname %></td>
                         <td class="editEmail"><%= allusers[i].email %></td>
@@ -35,7 +35,7 @@
 
                         <td class="editDeactivated"><% if (allusers[i].userdeactivated == 1){%>Yes<%} else {%>No<%}%></td>
 
-                        <td><input onclick="changetoedit(this,<%= allusers[i].userid %>);" type="button" value="Edit"></td>
+                        <td><input onclick="changetoedit(this,<%= allusers[i].userId %>);" type="button" value="Edit"></td>
                     </tr>
                 <% }} %>    
                 </tbody>
@@ -90,7 +90,7 @@ function openTabs(evt, tabname) {
   evt.currentTarget.className += " active";
 }
 
-function changetoedit(obj,userid) {
+function changetoedit(obj,userId) {
     var html_displayname = $(obj).parents('tr').find('td.editDisplayName').html();
     var html_email = $(obj).parents('tr').find('td.editEmail').html();
     var html_admin = $(obj).parents('tr').find('td.editAdmin').html();
@@ -110,13 +110,13 @@ function changetoedit(obj,userid) {
     input_deactivated.val(html_deactivated);
     input_admin.val(html_admin);
 
-    var inputhiddenuserid = $('<input type="hidden" name="userid" value="'+userid+'"/>');
+    var inputhiddenuserId = $('<input type="hidden" name="userId" value="'+userId+'"/>');
 
     $(obj).parents('tr').find('td.editDisplayName').html(input_displayname)
     $(obj).parents('tr').find('td.editEmail').html(input_email);
     $(obj).parents('tr').find('td.editAdmin').html(input_admin);
     $(obj).parents('tr').find('td.editDeactivated').html(input_deactivated);
-    $(obj).parents('tr').find('td.editDisplayName').append(inputhiddenuserid);
+    $(obj).parents('tr').find('td.editDisplayName').append(inputhiddenuserId);
 
     obj.style.display = 'none';
     $('#saveuserbutton').show();  

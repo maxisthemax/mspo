@@ -1,3 +1,4 @@
+config.json
 # Node build artifacts
 node_modules
 npm-debug.log
@@ -10,5 +11,4 @@ npm-debug.log
 # Docker
 Dockerfile
 docker-compose.yml
-config.json
 public/customers

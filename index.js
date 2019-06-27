@@ -48,7 +48,7 @@ passport.use(new Strategy(
 // serializing, and querying the user record by ID from the database when
 // deserializing.
 passport.serializeUser(function (user, cb) {
-  cb(null, user.userid);
+  cb(null, user.userId);
 });
 passport.deserializeUser(function (id, cb) {
   db.users.findById(id, function (err, user) {
@@ -116,8 +116,8 @@ app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 /* customers */
 app.all('/customers*', ensureLoggedIn('/login'));
 app.get('/customers', getCustomersPage);
-app.get('/customers/:custid', getEditCustomersPage);
-app.get('/customers/doc/:custid', getCustomerDocPage);
+app.get('/customers/:custId', getEditCustomersPage);
+app.get('/customers/doc/:custId', getCustomerDocPage);
 app.post('/customers/doc/', uploadCustomerDocuments);
 app.post('/customers/createcustomer', createCustomer);
 app.post('/customers/editcustomer', editCustomer);
@@ -126,11 +126,11 @@ app.post('/customers/editcustomer', editCustomer);
 /* lands */
 app.all('/lands*', ensureLoggedIn('/login'));
 app.get('/lands', getLandsPage);
-app.get('/lands/:landid', getEditLandsPage);
-app.get('/lands/doc/:landid', getLandsDocPage);
+app.get('/lands/:lotId', getEditLandsPage);
+app.get('/lands/doc/:lotId', getLandsDocPage);
 app.post('/lands/doc/', uploadLandDocuments);
-app.post('/lands/createcustomer', createLand);
-app.post('/lands/editcustomer', editLand);
+app.post('/lands/createland', createLand);
+app.post('/lands/editland', editLand);
 /* lands */
 
 
