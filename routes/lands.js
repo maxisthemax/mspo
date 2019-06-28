@@ -1,4 +1,5 @@
 var lands = require("../modals/lands");
+var cust = require("../modals/customers");
 var fs = require("fs");
 var ejs = require("ejs");
 var formidable = require('formidable');
@@ -10,15 +11,15 @@ module.exports = {
     getLandsPage: (req, res) => {
 
         var htmlContent = fs.readFileSync('./views/lands/landsbutton.ejs', 'utf8');
-
-
-        lands.lands.queryAllLands(req.user.coId, function (err, lands) {
-
-            res.render('lands/lands.ejs', {
-                successFlash: req.flash('success'),
-                errorFlash: req.flash('error'),
-                lands: lands,
-                editlandhtml: htmlContent,
+        cust.customers.queryAllCustomers(req.user.coId, function (err, customers) {
+            lands.lands.queryAllLands(req.user.coId, function (err, lands) {
+                res.render('lands/lands.ejs', {
+                    successFlash: req.flash('success'),
+                    errorFlash: req.flash('error'),
+                    customers: customers,
+                    lands: lands,
+                    editlandhtml: htmlContent,
+                });
             });
         });
     },
@@ -64,19 +65,34 @@ module.exports = {
 
 
     getEditLandsPage: (req, res) => {
-        lands.lands.queryLand(req.params.lotId, function (err, land) {
+        cust.customers.queryAllCustomers(req.user.coId, function (err, customers) {
+            lands.lands.queryLand(req.params.lotId, function (err, land) {
 
-            res.render('lands/editland.ejs', {
-                successFlash: req.flash('success'),
-                errorFlash: req.flash('error'),
-                land: land
+                res.render('lands/editland.ejs', {
+                    successFlash: req.flash('success'),
+                    errorFlash: req.flash('error'),
+                    land: land,
+                    customers: customers
+                });
             });
         });
     },
 
+    editLand: (req, res) => {
+        lands.lands.editLand(req, function (err, land) {
+
+            //console.log(customer);
+            if (err) {
+                req.flash('error', 'Unable to Edit Land Data');
+            } else if (land) {
+                req.flash('success', 'Land Data Saved');
+            }
+            res.redirect('/lands/');
+        });
+    },
 
 
     getLandsDocPage: (req, res) => { },
     uploadLandDocuments: (req, res) => { },
-    editLand: (req, res) => { },
+
 };

@@ -1,6 +1,7 @@
 exports.queryAllCustomers = function (coId, cb) {
   process.nextTick(function () {
     var firstquery = `SELECT * FROM customers WHERE coId = ${coId} ORDER BY custId`;
+    //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.length) {
@@ -17,7 +18,7 @@ exports.queryCustomers = function (custId, cb) {
   process.nextTick(function () {
     var firstquery = `SELECT * FROM customers WHERE 1 and custId=${custId} ORDER BY custId`;
     con.query(firstquery, function (err, result, fields) {
-      console.log(result);
+      //console.log(result);
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.length) {
         return cb(null, result);

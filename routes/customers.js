@@ -119,7 +119,7 @@ module.exports = {
 
     editCustomer: (req, res) => {
         cust.customers.editCustomer(req.body, function (err, customer) {
-            console.log(customer);
+            //console.log(customer);
             if (err) {
                 req.flash('error', 'Unable to Edit Customer Data');
             } else if (customer) {

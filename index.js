@@ -99,7 +99,7 @@ app.get('/', ensureLoggedIn('/login'), getHomePage);
 /* home*/
 
 /* login & logout */
-app.get('/login', getLoginPage);
+app.get('/login/', getLoginPage);
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Invalid Username Or Password' }),
   postLoginPage);
@@ -108,14 +108,14 @@ app.get('/logout', getLogout);
 
 /* admin */
 app.all('/admin/*', requiresAdmin());
-app.get('/admin', requiresAdmin(), getAdminPage);
+app.get('/admin/', requiresAdmin(), getAdminPage);
 app.post('/admin/user/createUser', ensureLoggedIn('/login'), createUser);
 app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 /* admin */
 
 /* customers */
 app.all('/customers*', ensureLoggedIn('/login'));
-app.get('/customers', getCustomersPage);
+app.get('/customers/', getCustomersPage);
 app.get('/customers/:custId', getEditCustomersPage);
 app.get('/customers/doc/:custId', getCustomerDocPage);
 app.post('/customers/doc/', uploadCustomerDocuments);
@@ -125,7 +125,7 @@ app.post('/customers/editcustomer', editCustomer);
 
 /* lands */
 app.all('/lands*', ensureLoggedIn('/login'));
-app.get('/lands', getLandsPage);
+app.get('/lands/', getLandsPage);
 app.get('/lands/:lotId', getEditLandsPage);
 app.get('/lands/doc/:lotId', getLandsDocPage);
 app.post('/lands/doc/', uploadLandDocuments);

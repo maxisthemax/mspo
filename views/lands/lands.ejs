@@ -2,8 +2,7 @@
 <div class="container-fluid">
     <div class="tab">
         <button class="tablinks" onclick="openTabs(event, 'lands')" value=lands>Lands</button>
-        <button class="tablinks" onclick="openTabs(event, 'createland')" value=createland>Create
-            Lands</button>
+        <button class="tablinks" onclick="openTabs(event, 'createland')" value=createland>Create Land</button>
     </div>
     <div class="" style="border:1px solid">
         <div id="lands" class="tabcontent">
@@ -61,8 +60,16 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="textInput">Customer Name</label>
-                        <input type="text" id="custId" name="custId" class="form-control mb-4" required>
+
+                        <label for="custId">Customer Name</label>
+                            <select class="form-control mb-4" id="custId"name="custId" required style="width: 100%">
+                            <option></option>
+                            <% if(customers){ for(var i = 0; i < customers.length; i++) {%>                        
+                            <option value=<%= customers[i].custId %>><%= customers[i].custName  %> - <%= customers[i].custIC  %></option>
+                            <% }} %> 
+                        </select>  
+
+           
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Area (hektar)</label>
@@ -70,7 +77,6 @@
                     </div>
                 </div>
                 <div class="row">
-
                     <div class="col-sm-6">
                         <label for="textInput">Usage Of Land</label>
                         <input type="text" id="usageOfLand" name="usageOfLand" class="form-control mb-4" required>
@@ -141,5 +147,12 @@
             }
         }
     });
+
+    $("#custId").select2({
+        placeholder: "Select a Customer",
+		width: 'resolve',
+    });   
+
+    
 </script>
 <% include lands/landsjs.ejs %>

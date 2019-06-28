@@ -86,7 +86,7 @@ exports.createUser = function (req, cb) {
       + "'" + "0" + "',"
       + "" + coId + ""
       + ")";
-    console.log(firstquery);
+    //console.log(firstquery);
     con.query(firstquery, function (err, result) {
       //console.log(result);
       if (err) {

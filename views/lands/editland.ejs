@@ -18,9 +18,15 @@
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    <label for="textInput">Customer Name</label>
-                    <input type="text" id="custId" name="custId" class="form-control mb-4" required
-                        value="<%= land[0].custId%>">
+
+                        <label for="custId">Customer Name</label>
+                            <select class="form-control mb-4" id="custId"name="custId" required style="width: 100%">
+                            <option></option>
+                            <% if(customers){ for(var i = 0; i < customers.length; i++) {%>                        
+                            <option value=<%= customers[i].custId %> <%if (customers[i].custId==land[0].custId){ %>selected<%}%> ><%= customers[i].custName %></option>
+                            <% }} %> 
+                        </select>  
+
                 </div>
                 <div class="col-sm-6">
                     <label for="textInput">Area (hektar)</label>
@@ -31,12 +37,12 @@
             <div class="row">
                 <div class="col-sm-6">
                     <label for="textInput">Usage Of Land</label>
-                    <input type="text" id="landadd1" name="landadd1" class="form-control mb-4"
+                    <input type="text" id="usageOfLand" name="usageOfLand" class="form-control mb-4"
                         placeholder="Enter land Address Here" value="<%= land[0].usageOfLand%>">
                 </div>
                 <div class="col-sm-6">
                     <label for="textInput">Type Of Condition</label>
-                    <input type="text" id="landadd2" name="landadd2" class="form-control mb-4"
+                    <input type="text" id="typeOfCondition" name="typeOfCondition" class="form-control mb-4"
                         placeholder="Enter land Address Here" value="<%= land[0].typeOfCondition%>">
                 </div>
             </div>
@@ -53,7 +59,7 @@
                     </div>                    
                 </div>    
 
-            <input type="hidden" id="landid" name="landid" value="<%= land[0].lotId%>">
+            <input type="hidden" id="lotId" name="lotId" value="<%= land[0].lotId%>">
 
             <button class="btn btn-primary btn-block" type="submit">Save land</button>
 
@@ -69,3 +75,10 @@
 </body>
 
 </html>
+
+<script>
+    $("#custId").select2({
+        placeholder: "Select a Customer",
+		width: 'resolve',
+    });   
+</script>
