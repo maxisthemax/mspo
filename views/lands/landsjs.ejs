@@ -14,7 +14,7 @@ $(document).ready(function () {
                     lands[i].usageOfLand, 
                     lands[i].typeOfCondition,
                     `${lands[i].gpsLocationLat},${lands[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${lands[i].gpsLocationLat},${lands[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
-                    lands[i].lotId
+                    lands[i].landId
                     ] );
             }       
         var table = $('#landview').DataTable({

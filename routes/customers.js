@@ -114,7 +114,7 @@ module.exports = {
                     req.flash('error', 'Unable to Save Customer Data');
                 }
 
-                res.redirect('/customers');
+                res.redirect('/customers/');
             } else if (customer) {
 
                 //console.log(customer);
@@ -127,18 +127,14 @@ module.exports = {
                     });
                 }
                 req.flash('success', 'New Customer Created');
-                if (req.files.icupload) {
-                    //console.log(filefolder + '/' + req.files.icupload[0].name);
-                    //console.log(req.files.icupload[0].data);
+                if (req.files.icupload && req.files.icupload.length > 0) {              
                     fs.writeFileSync(filefolder + '/' + req.files.icupload[0].name, req.files.icupload[0].data, function (err) {
                         if (err) {
-                            //console.log(err);
-                            res.redirect('/customers');
-                        } else {
-                            res.redirect('/customers');
+                            res.redirect('/customers/');
                         }
                     });
-                } else { res.redirect('/customers'); }
+                    res.redirect('/customers/');
+                } else { res.redirect('/customers/'); }
             }
         });
     },
@@ -151,7 +147,7 @@ module.exports = {
             } else if (customer) {
                 req.flash('success', 'Customer Data Saved');
             }
-            res.redirect('/customers');
+            res.redirect('/customers/');
         });
     },
 };

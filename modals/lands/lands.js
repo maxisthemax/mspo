@@ -1,7 +1,7 @@
 exports.queryAllLands = function (coId, cb) {
   process.nextTick(function () {
     var firstquery = `SELECT a.*,b.custName,b.custIC FROM lands a LEFT JOIN customers b on a.custId = b.custId
-    WHERE a.coId = ${coId} ORDER BY custId ASC,lotId ASC`;
+    WHERE a.coId = ${coId} ORDER BY custId ASC,landId ASC`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
@@ -15,10 +15,10 @@ exports.queryAllLands = function (coId, cb) {
   });
 }
 
-exports.queryLand = function (lotId, cb) {
+exports.queryLand = function (landId, cb) {
   process.nextTick(function () {
     var firstquery = `SELECT * FROM lands 
-    WHERE lotId=${lotId} ORDER BY custId`;
+    WHERE landId=${landId} ORDER BY custId`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
@@ -50,7 +50,7 @@ exports.editLand = function (req, cb) {
   var land = req.body;
   process.nextTick(function () {
 
-    land.lotId = land.lotId ? [].concat(land.lotId) : [''];
+    land.landId = land.landId ? [].concat(land.landId) : [''];
     land.lotNo = land.lotNo ? [].concat(land.lotNo) : [''];
     land.titleNo = land.titleNo ? [].concat(land.titleNo) : [''];
     land.area = land.area ? [].concat(land.area) : [''];
@@ -70,7 +70,7 @@ exports.editLand = function (req, cb) {
     typeOfCondition = "${land.typeOfCondition[0]}",
     gpsLocationLng = "${land.gpsLocationLng[0]}",
     gpsLocationLat = "${land.gpsLocationLat[0]}"
-    where lotId= "${land.lotId[0]}"`
+    where landId= "${land.landId[0]}"`
 
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
@@ -90,7 +90,7 @@ exports.createLand = function (req, cb) {
   var land = req.body;
   process.nextTick(function () {
 
-    land.lotId = land.lotId ? [].concat(land.lotId) : [''];
+    land.landId = land.landId ? [].concat(land.landId) : [''];
     land.lotNo = land.lotNo ? [].concat(land.lotNo) : [''];
     land.titleNo = land.titleNo ? [].concat(land.titleNo) : [''];
     land.area = land.area ? [].concat(land.area) : [''];

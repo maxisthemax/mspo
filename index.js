@@ -98,10 +98,10 @@ var checklotcompany = function (req) {
   return [
     function (req, res, next) {
 
-      var lotId = req.params.lotId;
+      var landId = req.params.landId;
       process.nextTick(function () {
         var firstquery = `SELECT coId FROM lands 
-    WHERE lotId=${lotId} LIMIT 1`;
+    WHERE landId=${landId} LIMIT 1`;
         //console.log(firstquery);
 
         con.query(firstquery, function (err, result, fields) {
@@ -179,8 +179,8 @@ app.post('/customers/editcustomer', editCustomer);
 /* lands */
 app.all('/lands*', ensureLoggedIn('/login'));
 app.get('/lands/', getLandsPage);
-app.get('/lands/:lotId',checklotcompany(), getEditLandsPage);
-app.get('/lands/doc/:lotId',checklotcompany(), getLandsDocPage);
+app.get('/lands/:landId',checklotcompany(), getEditLandsPage);
+app.get('/lands/doc/:landId',checklotcompany(), getLandsDocPage);
 app.post('/lands/doc/', uploadLandDocuments);
 app.post('/lands/createland', createLand);
 app.post('/lands/editland', editLand);
