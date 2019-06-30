@@ -1,7 +1,7 @@
 exports.queryAllLands = function (coId, cb) {
   process.nextTick(function () {
     var firstquery = `SELECT a.*,b.custName,b.custIC FROM lands a LEFT JOIN customers b on a.custId = b.custId
-    WHERE a.coId = ${coId} ORDER BY custId`;
+    WHERE a.coId = ${coId} ORDER BY custId ASC,lotId ASC`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));

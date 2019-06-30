@@ -15,8 +15,8 @@ var db = require('./modals/users');
 const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
-const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage,getCustomerDocPage,uploadCustomerDocuments } = require('./routes/customers');
-const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments,createLand,editLand } = require('./routes/lands');
+const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage, getCustomerDocPage, uploadCustomerDocuments } = require('./routes/customers');
+const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments, createLand, editLand } = require('./routes/lands');
 const { getCompanyPage } = require('./routes/company');
 
 
@@ -94,6 +94,59 @@ var requiresAdmin = function () {
   ]
 };
 
+var checklotcompany = function (req) {
+  return [
+    function (req, res, next) {
+
+      var lotId = req.params.lotId;
+      process.nextTick(function () {
+        var firstquery = `SELECT coId FROM lands 
+    WHERE lotId=${lotId} LIMIT 1`;
+        //console.log(firstquery);
+
+        con.query(firstquery, function (err, result, fields) {
+          //console.log(result);
+          if (result.length == 0) {
+            errorFlash = req.flash('error', 'Error Reading');
+            res.redirect('/');
+          } else {
+            if (result[0].coId != req.user.coId) {
+              errorFlash = req.flash('error', 'Error Reading');
+              res.redirect('/');
+            } else { next(); }
+          }
+        });
+      });
+    }
+  ]
+};
+
+var checkcustomercompany = function (req) {
+  return [
+    function (req, res, next) {
+
+      var custId = req.params.custId;
+      process.nextTick(function () {
+        var firstquery = `SELECT coId FROM customers 
+    WHERE custId=${custId} LIMIT 1`;
+        //console.log(firstquery);
+
+        con.query(firstquery, function (err, result, fields) {
+          //console.log(result);
+          if (result.length == 0) {
+            errorFlash = req.flash('error', 'Error Reading');
+            res.redirect('/');
+          } else {
+            if (result[0].coId != req.user.coId) {
+              errorFlash = req.flash('error', 'Error Reading');
+              res.redirect('/');
+            } else { next(); }
+          }
+        });
+      });
+    }
+  ]
+};
 /* home*/
 app.get('/', ensureLoggedIn('/login'), getHomePage);
 /* home*/
@@ -116,8 +169,8 @@ app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 /* customers */
 app.all('/customers*', ensureLoggedIn('/login'));
 app.get('/customers/', getCustomersPage);
-app.get('/customers/:custId', getEditCustomersPage);
-app.get('/customers/doc/:custId', getCustomerDocPage);
+app.get('/customers/:custId', checkcustomercompany(), getEditCustomersPage);
+app.get('/customers/doc/:custId',checkcustomercompany(), getCustomerDocPage);
 app.post('/customers/doc/', uploadCustomerDocuments);
 app.post('/customers/createcustomer', createCustomer);
 app.post('/customers/editcustomer', editCustomer);
@@ -126,8 +179,8 @@ app.post('/customers/editcustomer', editCustomer);
 /* lands */
 app.all('/lands*', ensureLoggedIn('/login'));
 app.get('/lands/', getLandsPage);
-app.get('/lands/:lotId', getEditLandsPage);
-app.get('/lands/doc/:lotId', getLandsDocPage);
+app.get('/lands/:lotId',checklotcompany(), getEditLandsPage);
+app.get('/lands/doc/:lotId',checklotcompany(), getLandsDocPage);
 app.post('/lands/doc/', uploadLandDocuments);
 app.post('/lands/createland', createLand);
 app.post('/lands/editland', editLand);
