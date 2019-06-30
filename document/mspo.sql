@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2019 at 01:41 AM
+-- Generation Time: Jun 30, 2019 at 06:26 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -37,14 +37,6 @@ CREATE TABLE `company` (
   `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `company`
---
-
-INSERT INTO `company` (`coId`, `coName`, `coAdd`, `coTel`, `deactivated`, `createdDate`) VALUES
-(1, 'Maxisthemax', 'bukit jelutong', NULL, 0, '2019-05-09 23:39:47'),
-(2, 'xxxxxxxxxxxx', 'xxxxxxxxxxxxxxxxxx', NULL, 0, '2019-05-09 23:39:47');
-
 -- --------------------------------------------------------
 
 --
@@ -65,17 +57,6 @@ CREATE TABLE `customers` (
   `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `customers`
---
-
-INSERT INTO `customers` (`coId`, `custId`, `custNo`, `custName`, `custIC`, `custTel`, `custAdd1`, `custAdd2`, `custAdd3`, `deactivated`, `createDate`) VALUES
-(1, 1, '1', 'Leong Chee Nang', 'xxxxxxxxxxxxxxxxxx', '0164423372', '31, Jalan Adang U8/18', 'Bukit Jelutong', 'xxxxxxxxxxxxxxxxxx', 0, '2019-06-26 14:52:52'),
-(2, 2, '1', 'Leong Chee Nang', 'xxxxxxxxxxxxxxxxxx', '0164423372', '31, Jalan Adang U8/18', 'Bukit Jelutong', 'xxxxxxxxxxxxxx', 0, '2019-06-26 14:54:42'),
-(2, 4, '123qweasdzxc', 'Leong Chee Nangx', 'x', '0164423372x', '31, Jalan Adang U8/18x', 'Bukit Jelutongx', 'x', 0, '2019-06-26 15:01:31'),
-(2, 7, '1zx', 'Leong Chee Nangxz', 'xxxxxxxxxxxxxxxxxxzx', '0164423372zx', '31, Jalan Adang U8/18zx', 'Bukit Jelutongzx', 'xxxxxxxxxxxxxxxxxxzx', 0, '2019-06-26 15:02:04'),
-(1, 10, '12', 'Leong Chee Nang	', 'xxxxxxxxxxxxxxxxxx1', 'xxxxxxxxxxxxxxxxxx', 'xxxxxxxxxxxxxxxxxx', 'xxxxxxxxxxxxxxxxxx', 'xxxxxxxxxxxxxxxxxx', 0, '2019-06-27 13:08:46');
-
 -- --------------------------------------------------------
 
 --
@@ -83,7 +64,7 @@ INSERT INTO `customers` (`coId`, `custId`, `custNo`, `custName`, `custIC`, `cust
 --
 
 CREATE TABLE `lands` (
-  `lotId` int(11) NOT NULL,
+  `landId` int(11) NOT NULL,
   `lotNo` varchar(200) NOT NULL,
   `titleNo` varchar(200) NOT NULL,
   `area` double NOT NULL,
@@ -95,17 +76,6 @@ CREATE TABLE `lands` (
   `coId` int(11) NOT NULL,
   `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `lands`
---
-
-INSERT INTO `lands` (`lotId`, `lotNo`, `titleNo`, `area`, `custId`, `usageOfLand`, `typeOfCondition`, `gpsLocationLng`, `gpsLocationLat`, `coId`, `createdDate`) VALUES
-(1, 'abc', 'abcedf', 12.6, 1, 'sdsa', 'asdasds', 11, 22, 1, '2019-06-27 21:49:47'),
-(2, '222222', '', 2222222, 2222222, '22222222', '22222222222', 2222222, 222222222222, 1, '0000-00-00 00:00:00'),
-(3, '111111', '', 11111111111, 11111111, '111111111', '1111111111111', 111111111, 111111111, 1, '0000-00-00 00:00:00'),
-(4, '323', '', 323, 23, '232', '32323232', 3232, 323, 1, '0000-00-00 00:00:00'),
-(5, '333333333333', '33333333', 33333333333, 3333333, '3333333333', '33333333333333333', 33333333, 333333333333, 1, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -125,15 +95,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`userId`, `username`, `userpassword`, `displayname`, `email`, `deactivated`, `administrator`, `coId`) VALUES
-(1, 'maxisthemax', 'test123', 'Max Test', 'maxisthemax89@gmail.com', 0, 1, 1),
-(2, 'yy', 'yy', 'yy', '123@123.com', 0, 1, 2),
-(3, 'xx', 'xx', 'xx', 'xxx@xxx.com', 0, 0, 2);
-
---
 -- Indexes for dumped tables
 --
 
@@ -148,7 +109,6 @@ ALTER TABLE `company`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`custId`),
-  ADD UNIQUE KEY `custId` (`custId`,`custIC`),
   ADD UNIQUE KEY `uniq_coId_custNo` (`coId`,`custNo`) USING BTREE,
   ADD UNIQUE KEY `uniq_coId_custIC` (`coId`,`custIC`) USING BTREE;
 
@@ -156,8 +116,8 @@ ALTER TABLE `customers`
 -- Indexes for table `lands`
 --
 ALTER TABLE `lands`
-  ADD PRIMARY KEY (`lotId`),
-  ADD UNIQUE KEY `uniq_lotId_coId` (`lotId`,`coId`) USING BTREE;
+  ADD PRIMARY KEY (`landId`) USING BTREE,
+  ADD UNIQUE KEY `uniq_landId_coId` (`landId`,`coId`) USING BTREE;
 
 --
 -- Indexes for table `users`
@@ -174,25 +134,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `coId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `coId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `custId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `custId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `lands`
 --
 ALTER TABLE `lands`
-  MODIFY `lotId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `landId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
