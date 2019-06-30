@@ -49,9 +49,16 @@
             </div>
 
             <input type="hidden" id="custId" name="custId" value="<%= customer[0].custId%>">
-
-            <button class="btn btn-primary btn-block" type="submit">Save Customer</button>
-
+            <div class="row">
+                <div class="col-sm-3">
+                    <a href="/customers">
+                        <input type=button class="btn btn-secondary btn-block" value="Back" onclick="">
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-block" type="submit">Save Customer</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

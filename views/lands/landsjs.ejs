@@ -13,7 +13,7 @@ $(document).ready(function () {
                     lands[i].area, 
                     lands[i].usageOfLand, 
                     lands[i].typeOfCondition,
-                    `${lands[i].gpsLocationLng},${lands[i].gpsLocationLng}`,
+                    `${lands[i].gpsLocationLat},${lands[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${lands[i].gpsLocationLat},${lands[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
                     lands[i].lotId
                     ] );
             }       
@@ -48,15 +48,7 @@ $(document).ready(function () {
                             data += htm;
                             //console.log(html);
                             data += '';
-//                         console.log(data);
-// console.log(api.cell(rowIdx, 0).data());
-//                         // Extra: Show "Name" in row details
-//                         data += '<tr><td>Name:</td><td>' + api.cell(rowIdx, 0).data() + '</td></tr>';
-//                         // Generate a table
-//                         data = $('<table width="100%"/>').append( data ).prop('outerHTML');
-                        
-//                         // Extra: Show custom content
-//                         data += '<div class="content-custom">Custom content</div>';
+
                             data += '</div><br><br>';  
                         return data;
                     }

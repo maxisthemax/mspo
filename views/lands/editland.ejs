@@ -48,15 +48,15 @@
             </div>
                 <div class="row">
                     <div class="col-sm-3">
+                        <label for="textInput">Latitude</label>
+                        <input type="text" id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4" required
+                        value="<%= land[0].gpsLocationLat%>">
+                    </div>                   
+                    <div class="col-sm-3">
                         <label for="textInput">Longitude</label>
                         <input type="text" id="gpsLocationLng" name="gpsLocationLng" class="form-control mb-4" required
                         value="<%= land[0].gpsLocationLng%>">
-                    </div>
-                    <div class="col-sm-3">
-                        <label for="textInput">Latitude</label>
-                        <input type="text" id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4" required
-                        value="<%= land[0].gpsLocationLng%>">
-                    </div>                    
+                    </div>                 
                 </div>    
 
             <input type="hidden" id="lotId" name="lotId" value="<%= land[0].lotId%>">

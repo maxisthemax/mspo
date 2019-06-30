@@ -1,30 +1,53 @@
 <% include partials/header.ejs %>
 <div id="editcustomer" class="container-fluid">
-    <form name="user" method="POST" action="/customers/doc" enctype="multipart/form-data">
+    <form name="customerdoc" method="POST" action="/customers/doc" enctype="multipart/form-data">
         <div class="panel panel-primary p-5" id="result_panel" style="border:1px solid">
             <div class="panel-heading">
-                <h3 class="panel-title">Customer's Documents<% if(custdir.length){%>
-                    <!-- Created:<%=custdir[custdir.length-1].createdate%><% } %> </h3> -->
+                <h3 class="panel-title">Customer's Documents</h3>
             </div>
             <div class="panel-body">
                 <p class="h4 mb-4">Upload Document Here</p>
                 <div class="row">
-                    <div class="col-sm-6">
-                        <input type="file" name="docupload" multiple="multiple"><br>
-                        <button type="submit" class="btn btn-primary">Upload</button>
+                    <div class="col-sm-9">
+                        <input type="file" id="docupload" name="docupload" multiple="multiple" onchange="myFunction()">
+                        <p><strong>Tip:</strong> Use the Control or the Shift key to select multiple files.</p>
+                        <br>
+                        <div id="uploadpreview"></div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <a href="/customers">
+                                    <input type=button class="btn btn-secondary btn-block" value="Back" onclick="">
+                                </a>
+                            </div>
+                            <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                             </div>
+                        </div>
                     </div>
                 </div>
                 <br>
                 <ul class="list-group list-group-custom">
                     <% if(custdir){ for(var i = 0; i < custdir.length; i++) {%>
-                    <li class="list-group-item"><a href="<%= custdir[i].docfullpath %>" target="_blank"
-                            class="list-group-item"><%= i+1 %>. <%= custdir[i].docfilename %></a>
+                    <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <a href="<%= custdir[i].docfullpath %>" target="_blank"
+                                class="list-group-item"><%= i+1 %>. <%= custdir[i].docfilename %>
+                            </a>
+                        </div>  
+                        <div class="col-sm-2">   
+                            <input type=button id="deletebutton" class="btn btn-danger btn-block" name="deletebutton" value="Delete" onclick="deletefile('<%= custdir[i].docfilename %>')">
+                        </div>    
+                    </div>    
                     </li>
                     <% }} %>
                 </ul>
             </div>
         </div>
         <input type=hidden name="custId" value="<%= custId %>">
+        <input type=hidden name="mode" id="mode" value="1">
+        <input type=hidden name="filenamedelete" id="filenamedelete" value="">
     </form>
     <% include partials/footer.ejs %>
 </div>
@@ -34,3 +57,57 @@
 </body>
 
 </html>
+
+<script>
+ function getConfirmation() {
+        var retVal = confirm("Do you want to delete this file ?");
+        if( retVal == true ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+$(function() {
+  myFunction();
+});
+function deletefile(filename){
+    var mode = document.getElementById("mode");
+    var filenamedelete = document.getElementById("filenamedelete");
+    filenamedelete.value = filename;
+    mode.value = 2;
+    if (getConfirmation() == true) {
+        customerdoc.submit()
+    }
+}
+
+function myFunction(){
+  var x = document.getElementById("docupload");
+  var txt = "";
+  if ('files' in x) {
+    if (x.files.length == 0) {
+      txt = "Select one or more files.";
+    } else {
+      for (var i = 0; i < x.files.length; i++) {
+        txt += "<br><strong>" + (i+1) + `. file</strong><br><input type="text" class="form-control mb-1" id="rename[${i}]" name="rename[${i}]" placeholder="Enter to Change the File Name. Blank for default name">`;
+        var file = x.files[i];
+        if ('name' in file) {
+          txt += "name: " + file.name + "<br>";
+        }
+        if ('size' in file) {
+          txt += "size: " + file.size + " bytes <br>";
+        }
+      }
+    }
+  } 
+  else {
+    if (x.value == "") {
+      txt += "Select one or more files.";
+    } else {
+      txt += "The files property is not supported by your browser!";
+      txt  += "<br>The path of the selected file: " + x.value; // If the browser does not support the files property, it will return the path of the selected file instead. 
+    }
+  }
+  document.getElementById("uploadpreview").innerHTML = txt;
+}
+</script>

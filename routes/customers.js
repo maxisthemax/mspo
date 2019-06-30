@@ -33,7 +33,8 @@ module.exports = {
         });
     },
     getCustomerDocPage: (req, res) => {
-        var custdoc = `public/customers/doc/${req.params.custId}`;
+        var defaultfolder = `public/company/${req.user.coId}/customers/doc/`;
+        var custdoc = `${defaultfolder}/${req.params.custId}`;
         var cusdirarray = [];
         getDirectories(custdoc, function (err, dir) {
             for (var i = 0; i < dir.length; i++) {
@@ -46,7 +47,6 @@ module.exports = {
                 // date_time = date + " " + newtime;
 
                 cusdirarray.push({ docfullpath: dirnew, docfilename: path.basename(dirnew) });
-                console.log(cusdirarray);
             }
             res.render('customers/custdocument.ejs', {
                 successFlash: req.flash('success'),
@@ -59,24 +59,49 @@ module.exports = {
 
 
     uploadCustomerDocuments: (req, res) => {
-        console.log(req);
-        var filefolder = "public/customers/doc/" + req.body.custId;
-        if (!fs.existsSync(filefolder)) {
-            mkdirp(filefolder, function (err) {
-                if (err) console.error(err)
-                else console.log('dir created')
-            });
-        }
-        if (req.files.docupload) {
-            fs.writeFile(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
-                if (err) {
-                    //console.log(err);
-                    res.redirect(`/customers/doc/${req.body.custId}`);
-                } else {
-                    res.redirect(`/customers/doc/${req.body.custId}`);
+        //1 - upload
+        //2 - delete
+        var mode = req.body.mode;
+        var defaultfolder = `public/company/${req.user.coId}/customers/doc/`;
+        var filefolder = defaultfolder + req.body.custId;
+
+        if (mode == 1)
+        {
+            if (!fs.existsSync(filefolder)) {
+                mkdirp(filefolder, function (err) {
+                    if (err) console.error(err)
+                    else console.log('dir created')
+                });
+            }
+            //console.log(req.files.docupload);
+            if (req.files.docupload && req.files.docupload.length > 0) {
+                for (i = 0; i < req.files.docupload.length; i++) {
+                    var filetype = req.files.docupload[i].name.split('.').pop();
+                    var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`]+"."+filetype;
+                    fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
+                        if (err) {
+                            //console.log(err);
+                            res.redirect(`/customers/doc/${req.body.custId}`);
+                        }
+                    });
                 }
-            });
-        } else { res.redirect(`/customers/doc/${req.body.custId}`); }
+
+                res.redirect(`/customers/doc/${req.body.custId}`);
+
+            } else { res.redirect(`/customers/doc/${req.body.custId}`); }
+        } 
+        else if (mode == 2) {
+
+            var filename = req.body.filenamedelete;
+            var filepath = filefolder + '/' + filename;
+            try {
+                fs.unlinkSync(filepath)
+                //file removed
+              } catch(err) {
+                console.error(err)
+              }
+              res.redirect(`/customers/doc/${req.body.custId}`);  
+        }
     },
 
     createCustomer: (req, res) => {
@@ -93,7 +118,8 @@ module.exports = {
             } else if (customer) {
 
                 //console.log(customer);
-                var filefolder = "public/customers/doc/" + customer.insertId;
+                var defaultfolder = `public/company/${req.user.coId}/customers/doc/`;
+                var filefolder = defaultfolder + customer.insertId;
                 if (!fs.existsSync(filefolder)) {
                     mkdirp(filefolder, function (err) {
                         if (err) console.error(err)
@@ -102,11 +128,11 @@ module.exports = {
                 }
                 req.flash('success', 'New Customer Created');
                 if (req.files.icupload) {
-                    console.log(filefolder + '/' + req.files.icupload[0].name);
-                     console.log(req.files.icupload[0].data);
-                    fs.writeFile(filefolder + '/' + req.files.icupload[0].name, req.files.icupload[0].data, function (err) {
+                    //console.log(filefolder + '/' + req.files.icupload[0].name);
+                    //console.log(req.files.icupload[0].data);
+                    fs.writeFileSync(filefolder + '/' + req.files.icupload[0].name, req.files.icupload[0].data, function (err) {
                         if (err) {
-                            console.log(err);
+                            //console.log(err);
                             res.redirect('/customers');
                         } else {
                             res.redirect('/customers');
