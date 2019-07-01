@@ -127,8 +127,10 @@ module.exports = {
                     });
                 }
                 req.flash('success', 'New Customer Created');
-                if (req.files.icupload && req.files.icupload.length > 0) {              
-                    fs.writeFileSync(filefolder + '/' + req.files.icupload[0].name, req.files.icupload[0].data, function (err) {
+                if (req.files.icupload && req.files.icupload.length > 0) {
+                    var filetype = req.files.icupload[0].name.split('.').pop();
+                    var filename = (req.body[`icrename[0]`] == "") ? req.files.icupload[0].name : req.body[`icrename[0]`]+"."+filetype;              
+                    fs.writeFileSync(filefolder + '/' + filename, req.files.icupload[0].data, function (err) {
                         if (err) {
                             res.redirect('/customers/');
                         }
