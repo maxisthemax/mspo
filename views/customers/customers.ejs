@@ -131,7 +131,7 @@
         }
         document.getElementById(tabname).style.display = "block";
         evt.currentTarget.className += " active";
-        localStorage.setItem('activeCusTab_users', tabname);
+        localStorage.setItem('activeCust_Tab', tabname);
     }
 
     $(document).ready(function () {
@@ -144,13 +144,12 @@
         });
 
         tablinks = document.getElementsByClassName('tablinks');
-        var activeCusTab_users = localStorage.getItem('activeCusTab_users');
-        //console.log(activeCusTab_users);
-        if (activeCusTab_users === null) {
+        var activeCust_Tab = localStorage.getItem('activeCust_Tab');
+        if (activeCust_Tab === null) {
             tablinks[0].click();
         } else {
             for (i = 0; i < tablinks.length; i++) {
-                if (tablinks[i].value == activeCusTab_users)
+                if (tablinks[i].value == activeCust_Tab)
                     tablinks[i].click();
             }
         }
