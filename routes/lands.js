@@ -11,13 +11,13 @@ module.exports = {
     getLandsPage: (req, res) => {
 
         var htmlContent = fs.readFileSync('./views/lands/landsbutton.ejs', 'utf8');
-        cust.customers.queryAllCustomers(req.user.coId, function (err, customers) {
-            lands.lands.queryAllLands(req.user.coId, function (err, lands) {
+        cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
+            lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
                 res.render('lands/lands.ejs', {
                     successFlash: req.flash('success'),
                     errorFlash: req.flash('error'),
-                    customers: customers,
-                    lands: lands,
+                    cust_s: cust_s,
+                    land_s: land_s,
                     editlandhtml: htmlContent,
                 });
             });
@@ -59,14 +59,14 @@ module.exports = {
 
 
     getEditLandsPage: (req, res) => {
-        cust.customers.queryAllCustomers(req.user.coId, function (err, customers) {
+        cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
             lands.lands.queryLand(req.params.landId, function (err, land) {
 
                 res.render('lands/editland.ejs', {
                     successFlash: req.flash('success'),
                     errorFlash: req.flash('error'),
                     land: land,
-                    customers: customers
+                    cust_s: cust_s
                 });
             });
         });
@@ -87,9 +87,9 @@ module.exports = {
     getLandsDocPage: (req, res) => {
 
         var defaultfolder = `public/company/${req.user.coId}/lands/doc/`;
-        var landdoc = `${defaultfolder}/${req.params.landId}`;
-        var cusdirarray = [];
-        getDirectories(landdoc, function (err, dir) {
+        var land_doc = `${defaultfolder}/${req.params.landId}`;
+        var land_dirarray = [];
+        getDirectories(land_doc, function (err, dir) {
             for (var i = 0; i < dir.length; i++) {
                 dirnew = dir[i].replace('public', '');
 
@@ -99,12 +99,12 @@ module.exports = {
                 // newtime = time.split(".")[0];
                 // date_time = date + " " + newtime;
 
-                cusdirarray.push({ docfullpath: dirnew, docfilename: path.basename(dirnew) });
+                land_dirarray.push({ docfullpath: dirnew, docfilename: path.basename(dirnew) });
             }
             res.render('lands/landdocument.ejs', {
                 successFlash: req.flash('success'),
                 errorFlash: req.flash('error'),
-                landdir: cusdirarray,
+                land_dir: land_dirarray,
                 landId: req.params.landId
             });
         });
@@ -113,10 +113,10 @@ module.exports = {
         //1 - upload
         //2 - delete
         var mode = req.body.mode;
+        console.log(mode);
         var defaultfolder = `public/company/${req.user.coId}/lands/doc/`;
         var filefolder = defaultfolder + req.body.landId;
-        console.log(req.body);
-        console.log(req.files);
+
         if (mode == 1) {
             if (!fs.existsSync(filefolder)) {
                 mkdirp(filefolder, function (err) {
@@ -145,6 +145,7 @@ module.exports = {
 
             var filename = req.body.filenamedelete;
             var filepath = filefolder + '/' + filename;
+            console.log(filepath);
             try {
                 fs.unlinkSync(filepath)
                 //file removed

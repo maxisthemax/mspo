@@ -1,6 +1,6 @@
 <% include partials/header.ejs %>
-<div id="landdocument" class="container-fluid">
-    <form name="landdoc" method="POST" action="/lands/doc" enctype="multipart/form-data">
+<div id="land_doc" class="container-fluid">
+    <form name="land_doc_form" method="POST" action="/lands/doc" enctype="multipart/form-data">
         <div class="panel panel-primary p-5" id="result_panel" style="border:1px solid">
             <div class="panel-heading">
                 <h3 class="panel-title">Land's Documents</h3>
@@ -28,16 +28,16 @@
                 </div>
                 <br>
                 <ul class="list-group list-group-custom">
-                    <% if(landdir){ for(var i = 0; i < landdir.length; i++) {%>
+                    <% if(land_dir){ for(var i = 0; i < land_dir.length; i++) {%>
                     <li class="list-group-item">
                     <div class="row">
                         <div class="col-sm-10">
-                            <a href="<%= landdir[i].docfullpath %>" target="_blank"
-                                class="list-group-item"><%= i+1 %>. <%= landdir[i].docfilename %>
+                            <a href="<%= land_dir[i].docfullpath %>" target="_blank"
+                                class="list-group-item"><%= i+1 %>. <%= land_dir[i].docfilename %>
                             </a>
                         </div>  
                         <div class="col-sm-2">   
-                            <input type=button id="deletebutton" class="btn btn-danger btn-block" name="deletebutton" value="Delete" onclick="deletefile('<%= landdir[i].docfilename %>')">
+                            <input type=button id="deletebutton" class="btn btn-danger btn-block" name="deletebutton" value="Delete" onclick="deletefile('<%= land_dir[i].docfilename %>')">
                         </div>    
                     </div>    
                     </li>
@@ -77,7 +77,7 @@ function deletefile(filename){
     filenamedelete.value = filename;
     mode.value = 2;
     if (getConfirmation() == true) {
-        landdoc.submit()
+        land_doc_form.submit()
     }
 }
 

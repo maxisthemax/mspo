@@ -1,7 +1,7 @@
 <% include partials/header.ejs %>
-<div id="editland" class="container-fluid">
+<div id="land_edit" class="container-fluid">
     <div class="" style="border:1px solid">
-        <form class="p-5" name="land" method="POST" action="/lands/editland">
+        <form class="p-5" name="land_edit_form" method="POST" action="/lands/editland">
             <p class="h4 mb-4">Edit land</p>
 
             <div class="row">
@@ -22,8 +22,8 @@
                         <label for="custId">Customer Name</label>
                             <select class="form-control mb-4" id="custId"name="custId" required style="width: 100%">
                             <option></option>
-                            <% if(customers){ for(var i = 0; i < customers.length; i++) {%>                        
-                            <option value=<%= customers[i].custId %> <%if (customers[i].custId==land[0].custId){ %>selected<%}%> ><%= customers[i].custName %></option>
+                            <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>                        
+                            <option value=<%= cust_s[i].custId %> <%if (cust_s[i].custId==land[0].custId){ %>selected<%}%> ><%= cust_s[i].custName %></option>
                             <% }} %> 
                         </select>  
 

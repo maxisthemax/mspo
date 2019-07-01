@@ -1,16 +1,16 @@
 <% include partials/header.ejs %>
 <div class="container-fluid">
     <div class="tab">
-        <button class="tablinks" onclick="openTabs(event, 'lands')" value=lands>Lands</button>
-        <button class="tablinks" onclick="openTabs(event, 'createland')" value=createland>Create Land</button>
+        <button class="tablinks" onclick="openTabs(event, 'land_s')" value=land_s>Lands</button>
+        <button class="tablinks" onclick="openTabs(event, 'land_create')" value=land_create>Create Land</button>
     </div>
     <div class="" style="border:1px solid">
-        <div id="lands" class="tabcontent">
+        <div id="land_s" class="tabcontent">
             <div class="panel-heading">
                 <h3>Lands List</h3>
             </div>
             <div class="panel-body">
-                <table id="landview" class="display" cellspacing="0" width="100%">
+                <table id="land_s_view" class="display" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Lot No</th>
@@ -43,7 +43,7 @@
             <!-- /#page-content-wrapper -->
         </div>
 
-        <div id="createland" class="tabcontent">
+        <div id="land_create" class="tabcontent">
             <form class="p-5" name="user" method="POST" action="/lands/createland"
                 enctype="multipart/form-data">
                 <p class="h4 mb-4">Create New land</p>
@@ -64,8 +64,8 @@
                         <label for="custId">Customer Name</label>
                             <select class="form-control mb-4" id="custId"name="custId" required style="width: 100%">
                             <option></option>
-                            <% if(customers){ for(var i = 0; i < customers.length; i++) {%>                        
-                            <option value=<%= customers[i].custId %>><%= customers[i].custName  %> - <%= customers[i].custIC  %></option>
+                            <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>                        
+                            <option value=<%= cust_s[i].custId %>><%= cust_s[i].custName  %> - <%= cust_s[i].custIC  %></option>
                             <% }} %> 
                         </select>  
 
@@ -136,7 +136,7 @@
         }
         document.getElementById(tabname).style.display = "block";
         evt.currentTarget.className += " active";
-        localStorage.setItem('activeCusTab_lands', tabname);
+        localStorage.setItem('activeLand_Tab', tabname);
     }
 
     $(document).ready(function () {
@@ -149,12 +149,12 @@
         });
 
         tablinks = document.getElementsByClassName('tablinks');
-        var activeCusTab_lands = localStorage.getItem('activeCusTab_lands');
-        if (activeCusTab_lands === null) {
+        var activeLand_Tab = localStorage.getItem('activeLand_Tab');
+        if (activeLand_Tab === null) {
             tablinks[0].click();
         } else {
             for (i = 0; i < tablinks.length; i++) {
-                if (tablinks[i].value == activeCusTab_lands)
+                if (tablinks[i].value == activeLand_Tab)
                     tablinks[i].click();
             }
         }

@@ -3,21 +3,21 @@
 <script> 
 $(document).ready(function () {
         var editlandhtml = <%- JSON.stringify(editlandhtml)%>;
-        var lands = <%- JSON.stringify(lands)%>;
+        var land_s = <%- JSON.stringify(land_s)%>;
         var data = [];
-        for ( var i=0 ; i<lands.length ; i++ ) {
+        for ( var i=0 ; i<land_s.length ; i++ ) {
                 data.push( [ 
-                    lands[i].lotNo, 
-                    lands[i].titleNo, 
-                    `${lands[i].custName} - ${lands[i].custIC}`, 
-                    lands[i].area, 
-                    lands[i].usageOfLand, 
-                    lands[i].typeOfCondition,
-                    `${lands[i].gpsLocationLat},${lands[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${lands[i].gpsLocationLat},${lands[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
-                    lands[i].landId
+                    land_s[i].lotNo, 
+                    land_s[i].titleNo, 
+                    `${land_s[i].custName} - ${land_s[i].custIC}`, 
+                    land_s[i].area, 
+                    land_s[i].usageOfLand, 
+                    land_s[i].typeOfCondition,
+                    `${land_s[i].gpsLocationLat},${land_s[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${land_s[i].gpsLocationLat},${land_s[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
+                    land_s[i].landId
                     ] );
             }       
-        var table = $('#landview').DataTable({
+        var table = $('#land_s_view').DataTable({
             aaSorting: [],
             dom: 'Blfrtip',
             data: data,
@@ -40,7 +40,7 @@ $(document).ready(function () {
                                 : '';
                             }
                         } ).join('');
-                            var htm = ejs.render(editlandhtml,{lands: columns});
+                            var htm = ejs.render(editlandhtml,{land_s: columns});
                             data = $('<table width="100%"/>').append( data ).prop('outerHTML');
                             
                             // Extra: Show custom content

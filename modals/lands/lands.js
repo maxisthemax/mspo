@@ -31,21 +31,7 @@ exports.queryLand = function (landId, cb) {
     });
   });
 }
-// exports.queryCustomers = function (custId, cb) {
-//   process.nextTick(function () {
-//     var firstquery = `SELECT * FROM customers WHERE 1 and custId=${custId} ORDER BY custId`;
-//     con.query(firstquery, function (err, result, fields) {
-//       console.log(result);
-//       if (result) result = JSON.parse(JSON.stringify(result));
-//       if (result && result.length) {
-//         return cb(null, result);
-//       }
-//       else {
-//         return cb(err, null);
-//       }
-//     });
-//   });
-// }
+
 exports.editLand = function (req, cb) {
   var land = req.body;
   process.nextTick(function () {
