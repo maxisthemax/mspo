@@ -1,17 +1,17 @@
 <% include partials/header.ejs %>
 <div class="container-fluid">
     <div class="tab">
-        <button class="tablinks" onclick="openTabs(event, 'customers')" value=customers>Customers</button>
-        <button class="tablinks" onclick="openTabs(event, 'createcustomer')" value=createcustomer>Create
+        <button class="tablinks" onclick="openTabs(event, 'cust_s')" value=cust_s>Customers</button>
+        <button class="tablinks" onclick="openTabs(event, 'cust_create')" value=cust_create>Create
             Customer</button>
     </div>
     <div class="" style="border:1px solid">
-        <div id="customers" class="tabcontent">
+        <div id="cust_s" class="tabcontent">
             <div class="panel-heading">
                 <h3>Customers List</h3>
             </div>
             <div class="panel-body">
-                <table id="customerview" class="display" cellspacing="0" width="100%">
+                <table id="cust_view" class="display" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Customer No</th>
@@ -44,50 +44,50 @@
             <!-- /#page-content-wrapper -->
         </div>
 
-        <div id="createcustomer" class="tabcontent">
-            <form class="p-5" name="user" method="POST" action="/customers/createcustomer"
+        <div id="cust_create" class="tabcontent">
+            <form class="p-5" name="cust_form" method="POST" action="/customers/createcustomer"
                 enctype="multipart/form-data">
                 <p class="h4 mb-4">Create New Customer</p>
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="textInput">Customer No</label>
-                        <input type="text" id="custno" name="custno" class="form-control mb-4" required
+                        <input type="text" id="custNo" name="custNo" class="form-control mb-4" required
                             placeholder="Enter Customer No Here">
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Customer Name</label>
-                        <input type="text" id="custname" name="custname" class="form-control mb-4" required
+                        <input type="text" id="custName" name="custName" class="form-control mb-4" required
                             placeholder="Enter Customer Name Here">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="textInput">Customer IC</label>
-                        <input type="text" id="custic" name="custic" class="form-control mb-4" required
+                        <input type="text" id="custIC" name="custIC" class="form-control mb-4" required
                             placeholder="Enter Customer IC Here">
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Customer Tel.</label>
-                        <input type="text" id="custtel" name="custtel" class="form-control mb-4"
+                        <input type="text" id="custTel" name="custTel" class="form-control mb-4"
                             placeholder="Enter Customer Name Here">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="textInput">Address 1</label>
-                        <input type="text" id="custadd1" name="custadd1" class="form-control mb-4" required
+                        <input type="text" id="custAdd1" name="custAdd1" class="form-control mb-4" required
                             placeholder="Enter Customer Address Here">
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Address 2</label>
-                        <input type="text" id="custadd2" name="custadd2" class="form-control mb-4" required
+                        <input type="text" id="custAdd2" name="custAdd2" class="form-control mb-4" required
                             placeholder="Enter Customer Address Here">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="textInput">Address 3</label>
-                        <input type="text" id="custadd3" name="custadd3" class="form-control mb-4" required
+                        <input type="text" id="custAdd3" name="custAdd3" class="form-control mb-4" required
                             placeholder="Enter Customer Address Here">
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <% include partials/header.ejs %>
-<div id="editcustomer" class="container-fluid">
-    <form name="customerdoc" method="POST" action="/customers/doc" enctype="multipart/form-data">
+<div id="cust_edit" class="container-fluid">
+    <form name="cust_doc" method="POST" action="/customers/doc" enctype="multipart/form-data">
         <div class="panel panel-primary p-5" id="result_panel" style="border:1px solid">
             <div class="panel-heading">
                 <h3 class="panel-title">Customer's Documents</h3>
@@ -28,16 +28,16 @@
                 </div>
                 <br>
                 <ul class="list-group list-group-custom">
-                    <% if(custdir){ for(var i = 0; i < custdir.length; i++) {%>
+                    <% if(cust_dir){ for(var i = 0; i < cust_dir.length; i++) {%>
                     <li class="list-group-item">
                     <div class="row">
                         <div class="col-sm-10">
-                            <a href="<%= custdir[i].docfullpath %>" target="_blank"
-                                class="list-group-item"><%= i+1 %>. <%= custdir[i].docfilename %>
+                            <a href="<%= cust_dir[i].docfullpath %>" target="_blank"
+                                class="list-group-item"><%= i+1 %>. <%= cust_dir[i].docfilename %>
                             </a>
                         </div>  
                         <div class="col-sm-2">   
-                            <input type=button id="deletebutton" class="btn btn-danger btn-block" name="deletebutton" value="Delete" onclick="deletefile('<%= custdir[i].docfilename %>')">
+                            <input type=button id="deletebutton" class="btn btn-danger btn-block" name="deletebutton" value="Delete" onclick="deletefile('<%= cust_dir[i].docfilename %>')">
                         </div>    
                     </div>    
                     </li>
@@ -77,7 +77,7 @@ function deletefile(filename){
     filenamedelete.value = filename;
     mode.value = 2;
     if (getConfirmation() == true) {
-        customerdoc.submit()
+        cust_doc.submit()
     }
 }
 

@@ -35,27 +35,28 @@ exports.createCustomer = function (req, cb) {
   var cust = req.body;
   process.nextTick(function () {
 
-    cust.custno = cust.custno ? [].concat(cust.custno) : [''];
-    cust.custname = cust.custname ? [].concat(cust.custname) : [''];
-    cust.custic = cust.custic ? [].concat(cust.custic) : [''];
-    cust.custtel = cust.custtel ? [].concat(cust.custtel) : [''];
-    cust.custadd1 = cust.custadd1 ? [].concat(cust.custadd1) : [''];
-    cust.custadd2 = cust.custadd2 ? [].concat(cust.custadd2) : [''];
-    cust.custadd3 = cust.custadd3 ? [].concat(cust.custadd3) : [''];
+    cust.custNo = cust.custNo ? [].concat(cust.custNo) : [''];
+    cust.custName = cust.custName ? [].concat(cust.custName) : [''];
+    cust.custIC = cust.custIC ? [].concat(cust.custIC) : [''];
+    cust.custTel = cust.custTel ? [].concat(cust.custTel) : [''];
+    cust.custAdd1 = cust.custAdd1 ? [].concat(cust.custAdd1) : [''];
+    cust.custAdd2 = cust.custAdd2 ? [].concat(cust.custAdd2) : [''];
+    cust.custAdd3 = cust.custAdd3 ? [].concat(cust.custAdd3) : [''];
 
 
     let firstquery = "INSERT INTO `customers` (`coId`,`custNo`, `custName`, `custIC`, `custTel`, `custAdd1`, `custAdd2`, `custAdd3`, `deactivated`, `createDate`) VALUES ("
       + "" + coId + ","
-      + "'" + cust.custno[0] + "',"
-      + "'" + cust.custname[0] + "',"
-      + "'" + cust.custic[0] + "',"
-      + "'" + cust.custtel[0] + "',"
-      + "'" + cust.custadd1[0] + "',"
-      + "'" + cust.custadd2[0] + "',"
-      + "'" + cust.custadd3[0] + "',"
+      + "'" + cust.custNo[0] + "',"
+      + "'" + cust.custName[0] + "',"
+      + "'" + cust.custIC[0] + "',"
+      + "'" + cust.custTel[0] + "',"
+      + "'" + cust.custAdd1[0] + "',"
+      + "'" + cust.custAdd2[0] + "',"
+      + "'" + cust.custAdd3[0] + "',"
       + "'" + "0" + "',"
       + "" + "CURRENT_TIMESTAMP"
       + ")";
+    console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.insertId) {
@@ -73,23 +74,23 @@ exports.editCustomer = function (cust, cb) {
   process.nextTick(function () {
 
     cust.custId = cust.custId ? [].concat(cust.custId) : [''];
-    cust.custno = cust.custno ? [].concat(cust.custno) : [''];
-    cust.custname = cust.custname ? [].concat(cust.custname) : [''];
-    cust.custic = cust.custic ? [].concat(cust.custic) : [''];
-    cust.custtel = cust.custtel ? [].concat(cust.custtel) : [''];
-    cust.custadd1 = cust.custadd1 ? [].concat(cust.custadd1) : [''];
-    cust.custadd2 = cust.custadd2 ? [].concat(cust.custadd2) : [''];
-    cust.custadd3 = cust.custadd3 ? [].concat(cust.custadd3) : [''];
+    cust.custNo = cust.custNo ? [].concat(cust.custNo) : [''];
+    cust.custName = cust.custName ? [].concat(cust.custName) : [''];
+    cust.custIC = cust.custIC ? [].concat(cust.custIC) : [''];
+    cust.custTel = cust.custTel ? [].concat(cust.custTel) : [''];
+    cust.custAdd1 = cust.custAdd1 ? [].concat(cust.custAdd1) : [''];
+    cust.custAdd2 = cust.custAdd2 ? [].concat(cust.custAdd2) : [''];
+    cust.custAdd3 = cust.custAdd3 ? [].concat(cust.custAdd3) : [''];
 
 
     let firstquery = "UPDATE `customers` SET"
-      + "`custNo` = '" + cust.custno[0] + "',"
-      + "`custName` ='" + cust.custname[0] + "',"
-      + "`custIC` = '" + cust.custic[0] + "',"
-      + "`custTel` = '" + cust.custtel[0] + "',"
-      + "`custAdd1` = '" + cust.custadd1[0] + "',"
-      + "`custAdd2` = '" + cust.custadd2[0] + "',"
-      + "`custAdd3` = '" + cust.custadd3[0] + "'"
+      + "`custNo` = '" + cust.custNo[0] + "',"
+      + "`custName` ='" + cust.custName[0] + "',"
+      + "`custIC` = '" + cust.custIC[0] + "',"
+      + "`custTel` = '" + cust.custTel[0] + "',"
+      + "`custAdd1` = '" + cust.custAdd1[0] + "',"
+      + "`custAdd2` = '" + cust.custAdd2[0] + "',"
+      + "`custAdd3` = '" + cust.custAdd3[0] + "'"
       + " where custId=" + cust.custId[0];
 
     con.query(firstquery, function (err, result, fields) {

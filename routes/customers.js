@@ -12,31 +12,31 @@ module.exports = {
         var htmlContent = fs.readFileSync('./views/customers/customersbutton.ejs', 'utf8');
 
 
-        cust.customers.queryAllCustomers(req.user.coId, function (err, customers) {
+        cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
 
             res.render('customers/customers.ejs', {
                 successFlash: req.flash('success'),
                 errorFlash: req.flash('error'),
-                customers: customers,
+                cust_s: cust_s,
                 editcustomerhtml: htmlContent,
             });
         });
     },
     getEditCustomersPage: (req, res) => {
-        cust.customers.queryCustomers(req.params.custId, function (err, customer) {
+        cust.customers.queryCustomers(req.params.custId, function (err, cust) {
 
             res.render('customers/editcustomer.ejs', {
                 successFlash: req.flash('success'),
                 errorFlash: req.flash('error'),
-                customer: customer
+                cust: cust
             });
         });
     },
     getCustomerDocPage: (req, res) => {
         var defaultfolder = `public/company/${req.user.coId}/customers/doc/`;
-        var custdoc = `${defaultfolder}/${req.params.custId}`;
-        var cusdirarray = [];
-        getDirectories(custdoc, function (err, dir) {
+        var cust_doc = `${defaultfolder}/${req.params.custId}`;
+        var cust_dirarray = [];
+        getDirectories(cust_doc, function (err, dir) {
             for (var i = 0; i < dir.length; i++) {
                 dirnew = dir[i].replace('public', '');
 
@@ -46,12 +46,12 @@ module.exports = {
                 // newtime = time.split(".")[0];
                 // date_time = date + " " + newtime;
 
-                cusdirarray.push({ docfullpath: dirnew, docfilename: path.basename(dirnew) });
+                cust_dirarray.push({ docfullpath: dirnew, docfilename: path.basename(dirnew) });
             }
             res.render('customers/custdocument.ejs', {
                 successFlash: req.flash('success'),
                 errorFlash: req.flash('error'),
-                custdir: cusdirarray,
+                cust_dir: cust_dirarray,
                 custId: req.params.custId
             });
         });

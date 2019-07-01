@@ -3,21 +3,21 @@
 <script> 
 $(document).ready(function () {
         var editcusthtml = <%- JSON.stringify(editcustomerhtml)%>;
-        var customers = <%- JSON.stringify(customers)%>;
+        var cust_s = <%- JSON.stringify(cust_s)%>;
         var data = [];
-        for ( var i=0 ; i<customers.length ; i++ ) {
+        for ( var i=0 ; i<cust_s.length ; i++ ) {
                 data.push( [ 
-                    customers[i].custNo, 
-                    customers[i].custName, 
-                    customers[i].custIC, 
-                    customers[i].custTel, 
-                    customers[i].custAdd1, 
-                    customers[i].custAdd2,
-                    customers[i].custAdd3,
-                    customers[i].custId ] );
+                    cust_s[i].custNo, 
+                    cust_s[i].custName, 
+                    cust_s[i].custIC, 
+                    cust_s[i].custTel, 
+                    cust_s[i].custAdd1, 
+                    cust_s[i].custAdd2,
+                    cust_s[i].custAdd3,
+                    cust_s[i].custId ] );
             }        
         //console.log(customers);
-        var table = $('#customerview').DataTable({
+        var table = $('#cust_view').DataTable({
             aaSorting: [],
             dom: 'Blfrtip',
             data: data,
