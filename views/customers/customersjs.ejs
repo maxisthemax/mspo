@@ -40,7 +40,7 @@ $(document).ready(function () {
                                 : '';
                             }
                         } ).join('');
-                            var htm = ejs.render(editcusthtml,{cust: columns});
+                            var htm = ejs.render(editcusthtml,{cust_s: columns});
                             data = $('<table width="100%"/>').append( data ).prop('outerHTML');
                             
                             // Extra: Show custom content
