@@ -113,7 +113,7 @@ module.exports = {
         //1 - upload
         //2 - delete
         var mode = req.body.mode;
-        console.log(mode);
+        //console.log(mode);
         var defaultfolder = `public/company/${req.user.coId}/lands/doc/`;
         var filefolder = defaultfolder + req.body.landId;
 
@@ -145,7 +145,7 @@ module.exports = {
 
             var filename = req.body.filenamedelete;
             var filepath = filefolder + '/' + filename;
-            console.log(filepath);
+            //console.log(filepath);
             try {
                 fs.unlinkSync(filepath)
                 //file removed

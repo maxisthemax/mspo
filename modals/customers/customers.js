@@ -56,7 +56,7 @@ exports.createCustomer = function (req, cb) {
       + "'" + "0" + "',"
       + "" + "CURRENT_TIMESTAMP"
       + ")";
-    console.log(firstquery);
+    //(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.insertId) {
