@@ -80,7 +80,7 @@
         uploadMultiple();
       }
       var x = document.getElementById("docupload");
-      x.files = FileListItem(temp);
+      //x.files = FileListItem(temp);
     }
   });
 
@@ -94,8 +94,6 @@
     }
   }
   function removeFileInTemp(index) {
-    console.log(index);
-    console.log(temp);
     if (temp.length > 0)
       temp.splice(index, 1);
 
@@ -107,10 +105,7 @@
     $('#uploadpreview').empty();
     uploadMultiple();
   } 
-  function changeName(index,value) {
-    temp[index].name = value;
-    console.log(value);
-  }
+
   function uploadMultiple() {
     var x = document.getElementById("docupload");
 
@@ -126,7 +121,7 @@
         //console.log(temp);
         for (var i = 0; i < temp.length; i++) {
 
-          txt += `<div id = "preview_${i}"><br><strong>` + (i + 1) + `. file</strong><br><input type="text" class="form-control mb-1" ` + `onchange="changeName(${i},this.value);"` + ` id="rename[${i}]" name="rename[${i}]" placeholder="Enter to Change the File Name. Blank for default name">`;
+          txt += `<div id = "preview_${i}"><br><strong>` + (i + 1) + `. file</strong><br><input type="text" class="form-control mb-1" ` + ` id="rename[${i}]" name="rename[${i}]" placeholder="Enter to Change the File Name. Blank for default name">`;
 
           var file = temp[i];
 

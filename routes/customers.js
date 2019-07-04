@@ -77,8 +77,7 @@ module.exports = {
             if (req.files.docupload && req.files.docupload.length > 0) {
                 for (i = 0; i < req.files.docupload.length; i++) {
                     var filetype = req.files.docupload[i].name.split('.').pop();
-                    var filename = req.files.docupload[i].name;//(req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`]+"."+filetype;
-                    console.log(filename);
+                    var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`]+"."+filetype;
                     fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
                         if (err) {
                             //console.log(err);
