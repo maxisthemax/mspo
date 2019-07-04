@@ -40,6 +40,46 @@
 
                     </tbody>
                 </table>
+
+                <br> <br> <br> <br>
+                <div class="panel-heading">
+                    <h3>Disabled Customers List</h3>
+                    <h4>You have <%= cust_s_disabled.length%> disabled customers</h4>
+                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Disabled List (<%= cust_s_disabled.length%>)</button>
+
+                </div>
+                <br> <br>
+                <div id="demo" class="collapse">
+                    <table id="cust_s_disabled_view" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Customer No</th>
+                                <th>Customer Name</th>
+                                <th>Customer IC</th>
+                                <th>Customer Tel.</th>
+                                <th class="none">Address 1</th>
+                                <th class="none">Address 2</th>
+                                <th class="none">Address 3</th>
+                                <th class="none">Cust Id</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Customer No</th>
+                                <th>Customer Name</th>
+                                <th>Customer IC</th>
+                                <th>Customer Tel.</th>
+                                <th>Address 1</th>
+                                <th>Address 2</th>
+                                <th>Address 3</th>
+                                <th>Cust Id</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>    
             </div>
             <!-- /#page-content-wrapper -->
         </div>
@@ -96,7 +136,7 @@
                     <div class="col-sm-6">
                         <label for="icupload">IC Photo</label><br>
 
-                        <input type="file" name="icupload" id="icupload" onchange="myFunction()">                        
+                        <input type="file" name="icupload" id="icupload" onchange="myFunction()">
                         <br>
                         <div id="uploadpreview"></div>
                         <br>
@@ -159,34 +199,34 @@
         }
     });
 
-function myFunction(){
-  var x = document.getElementById("icupload");
-  var txt = "";
-  if ('files' in x) {
-    if (x.files.length == 0) {
-      txt = "Select one or more files.";
-    } else {
-      for (var i = 0; i < x.files.length; i++) {
-        txt += "<br><strong>" + (i+1) + `. file</strong><br><input type="text" class="form-control mb-1" id="icrename[${i}]" name="icrename[${i}]" placeholder="Enter to Change the File Name. Blank for default name">`;
-        var file = x.files[i];
-        if ('name' in file) {
-          txt += "name: " + file.name + "<br>";
+    function myFunction() {
+        var x = document.getElementById("icupload");
+        var txt = "";
+        if ('files' in x) {
+            if (x.files.length == 0) {
+                txt = "Select one or more files.";
+            } else {
+                for (var i = 0; i < x.files.length; i++) {
+                    txt += "<br><strong>" + (i + 1) + `. file</strong><br><input type="text" class="form-control mb-1" id="icrename[${i}]" name="icrename[${i}]" placeholder="Enter to Change the File Name. Blank for default name">`;
+                    var file = x.files[i];
+                    if ('name' in file) {
+                        txt += "name: " + file.name + "<br>";
+                    }
+                    if ('size' in file) {
+                        txt += "size: " + file.size + " bytes <br>";
+                    }
+                }
+            }
         }
-        if ('size' in file) {
-          txt += "size: " + file.size + " bytes <br>";
+        else {
+            if (x.value == "") {
+                txt += "Select one or more files.";
+            } else {
+                txt += "The files property is not supported by your browser!";
+                txt += "<br>The path of the selected file: " + x.value; // If the browser does not support the files property, it will return the path of the selected file instead. 
+            }
         }
-      }
-    }
-  } 
-  else {
-    if (x.value == "") {
-      txt += "Select one or more files.";
-    } else {
-      txt += "The files property is not supported by your browser!";
-      txt  += "<br>The path of the selected file: " + x.value; // If the browser does not support the files property, it will return the path of the selected file instead. 
-    }
-  }
-  document.getElementById("uploadpreview").innerHTML = txt;
-}    
+        document.getElementById("uploadpreview").innerHTML = txt;
+    }    
 </script>
 <% include customers/customersjs.ejs %>

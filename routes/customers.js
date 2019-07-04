@@ -13,12 +13,14 @@ module.exports = {
 
 
         cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
-
-            res.render('customers/customers.ejs', {
-                successFlash: req.flash('success'),
-                errorFlash: req.flash('error'),
-                cust_s: cust_s,
-                editcustomerhtml: htmlContent,
+            cust.customers.queryAllCustomersDisabled(req.user.coId, function (err, cust_s_disabled) {
+                res.render('customers/customers.ejs', {
+                    successFlash: req.flash('success'),
+                    errorFlash: req.flash('error'),
+                    cust_s: cust_s,
+                    cust_s_disabled: (cust_s_disabled)?cust_s_disabled:[],
+                    editcustomerhtml: htmlContent,
+                });
             });
         });
     },
@@ -65,8 +67,7 @@ module.exports = {
         var defaultfolder = `public/company/${req.user.coId}/customers/doc/`;
         var filefolder = defaultfolder + req.body.custId;
 
-        if (mode == 1)
-        {
+        if (mode == 1) {
             if (!fs.existsSync(filefolder)) {
                 mkdirp(filefolder, function (err) {
                     if (err) console.error(err)
@@ -77,7 +78,7 @@ module.exports = {
             if (req.files.docupload && req.files.docupload.length > 0) {
                 for (i = 0; i < req.files.docupload.length; i++) {
                     var filetype = req.files.docupload[i].name.split('.').pop();
-                    var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`]+"."+filetype;
+                    var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
                     fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
                         if (err) {
                             //console.log(err);
@@ -89,7 +90,7 @@ module.exports = {
                 res.redirect(`/customers/doc/${req.body.custId}`);
 
             } else { res.redirect(`/customers/doc/${req.body.custId}`); }
-        } 
+        }
         else if (mode == 2) {
 
             var filename = req.body.filenamedelete;
@@ -97,10 +98,10 @@ module.exports = {
             try {
                 fs.unlinkSync(filepath)
                 //file removed
-              } catch(err) {
+            } catch (err) {
                 console.error(err)
-              }
-              res.redirect(`/customers/doc/${req.body.custId}`);  
+            }
+            res.redirect(`/customers/doc/${req.body.custId}`);
         }
     },
 
@@ -129,7 +130,7 @@ module.exports = {
                 req.flash('success', 'New Customer Created');
                 if (req.files.icupload && req.files.icupload.length > 0) {
                     var filetype = req.files.icupload[0].name.split('.').pop();
-                    var filename = (req.body[`icrename[0]`] == "") ? req.files.icupload[0].name : req.body[`icrename[0]`]+"."+filetype;              
+                    var filename = (req.body[`icrename[0]`] == "") ? req.files.icupload[0].name : req.body[`icrename[0]`] + "." + filetype;
                     fs.writeFileSync(filefolder + '/' + filename, req.files.icupload[0].data, function (err) {
                         if (err) {
                             res.redirect('/customers/');

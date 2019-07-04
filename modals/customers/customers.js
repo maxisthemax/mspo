@@ -13,6 +13,21 @@ exports.queryAllCustomers = function (coId, cb) {
     });
   });
 }
+exports.queryAllCustomersDisabled = function (coId, cb) {
+  process.nextTick(function () {
+    var firstquery = `SELECT * FROM customers WHERE coId = ${coId} and disabled = 1 ORDER BY custId`;
+    //console.log(firstquery);
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.length) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
 
 exports.queryCustomers = function (custId, cb) {
   process.nextTick(function () {

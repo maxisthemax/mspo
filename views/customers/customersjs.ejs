@@ -41,22 +41,118 @@ $(document).ready(function () {
                             }
                         } ).join('');
                             var htm = ejs.render(editcusthtml,{cust_s: columns});
-                            data = $('<table width="100%"/>').append( data ).prop('outerHTML');
-                            
+                            data = $('<table width="100%"/>').append( data ).prop('outerHTML');                       
                             // Extra: Show custom content
                             data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  
                             data += htm;
                             //console.log(html);
                             data += '';
-//                         console.log(data);
-// console.log(api.cell(rowIdx, 0).data());
-//                         // Extra: Show "Name" in row details
-//                         data += '<tr><td>Name:</td><td>' + api.cell(rowIdx, 0).data() + '</td></tr>';
-//                         // Generate a table
-//                         data = $('<table width="100%"/>').append( data ).prop('outerHTML');
+                            data += '</div><br><br>';  
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function () {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function () {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                var editcusthtml = <%- JSON.stringify(editcustomerhtml)%>;
+        var cust_s_disabled = <%- JSON.stringify(cust_s_disabled)%>;
+        var data = [];
+        for ( var i=0 ; i<cust_s_disabled.length ; i++ ) {
+                data.push( [ 
+                    cust_s_disabled[i].custNo, 
+                    cust_s_disabled[i].custName, 
+                    cust_s_disabled[i].custIC, 
+                    cust_s_disabled[i].custTel, 
+                    cust_s_disabled[i].custAdd1, 
+                    cust_s_disabled[i].custAdd2,
+                    cust_s_disabled[i].custAdd3,
+                    cust_s_disabled[i].custId ] );
+            }        
+        //console.log(customers);
+        var table = $('#cust_s_disabled_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "responsive": {
+                "details": {
+                    "renderer": function ( api, rowIdx, columns ) {
+                        // Show hidden columns in row details
+                        var data = $.map( columns, function ( col, i ) {
+                            if (col.columnIndex == 7) 
+                            {
+                                return;
+                            }
+                            else {
+                                return col.hidden 
+                                ? '<tr><td>'+col.title+':</td> '+
+                                    '<td>'+col.data+'</td></tr>' 
+                                : '';
+                            }
+                        } ).join('');
+
+                            editcusthtmldisabled=`<style>
+                            .btnpadding {
+                                margin: 10px;
+                            }
+                            </style>
+                            <div id="cust_buttons" class="p-5">
+                                <p class="h4 mb-4">Actions</p>
+                                <div class="row">
+                                    <button type="button" class="btn btn-danger btnpadding" onclick="location.href = '/customers/<%= cust_s[7].data%>';" >Delete</button>
+                                  </div>
+                            </div>
+                            `;
+
                         
-//                         // Extra: Show custom content
-//                         data += '<div class="content-custom">Custom content</div>';
+                            var htm = ejs.render(editcusthtmldisabled,{cust_s_disabled: columns});
+                            data = $('<table width="100%"/>').append( data ).prop('outerHTML');                       
+                            // Extra: Show custom content
+                            data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  
+                            data += htm;
+                            //console.log(html);
+                            data += '';
                             data += '</div><br><br>';  
                         return data;
                     }
