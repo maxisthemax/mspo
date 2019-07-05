@@ -1,14 +1,16 @@
 <style>
-.btnpadding {
-    margin: 10px;
-}
+    .btnpadding {
+        margin: 10px;
+    }
 </style>
 <div id="cust_buttons" class="p-5">
     <p class="h4 mb-4">Actions</p>
     <div class="row">
-        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/customers/<%= cust_s[7].data%>';" >Edit This Customer</button>
-        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/customers/doc/<%= cust_s[7].data%>';" >View This Customer Documents</button>
-        <button type="button" class="btn btn-danger btnpadding" onclick="location.href = '/customers/doc/<%= cust_s[7].data%>';" >Disabled</button>
+        <button type="button" class="btn btn-primary btnpadding"
+            onclick="location.href = '/customers/<%= cust_s[7].data%>';">Edit This Customer</button>
+        <button type="button" class="btn btn-secondary btnpadding"
+            onclick="location.href = '/customers/doc/<%= cust_s[7].data%>';">View This Customer Documents</button>
+        <button type="button" class="btn btn-danger btnpadding"
+            onclick="var retVal = confirm('Do you want to disabled this customer ?');if (retVal == true) {location.href = '/customers/disabled/<%= cust_s[7].data%>'};">Disabled</button>
     </div>
 </div>
-

@@ -10,7 +10,7 @@ module.exports = {
     getCustomersPage: (req, res) => {
 
         var htmlContent = fs.readFileSync('./views/customers/customersbutton.ejs', 'utf8');
-
+        var htmlContent2 = fs.readFileSync('./views/customers/customersbutton2.ejs', 'utf8');
 
         cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
             cust.customers.queryAllCustomersDisabled(req.user.coId, function (err, cust_s_disabled) {
@@ -18,8 +18,9 @@ module.exports = {
                     successFlash: req.flash('success'),
                     errorFlash: req.flash('error'),
                     cust_s: cust_s,
-                    cust_s_disabled: (cust_s_disabled)?cust_s_disabled:[],
+                    cust_s_disabled: (cust_s_disabled) ? cust_s_disabled : [],
                     editcustomerhtml: htmlContent,
+                    editcustomerhtml2: htmlContent2,
                 });
             });
         });
@@ -152,6 +153,19 @@ module.exports = {
             }
             res.redirect('/customers/');
         });
+    },
+    disabledDeleteCustomer: (req, res) => {
+        cust.customers.disableDeleteCustomer(
+            req.params.disabledordelete,
+            req.params.custId,
+            function (err, customer) {
+                if (err) {
+                    console.log(err);
+                    res.redirect('/customers/');
+                } else {
+                    res.redirect('/customers/');
+                }
+            });
     },
 };
 

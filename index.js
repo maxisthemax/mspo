@@ -15,7 +15,7 @@ var db = require('./modals/users');
 const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
-const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage, getCustomerDocPage, uploadCustomerDocuments } = require('./routes/customers');
+const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage, getCustomerDocPage, uploadCustomerDocuments,disabledDeleteCustomer } = require('./routes/customers');
 const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments, createLand, editLand } = require('./routes/lands');
 const { getCompanyPage } = require('./routes/company');
 
@@ -171,6 +171,7 @@ app.all('/customers*', ensureLoggedIn('/login'));
 app.get('/customers/', getCustomersPage);
 app.get('/customers/:custId', checkcustomercompany(), getEditCustomersPage);
 app.get('/customers/doc/:custId',checkcustomercompany(), getCustomerDocPage);
+app.get('/customers/:disabledordelete/:custId/',checkcustomercompany(), disabledDeleteCustomer);
 app.post('/customers/doc/', uploadCustomerDocuments);
 app.post('/customers/createcustomer', createCustomer);
 app.post('/customers/editcustomer', editCustomer);

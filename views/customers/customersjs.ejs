@@ -3,6 +3,7 @@
 <script> 
 $(document).ready(function () {
         var editcusthtml = <%- JSON.stringify(editcustomerhtml)%>;
+        
         var cust_s = <%- JSON.stringify(cust_s)%>;
         var data = [];
         for ( var i=0 ; i<cust_s.length ; i++ ) {
@@ -93,7 +94,7 @@ $(document).ready(function () {
 
 
 
-                var editcusthtml = <%- JSON.stringify(editcustomerhtml)%>;
+        var editcusthtml2 = <%- JSON.stringify(editcustomerhtml2)%>;
         var cust_s_disabled = <%- JSON.stringify(cust_s_disabled)%>;
         var data = [];
         for ( var i=0 ; i<cust_s_disabled.length ; i++ ) {
@@ -131,26 +132,11 @@ $(document).ready(function () {
                                 : '';
                             }
                         } ).join('');
-
-                            editcusthtmldisabled=`<style>
-                            .btnpadding {
-                                margin: 10px;
-                            }
-                            </style>
-                            <div id="cust_buttons" class="p-5">
-                                <p class="h4 mb-4">Actions</p>
-                                <div class="row">
-                                    <button type="button" class="btn btn-danger btnpadding" onclick="location.href = '/customers/<%= cust_s[7].data%>';" >Delete</button>
-                                  </div>
-                            </div>
-                            `;
-
-                        
-                            var htm = ejs.render(editcusthtmldisabled,{cust_s_disabled: columns});
+                            var htm2 = ejs.render(editcusthtml2,{cust_s_disabled: columns});
                             data = $('<table width="100%"/>').append( data ).prop('outerHTML');                       
                             // Extra: Show custom content
                             data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  
-                            data += htm;
+                            data += htm2;
                             //console.log(html);
                             data += '';
                             data += '</div><br><br>';  

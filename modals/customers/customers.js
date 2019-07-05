@@ -1,6 +1,6 @@
 exports.queryAllCustomers = function (coId, cb) {
   process.nextTick(function () {
-    var firstquery = `SELECT * FROM customers WHERE coId = ${coId} ORDER BY custId`;
+    var firstquery = `SELECT * FROM customers WHERE coId = ${coId} and disabled = 0 ORDER BY custId`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
@@ -75,6 +75,28 @@ exports.createCustomer = function (req, cb) {
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.insertId) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
+exports.disableDeleteCustomer = function (disableDelete, custId, cb) {
+  process.nextTick(function () {
+    var firstquery =""
+    if (disableDelete == "disabled") {
+      firstquery = `UPDATE customers SET disabled = 1 WHERE custId = ${custId}`;
+    } else if (disableDelete == "restore") {
+      firstquery = `UPDATE customers SET disabled = 0 WHERE custId = ${custId}`;
+    } else if (disableDelete == "delete") {
+      firstquery = `DELETE FROM customers WHERE custId = ${custId}`;
+    }
+    
+    con.query(firstquery, function (err, result, fields) {
+      if (result) {
         return cb(null, result);
       }
       else {
