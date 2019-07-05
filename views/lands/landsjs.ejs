@@ -67,5 +67,126 @@ $(document).ready(function () {
             // Collapse row details
             table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var editlandhtml2 = <%- JSON.stringify(editlandhtml2)%>;
+        var land_s_disabled = <%- JSON.stringify(land_s_disabled)%>;
+        var data = [];
+        for ( var i=0 ; i<land_s_disabled.length ; i++ ) {
+                data.push( [ 
+                    land_s_disabled[i].lotNo, 
+                    land_s_disabled[i].titleNo, 
+                    `${land_s_disabled[i].custName} - ${land_s_disabled[i].custIC}`, 
+                    land_s_disabled[i].area, 
+                    land_s_disabled[i].usageOfLand, 
+                    land_s_disabled[i].typeOfCondition,
+                    `${land_s_disabled[i].gpsLocationLat},${land_s_disabled[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${land_s_disabled[i].gpsLocationLat},${land_s_disabled[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
+                    land_s_disabled[i].landId
+                    ] );
+            }          
+        //console.log(customers);
+        var table = $('#land_s_disabled_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "responsive": {
+                "details": {
+                    "renderer": function ( api, rowIdx, columns ) {
+                        // Show hidden columns in row details
+                        var data = $.map( columns, function ( col, i ) {
+                            if (col.columnIndex == 7) 
+                            {
+                                return;
+                            }
+                            else {
+                                return col.hidden 
+                                ? '<tr><td>'+col.title+':</td> '+
+                                    '<td>'+col.data+'</td></tr>' 
+                                : '';
+                            }
+                        } ).join('');
+                            var htm2 = ejs.render(editlandhtml2,{land_s_disabled: columns});
+                            data = $('<table width="100%"/>').append( data ).prop('outerHTML');                       
+                            // Extra: Show custom content
+                            data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  
+                            data += htm2;
+                            //console.log(html);
+                            data += '';
+                            data += '</div><br><br>';  
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function () {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function () {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
     });
 </script>

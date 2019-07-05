@@ -1,0 +1,14 @@
+<style>
+    .btnpadding {
+        margin: 10px;
+    }
+</style>
+<div id="land_buttons" class="p-5">
+    <p class="h4 mb-4">Actions</p>
+    <div class="row">
+        <button type="button" class="btn btn-info btnpadding"
+            onclick="var retVal = confirm('Do you want to restore this land ?');if (retVal == true) {location.href = '/lands/restore/<%= land_s_disabled[7].data%>'};">Restore</button>
+         <button type="button" class="btn btn-danger btnpadding"
+            onclick="var retVal = confirm('Do you want to delete this land ? (This will permanently delete the land)');if (retVal == true) {location.href = '/lands/delete/<%= land_s_disabled[7].data%>'};">Delete</button>
+    </div>
+</div>

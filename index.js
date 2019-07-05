@@ -16,7 +16,7 @@ const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
 const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage, getCustomerDocPage, uploadCustomerDocuments,disabledDeleteCustomer } = require('./routes/customers');
-const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments, createLand, editLand } = require('./routes/lands');
+const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments, createLand, editLand, disabledDeleteLand } = require('./routes/lands');
 const { getCompanyPage } = require('./routes/company');
 
 
@@ -182,6 +182,7 @@ app.all('/lands*', ensureLoggedIn('/login'));
 app.get('/lands/', getLandsPage);
 app.get('/lands/:landId',checklotcompany(), getEditLandsPage);
 app.get('/lands/doc/:landId',checklotcompany(), getLandsDocPage);
+app.get('/lands/:disabledordelete/:landId/',checklotcompany(), disabledDeleteLand);
 app.post('/lands/doc/', uploadLandDocuments);
 app.post('/lands/createland', createLand);
 app.post('/lands/editland', editLand);

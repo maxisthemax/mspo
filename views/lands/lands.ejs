@@ -40,12 +40,49 @@
                     </tbody>
                 </table>
             </div>
-            <!-- /#page-content-wrapper -->
+            <br> <br> <br> <br>
+            <div class="panel-heading">
+                <h3>Disabled Customers List</h3>
+                <h4>You have <%= land_s_disabled.length%> disabled customers</h4>
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Disabled List (<%= land_s_disabled.length%>)</button>
+
+            </div>
+            <br> <br>
+            <div id="demo" class="collapse">
+                <table id="land_s_disabled_view" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Lot No</th>
+                            <th>Title No</th>
+                            <th>Customer</th>
+                            <th>Area</th>
+                            <th class="none">Usage of Land</th>
+                            <th class="none">Type of Condition</th>
+                            <th class="none">Gps Location (Lat,Long)</th>
+                            <th class="none">Lot Id</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Lot No</th>
+                            <th>Title No</th>
+                            <th>Customer</th>
+                            <th>Area</th>
+                            <th>Usage of Land</th>
+                            <th>Type of Condition</th>
+                            <th>Gps Location</th>
+                            <th>Lot Id</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div id="land_create" class="tabcontent">
-            <form class="p-5" name="user" method="POST" action="/lands/createland"
-                enctype="multipart/form-data">
+            <form class="p-5" name="user" method="POST" action="/lands/createland" enctype="multipart/form-data">
                 <p class="h4 mb-4">Create New land</p>
                 <div class="row">
                     <div class="col-sm-6">
@@ -56,20 +93,21 @@
                     <div class="col-sm-6">
                         <label for="textInput">Title No</label>
                         <input type="text" id="titleNo" name="titleNo" class="form-control mb-4" required>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
 
                         <label for="custId">Customer Name</label>
-                            <select class="form-control mb-4" id="custId"name="custId" required style="width: 100%">
+                        <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%">
                             <option></option>
-                            <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>                        
-                            <option value=<%= cust_s[i].custId %>><%= cust_s[i].custName  %> - <%= cust_s[i].custIC  %></option>
-                            <% }} %> 
-                        </select>  
+                            <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>
+                            <option value=<%= cust_s[i].custId %>><%= cust_s[i].custName  %> - <%= cust_s[i].custIC  %>
+                            </option>
+                            <% }} %>
+                        </select>
 
-           
+
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Area (hektar)</label>
@@ -83,19 +121,20 @@
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Type Of Condition</label>
-                        <input type="text" id="typeOfCondition" name="typeOfCondition" class="form-control mb-4" required>
-                    </div>                    
-                </div>             
+                        <input type="text" id="typeOfCondition" name="typeOfCondition" class="form-control mb-4"
+                            required>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-sm-3">
                         <label for="textInput">Latitude</label>
                         <input type="text" id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4" required>
-                    </div>                   
+                    </div>
                     <div class="col-sm-3">
                         <label for="textInput">Longitude</label>
                         <input type="text" id="gpsLocationLng" name="gpsLocationLng" class="form-control mb-4" required>
-                    </div>              
-                </div>      
+                    </div>
+                </div>
                 <p class="h4 mb-4">Upload Document Here</p>
                 <div class="row">
                     <div class="col-sm-6">
@@ -162,9 +201,9 @@
 
     $("#custId").select2({
         placeholder: "Select a Customer",
-		width: 'resolve',
-    });   
+        width: 'resolve',
+    });
 
-    
+
 </script>
 <% include lands/landsjs.ejs %>

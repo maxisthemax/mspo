@@ -11,14 +11,19 @@ module.exports = {
     getLandsPage: (req, res) => {
 
         var htmlContent = fs.readFileSync('./views/lands/landsbutton.ejs', 'utf8');
+        var htmlContent2 = fs.readFileSync('./views/lands/landsbutton2.ejs', 'utf8');
         cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
             lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
-                res.render('lands/lands.ejs', {
-                    successFlash: req.flash('success'),
-                    errorFlash: req.flash('error'),
-                    cust_s: cust_s,
-                    land_s: land_s,
-                    editlandhtml: htmlContent,
+                lands.lands.queryAllLandsDisabled(req.user.coId, function (err, land_s_disabled) {
+                    res.render('lands/lands.ejs', {
+                        successFlash: req.flash('success'),
+                        errorFlash: req.flash('error'),
+                        cust_s: (cust_s)?cust_s:[],
+                        land_s_disabled:(land_s_disabled)?land_s_disabled:[],
+                        land_s: (land_s)?land_s:[],
+                        editlandhtml: htmlContent,
+                        editlandhtml2: htmlContent2,
+                    });
                 });
             });
         });
@@ -108,6 +113,19 @@ module.exports = {
                 landId: req.params.landId
             });
         });
+    },
+    disabledDeleteLand: (req, res) => {
+        lands.lands.disableDeleteLand(
+            req.params.disabledordelete,
+            req.params.landId,
+            function (err, land) {
+                if (err) {
+                    console.log(err);
+                    res.redirect('/lands/');
+                } else {
+                    res.redirect('/lands/');
+                }
+            });
     },
     uploadLandDocuments: (req, res) => {
         //1 - upload

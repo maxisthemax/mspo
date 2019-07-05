@@ -17,7 +17,7 @@ module.exports = {
                 res.render('customers/customers.ejs', {
                     successFlash: req.flash('success'),
                     errorFlash: req.flash('error'),
-                    cust_s: cust_s,
+                    cust_s: (cust_s)?cust_s:[],
                     cust_s_disabled: (cust_s_disabled) ? cust_s_disabled : [],
                     editcustomerhtml: htmlContent,
                     editcustomerhtml2: htmlContent2,

@@ -1,11 +1,50 @@
 exports.queryAllLands = function (coId, cb) {
   process.nextTick(function () {
     var firstquery = `SELECT a.*,b.custName,b.custIC FROM lands a LEFT JOIN customers b on a.custId = b.custId
-    WHERE a.coId = ${coId} ORDER BY custId ASC,landId ASC`;
+    WHERE a.coId = ${coId} and a.disabled = 0 ORDER BY custId ASC,landId ASC`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.length) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
+exports.queryAllLandsDisabled = function (coId, cb) {
+  process.nextTick(function () {
+    var firstquery = `SELECT a.*,b.custName,b.custIC FROM lands a LEFT JOIN customers b on a.custId = b.custId
+    WHERE a.coId = ${coId} and a.disabled = 1 ORDER BY custId ASC,landId ASC`;
+    //console.log(firstquery);
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.length) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
+exports.disableDeleteLand = function (disableDelete, landId, cb) {
+  process.nextTick(function () {
+    var firstquery =""
+    if (disableDelete == "disabled") {
+      firstquery = `UPDATE lands SET disabled = 1 WHERE landId = ${landId}`;
+    } else if (disableDelete == "restore") {
+      firstquery = `UPDATE lands SET disabled = 0 WHERE landId = ${landId}`;
+    } else if (disableDelete == "delete") {
+      firstquery = `DELETE FROM lands WHERE landId = ${landId}`;
+    }
+    
+    con.query(firstquery, function (err, result, fields) {
+      if (result) {
         return cb(null, result);
       }
       else {
