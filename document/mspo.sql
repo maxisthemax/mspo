@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 30, 2019 at 06:26 PM
+-- Generation Time: Jul 06, 2019 at 02:30 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -54,7 +54,8 @@ CREATE TABLE `customers` (
   `custAdd2` varchar(100) DEFAULT NULL,
   `custAdd3` varchar(100) DEFAULT NULL,
   `deactivated` smallint(6) NOT NULL DEFAULT '0',
-  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `disabled` smallint(6) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -74,7 +75,8 @@ CREATE TABLE `lands` (
   `gpsLocationLng` double NOT NULL,
   `gpsLocationLat` double NOT NULL,
   `coId` int(11) NOT NULL,
-  `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `disabled` smallint(6) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -102,7 +104,8 @@ CREATE TABLE `users` (
 -- Indexes for table `company`
 --
 ALTER TABLE `company`
-  ADD PRIMARY KEY (`coId`) USING BTREE;
+  ADD PRIMARY KEY (`coId`) USING BTREE,
+  ADD KEY `coId` (`coId`);
 
 --
 -- Indexes for table `customers`
@@ -110,21 +113,24 @@ ALTER TABLE `company`
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`custId`),
   ADD UNIQUE KEY `uniq_coId_custNo` (`coId`,`custNo`) USING BTREE,
-  ADD UNIQUE KEY `uniq_coId_custIC` (`coId`,`custIC`) USING BTREE;
+  ADD UNIQUE KEY `uniq_coId_custIC` (`coId`,`custIC`) USING BTREE,
+  ADD KEY `custId` (`custId`);
 
 --
 -- Indexes for table `lands`
 --
 ALTER TABLE `lands`
   ADD PRIMARY KEY (`landId`) USING BTREE,
-  ADD UNIQUE KEY `uniq_landId_coId` (`landId`,`coId`) USING BTREE;
+  ADD UNIQUE KEY `uniq_landId_coId` (`landId`,`coId`) USING BTREE,
+  ADD KEY `landId` (`landId`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userId`) USING BTREE,
-  ADD UNIQUE KEY `userName` (`username`) USING BTREE;
+  ADD UNIQUE KEY `userName` (`username`) USING BTREE,
+  ADD KEY `userId` (`userId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
