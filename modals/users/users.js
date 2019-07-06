@@ -58,7 +58,7 @@ exports.findAllUsers = function(coId, cb) {
         let firstquery = `select a.*,b.*,a.deactivated as userdeactivated,b.deactivated as companydeactivated FROM USERS a LEFT JOIN company b on a.coId = b.coId where b.coId =${coId}`
 
         con.query(firstquery, function(err, result, fields) {
-            console.log(result);
+            //console.log(result);
             if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
             if (result && result.length) {
                 return cb(null, result);
