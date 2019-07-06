@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 06, 2019 at 02:30 AM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.1.28
+-- Host: localhost
+-- Generation Time: Jul 06, 2019 at 07:02 AM
+-- Server version: 10.3.15-MariaDB
+-- PHP Version: 7.1.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -33,9 +33,16 @@ CREATE TABLE `company` (
   `coName` varchar(100) NOT NULL,
   `coAdd` varchar(100) DEFAULT NULL,
   `coTel` varchar(100) DEFAULT NULL,
-  `deactivated` mediumint(9) NOT NULL DEFAULT '0',
-  `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `deactivated` mediumint(9) NOT NULL DEFAULT 0,
+  `createdDate` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `company`
+--
+
+INSERT INTO `company` (`coId`, `coName`, `coAdd`, `coTel`, `deactivated`, `createdDate`) VALUES
+(1, 'saferack', 'bukit jelutong', NULL, 0, '2019-07-06 09:32:55');
 
 -- --------------------------------------------------------
 
@@ -53,9 +60,9 @@ CREATE TABLE `customers` (
   `custAdd1` varchar(100) DEFAULT NULL,
   `custAdd2` varchar(100) DEFAULT NULL,
   `custAdd3` varchar(100) DEFAULT NULL,
-  `deactivated` smallint(6) NOT NULL DEFAULT '0',
-  `createDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `disabled` smallint(6) NOT NULL DEFAULT '0'
+  `deactivated` smallint(6) NOT NULL DEFAULT 0,
+  `createdDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `disabled` smallint(6) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -75,8 +82,8 @@ CREATE TABLE `lands` (
   `gpsLocationLng` double NOT NULL,
   `gpsLocationLat` double NOT NULL,
   `coId` int(11) NOT NULL,
-  `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `disabled` smallint(6) NOT NULL DEFAULT '0'
+  `createdDate` datetime NOT NULL DEFAULT current_timestamp(),
+  `disabled` smallint(6) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -91,9 +98,10 @@ CREATE TABLE `users` (
   `userpassword` varchar(200) NOT NULL,
   `displayname` varchar(200) NOT NULL,
   `email` varchar(200) NOT NULL,
-  `deactivated` smallint(6) NOT NULL DEFAULT '0',
+  `deactivated` smallint(6) NOT NULL DEFAULT 0,
   `administrator` smallint(6) NOT NULL,
-  `coId` int(11) NOT NULL
+  `coId` int(11) NOT NULL,
+  `createdDate` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -140,7 +148,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `coId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `coId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customers`
