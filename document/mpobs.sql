@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 06, 2019 at 08:50 AM
+-- Generation Time: Jul 06, 2019 at 05:01 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.1.30
 
@@ -29,13 +29,21 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `mpobs` (
-  `mpodId` int(11) NOT NULL,
+  `mpobId` int(11) NOT NULL,
   `mpobLicNo` varchar(200) NOT NULL,
   `expiredDate` datetime NOT NULL,
   `custId` int(11) NOT NULL,
   `createdDate` datetime NOT NULL DEFAULT current_timestamp(),
-  `disabled` int(11) NOT NULL DEFAULT 0
+  `disabled` int(11) NOT NULL DEFAULT 0,
+  `coId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `mpobs`
+--
+
+INSERT INTO `mpobs` (`mpobId`, `mpobLicNo`, `expiredDate`, `custId`, `createdDate`, `disabled`, `coId`) VALUES
+(1, 'LOG 123', '2019-07-31 00:00:00', 1, '2019-07-06 14:51:27', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -45,8 +53,9 @@ CREATE TABLE `mpobs` (
 -- Indexes for table `mpobs`
 --
 ALTER TABLE `mpobs`
-  ADD PRIMARY KEY (`mpodId`),
-  ADD KEY `mpodId` (`mpodId`);
+  ADD PRIMARY KEY (`mpobId`),
+  ADD UNIQUE KEY `uniq_mpobId_coId` (`mpobId`,`coId`),
+  ADD KEY `mpodId` (`mpobId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -56,7 +65,7 @@ ALTER TABLE `mpobs`
 -- AUTO_INCREMENT for table `mpobs`
 --
 ALTER TABLE `mpobs`
-  MODIFY `mpodId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `mpobId` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
