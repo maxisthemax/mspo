@@ -11,3 +11,4 @@ public/customers
 # Docker
 Dockerfile
 docker-compose.yml
+config.json
