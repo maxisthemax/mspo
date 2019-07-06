@@ -1,0 +1,1 @@
+exports.mpobs = require('./mpobs');

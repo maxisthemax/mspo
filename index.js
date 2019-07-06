@@ -15,8 +15,10 @@ var db = require('./modals/users');
 const { getHomePage } = require('./routes/index');
 const { getAdminPage, saveUsers, createUser } = require('./routes/admin');
 const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
-const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage, getCustomerDocPage, uploadCustomerDocuments,disabledDeleteCustomer } = require('./routes/customers');
+const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage, getCustomerDocPage, uploadCustomerDocuments, disabledDeleteCustomer } = require('./routes/customers');
 const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments, createLand, editLand, disabledDeleteLand } = require('./routes/lands');
+const { getMpobsPage, getEditMpobsPage, getMpobsDocPage, uploadMpobDocuments, createMpob, editMpob, disabledDeleteMpob } = require('./routes/mpobs');
+
 const { getCompanyPage } = require('./routes/company');
 
 
@@ -31,15 +33,14 @@ app.use(busboyBodyParser({ multi: true }));
 
 
 passport.use(new Strategy(
-  function (username, password, cb) {
-    db.users.findByUsername(username, function (err, user) {
-      if (err) { return cb(err); }
-      if (!user) { return cb(null, false); }
-      if (user.userpassword != password) { return cb(null, false); }
-      else
-        return cb(null, user);
-    });
-  }));
+    function(username, password, cb) {
+        db.users.findByUsername(username, function(err, user) {
+            if (err) { return cb(err); }
+            if (!user) { return cb(null, false); }
+            if (user.userpassword != password) { return cb(null, false); } else
+                return cb(null, user);
+        });
+    }));
 // Configure Passport authenticated session persistence.
 //
 // In order to restore authentication state across HTTP requests, Passport needs
@@ -47,14 +48,14 @@ passport.use(new Strategy(
 // typical implementation of this is as simple as supplying the user ID when
 // serializing, and querying the user record by ID from the database when
 // deserializing.
-passport.serializeUser(function (user, cb) {
-  cb(null, user.userId);
+passport.serializeUser(function(user, cb) {
+    cb(null, user.userId);
 });
-passport.deserializeUser(function (id, cb) {
-  db.users.findById(id, function (err, user) {
-    if (err) { return cb(err); }
-    cb(null, user);
-  });
+passport.deserializeUser(function(id, cb) {
+    db.users.findById(id, function(err, user) {
+        if (err) { return cb(err); }
+        cb(null, user);
+    });
 });
 
 // set the view engine to ejs
@@ -72,80 +73,80 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 // Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
-app.use(function (req, res, next) {
-  // if there's a flash message in the session request, make it available in the response, then delete it
-  res.locals.sessionFlash = req.session.sessionFlash;
-  delete req.session.sessionFlash;
-  next();
+app.use(function(req, res, next) {
+    // if there's a flash message in the session request, make it available in the response, then delete it
+    res.locals.sessionFlash = req.session.sessionFlash;
+    delete req.session.sessionFlash;
+    next();
 });
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
-var requiresAdmin = function () {
-  return [
-    function (req, res, next) {
-      if (req.user && req.user.administrator === 1)
-        next();
-      else {
-        if (req.user) {
-          errorFlash = req.flash('error', 'Hi ' + req.user.displayname + ', you do not have administrator rights!');
+var requiresAdmin = function() {
+    return [
+        function(req, res, next) {
+            if (req.user && req.user.administrator === 1)
+                next();
+            else {
+                if (req.user) {
+                    errorFlash = req.flash('error', 'Hi ' + req.user.displayname + ', you do not have administrator rights!');
+                }
+                res.redirect('/');
+            }
         }
-        res.redirect('/');
-      }
-    }
-  ]
+    ]
 };
 
-var checklotcompany = function (req) {
-  return [
-    function (req, res, next) {
+var checklotcompany = function(req) {
+    return [
+        function(req, res, next) {
 
-      var landId = req.params.landId;
-      process.nextTick(function () {
-        var firstquery = `SELECT coId FROM lands 
+            var landId = req.params.landId;
+            process.nextTick(function() {
+                var firstquery = `SELECT coId FROM lands 
     WHERE landId=${landId} LIMIT 1`;
-        //console.log(firstquery);
+                //console.log(firstquery);
 
-        con.query(firstquery, function (err, result, fields) {
-          //console.log(result);
-          if (result.length == 0) {
-            errorFlash = req.flash('error', 'Error Reading');
-            res.redirect('/');
-          } else {
-            if (result[0].coId != req.user.coId) {
-              errorFlash = req.flash('error', 'Error Reading');
-              res.redirect('/');
-            } else { next(); }
-          }
-        });
-      });
-    }
-  ]
+                con.query(firstquery, function(err, result, fields) {
+                    //console.log(result);
+                    if (result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+                });
+            });
+        }
+    ]
 };
 
-var checkcustomercompany = function (req) {
-  return [
-    function (req, res, next) {
+var checkcustomercompany = function(req) {
+    return [
+        function(req, res, next) {
 
-      var custId = req.params.custId;
-      process.nextTick(function () {
-        var firstquery = `SELECT coId FROM customers 
+            var custId = req.params.custId;
+            process.nextTick(function() {
+                var firstquery = `SELECT coId FROM customers 
     WHERE custId=${custId} LIMIT 1`;
-        //console.log(firstquery);
+                //console.log(firstquery);
 
-        con.query(firstquery, function (err, result, fields) {
-          //console.log(result);
-          if (result.length == 0) {
-            errorFlash = req.flash('error', 'Error Reading');
-            res.redirect('/');
-          } else {
-            if (result[0].coId != req.user.coId) {
-              errorFlash = req.flash('error', 'Error Reading');
-              res.redirect('/');
-            } else { next(); }
-          }
-        });
-      });
-    }
-  ]
+                con.query(firstquery, function(err, result, fields) {
+                    //console.log(result);
+                    if (result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+                });
+            });
+        }
+    ]
 };
 /* home*/
 app.get('/', ensureLoggedIn('/login'), getHomePage);
@@ -154,8 +155,8 @@ app.get('/', ensureLoggedIn('/login'), getHomePage);
 /* login & logout */
 app.get('/login/', getLoginPage);
 app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Invalid Username Or Password' }),
-  postLoginPage);
+    passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Invalid Username Or Password' }),
+    postLoginPage);
 app.get('/logout', getLogout);
 /* login & logout */
 
@@ -170,8 +171,8 @@ app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 app.all('/customers*', ensureLoggedIn('/login'));
 app.get('/customers/', getCustomersPage);
 app.get('/customers/:custId', checkcustomercompany(), getEditCustomersPage);
-app.get('/customers/doc/:custId',checkcustomercompany(), getCustomerDocPage);
-app.get('/customers/:disabledordelete/:custId/',checkcustomercompany(), disabledDeleteCustomer);
+app.get('/customers/doc/:custId', checkcustomercompany(), getCustomerDocPage);
+app.get('/customers/:disabledordelete/:custId/', checkcustomercompany(), disabledDeleteCustomer);
 app.post('/customers/doc/', uploadCustomerDocuments);
 app.post('/customers/createcustomer', createCustomer);
 app.post('/customers/editcustomer', editCustomer);
@@ -180,14 +181,24 @@ app.post('/customers/editcustomer', editCustomer);
 /* lands */
 app.all('/lands*', ensureLoggedIn('/login'));
 app.get('/lands/', getLandsPage);
-app.get('/lands/:landId',checklotcompany(), getEditLandsPage);
-app.get('/lands/doc/:landId',checklotcompany(), getLandsDocPage);
-app.get('/lands/:disabledordelete/:landId/',checklotcompany(), disabledDeleteLand);
+app.get('/lands/:landId', checklotcompany(), getEditLandsPage);
+app.get('/lands/doc/:landId', checklotcompany(), getLandsDocPage);
+app.get('/lands/:disabledordelete/:landId/', checklotcompany(), disabledDeleteLand);
 app.post('/lands/doc/', uploadLandDocuments);
 app.post('/lands/createland', createLand);
 app.post('/lands/editland', editLand);
 /* lands */
 
+/* mpobs */
+app.all('/mpobs*', ensureLoggedIn('/login'));
+app.get('/mpobs/', getMpobsPage);
+// app.get('/mpobs/:mpobId', checklotcompany(), getEditMpobsPage);
+// app.get('/mpobs/doc/:mpobId', checklotcompany(), getMpobsDocPage);
+// app.get('/mpobs/:disabledordelete/:mpobId/', checklotcompany(), disabledDeleteMpob);
+// app.post('/mpobs/doc/', uploadMpobDocuments);
+// app.post('/mpobs/creatempob', createMpob);
+// app.post('/mpobs/editmpob', editMpob);
+/* mpobs */
 
 /* company */
 app.all('/company*', ensureLoggedIn('/login'));
@@ -198,7 +209,7 @@ app.get('/company', getCompanyPage);
 
 /* test */
 
-var server = app.listen(process.env.PORT || 5000, function () {
-  var port = server.address().port;
-  console.log("Express is working on port " + port);
+var server = app.listen(process.env.PORT || 5000, function() {
+    var port = server.address().port;
+    console.log("Express is working on port " + port);
 });
