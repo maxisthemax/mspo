@@ -60,8 +60,17 @@
                 </div>    
 
             <input type="hidden" id="landId" name="landId" value="<%= land[0].landId%>">
-
-            <button class="btn btn-primary btn-block" type="submit">Save land</button>
+            <div class="row">
+                <div class="col-sm-3">
+                    <a href="/lands/">
+                        <input type=button class="btn btn-secondary btn-block" value="Back" onclick="">
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-block" type="submit">Save land</button>
+                </div>
+            </div>
+            
 
         </form>
     </div>
