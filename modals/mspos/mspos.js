@@ -55,11 +55,11 @@ exports.createMspo = function(req, cb) {
             mspo.mspoCertNo = mspo.mspoCertNo ? [].concat(mspo.mspoCertNo) : [''];
             mspo.expiredDate = mspo.expiredDate ? [].concat(mspo.expiredDate) : [''];
             mspo.custId = mspo.custId ? [].concat(mspo.custId) : [''];
-
+            mspo.mspoStandard = mspo.mspoStandard ? [].concat(mspo.mspoStandard) : [''];
 
             let firstquery = `INSERT INTO mspos 
-    (mspoCertNo,expiredDate, custId, createdDate, disabled, coId)
-    VALUES ('${mspo.mspoCertNo}','${mspo.expiredDate}','${mspo.custId}',CURRENT_TIMESTAMP,'0','${coId}')`;
+    (mspoCertNo,expiredDate,standard, custId, createdDate, disabled, coId)
+    VALUES ('${mspo.mspoCertNo}','${mspo.expiredDate}','${mspo.mspoStandard}','${mspo.custId}',CURRENT_TIMESTAMP,'0','${coId}')`;
 
             console.log(firstquery);
 
@@ -104,10 +104,12 @@ exports.editMspo = function (req, cb) {
     mspo.mspoCertNo = mspo.mspoCertNo ? [].concat(mspo.mspoCertNo) : [''];
     mspo.expiredDate = mspo.expiredDate ? [].concat(mspo.expiredDate) : [''];
     mspo.custId = mspo.custId ? [].concat(mspo.custId) : [''];
- 
+    mspo.mspoStandard = mspo.mspoStandard ? [].concat(mspo.mspoStandard) : [''];
+
     let firstquery = `UPDATE mspos SET 
     mspoCertNo = "${mspo.mspoCertNo[0]}",
     expiredDate = "${mspo.expiredDate[0]}",
+    standard = "${mspo.mspoStandard[0]}",
     custId = "${mspo.custId[0]}"
     where mspoId= "${mspo.mspoId[0]}"`
 

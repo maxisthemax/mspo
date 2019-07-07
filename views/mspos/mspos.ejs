@@ -19,6 +19,7 @@
                                 <th>Customer Name</th>
                                 <th>Customer IC</th>
                                 <th class="none"></th>
+                                <th class="none">Standard</th>
                                 <!-- <th class="none">Address 3</th>
                                 <th class="none">Cust Id</th> -->
                             </tr>
@@ -30,6 +31,7 @@
                                 <th>Customer Name</th>
                                 <th>Customer IC</th>
                                 <th class="none"></th>
+                                <th class="none">Standard</th>
                                 <!-- <th class="none">Address 3</th>
                                 <th class="none">Cust Id</th> -->
                             </tr>
@@ -57,6 +59,7 @@
                                     <th>Customer Name</th>
                                     <th>Customer IC</th>
                                     <th class="none"></th>
+                                    <th class="none">Standard</th>
                                     <!-- <th class="none">Address 1</th>
                                     <th class="none">Address 2</th>
                                     <th class="none">Address 3</th>
@@ -70,6 +73,7 @@
                                     <th>Customer Name</th>
                                     <th>Customer IC</th>
                                     <th class="none"></th>
+                                    <th class="none">Standard</th>
                                     <!-- <th class="none">Address 1</th>
                                     <th class="none">Address 2</th>
                                     <th class="none">Address 3</th>
@@ -96,7 +100,7 @@
                         <div class="col-sm-6">
                             <label for="textInput">Expired Date</label>
                             <div class="input-group date" id="expiredDatePicker" data-target-input="nearest">
-                                <input type="text" required id="expiredDate" name="expiredDate" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                <input type="text" id="expiredDate" name="expiredDate" required class="form-control datetimepicker-input" data-target="#datetimepicker1" />
                                 <div class="input-group-append" data-target="#expiredDatePicker" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -104,6 +108,10 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-sm-6">
+                            <label for="textInput">Standard</label>
+                            <input type="text" id="mspoStandard" name="mspoStandard" class="form-control mb-4" placeholder="Enter MSPO Standard">
+                        </div>                    
                         <div class="col-sm-6">
                             <label for="custId">Customer Name</label>
                             <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%">
@@ -184,6 +192,7 @@
                 var chartformat = "YYYY-MM-DD";
                 $('#expiredDatePicker').datetimepicker({
                     format: chartformat,
+                    defaultDate: moment(),
                 });
             });
             $("#custId").select2({
