@@ -1,62 +1,45 @@
 <% include partials/header.ejs %>
-<div id="cust_edit" class="container-fluid">
+<div id="mpob_edit" class="container-fluid">
     <div class="" style="border:1px solid">
-        <form class="p-5" name="cust_edit_form" method="POST" action="/customers/editcustomer">
-            <p class="h4 mb-4">Edit Customer</p>
+        <form class="p-5" name="mpob_edit_form" method="POST" action="/mpobs/editmpob">
+            <p class="h4 mb-4">Edit Mpob</p>
 
             <div class="row">
                 <div class="col-sm-6">
-                    <label for="textInput">Customer No</label>
-                    <input type="text" id="custNo" name="custNo" class="form-control mb-4" required
-                        placeholder="Enter Customer No Here" value="<%= cust[0].custNo%>">
+                    <label for="textInput">Mpob License No</label>
+                    <input type="text" id="mpobLicNo" name="mpobLicNo" class="form-control mb-4" required
+                        placeholder="Enter Mpob License No Here" value="<%= mpob[0].mpobLicNo%>">
                 </div>
                 <div class="col-sm-6">
-                    <label for="textInput">Customer Name</label>
-                    <input type="text" id="custName" name="custName" class="form-control mb-4" required
-                        placeholder="Enter Customer Name Here" value="<%= cust[0].custName%>">
+                    <label for="textInput">Expired Date</label>
+                    <input type="text" id="expiredDate" name="expiredDate" class="form-control mb-4" required
+                        placeholder="Enter Expired Date Name Here" value="<%= mpob[0].expiredDate%>">
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    <label for="textInput">Customer IC</label>
-                    <input type="text" id="custIC" name="custIC" class="form-control mb-4" required
-                        placeholder="Enter Customer IC Here" value="<%= cust[0].custIC%>">
-                </div>
-                <div class="col-sm-6">
-                    <label for="textInput">Customer Tel.</label>
-                    <input type="text" id="custTel" name="custTel" class="form-control mb-4" required
-                        placeholder="Enter Customer Name Here" value="<%= cust[0].custTel%>">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <label for="textInput">Address 1</label>
-                    <input type="text" id="custAdd1" name="custAdd1" class="form-control mb-4"
-                        placeholder="Enter Customer Address Here" value="<%= cust[0].custAdd1%>">
-                </div>
-                <div class="col-sm-6">
-                    <label for="textInput">Address 2</label>
-                    <input type="text" id="custAdd2" name="custAdd2" class="form-control mb-4"
-                        placeholder="Enter Customer Address Here" value="<%= cust[0].custAdd2%>">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <label for="textInput">Address 3</label>
-                    <input type="text" id="custAdd3" name="custAdd3" class="form-control mb-4"
-                        placeholder="Enter Customer Address Here" value="<%= cust[0].custAdd3%>">
-                </div>
-            </div>
 
-            <input type="hidden" id="custId" name="custId" value="<%= cust[0].custId%>">
+                    <label for="custId">Customer Name</label>
+                        <select class="form-control mb-4" id="custId"name="custId" required style="width: 100%">
+                        <option></option>
+                        <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>                        
+                        <option value=<%= cust_s[i].custId %> <%if (cust_s[i].custId==mpob[0].custId){ %>selected<%}%> ><%= cust_s[i].custName %></option>
+                        <% }} %> 
+                    </select>  
+    
+                </div>
+            </div>
+            <br>
+
+            <input type="hidden" id="mpobId" name="mpobId" value="<%= mpob[0].mpobId%>">
             <div class="row">
                 <div class="col-sm-3">
-                    <a href="/customers">
+                    <a href="/mpobs/">
                         <input type=button class="btn btn-secondary btn-block" value="Back" onclick="">
                     </a>
                 </div>
                 <div class="col-sm-3">
-                    <button class="btn btn-primary btn-block" type="submit">Save Customer</button>
+                    <button class="btn btn-primary btn-block" type="submit">Save Mpob</button>
                 </div>
             </div>
         </form>
@@ -71,3 +54,11 @@
 </body>
 
 </html>
+
+
+<script>
+    $("#custId").select2({
+        placeholder: "Select a Customer",
+		width: 'resolve',
+    });   
+</script>

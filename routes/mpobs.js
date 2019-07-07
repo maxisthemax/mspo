@@ -12,9 +12,9 @@ module.exports = {
 
         var htmlContent = fs.readFileSync('./views/mpobs/mpobsbutton.ejs', 'utf8');
         var htmlContent2 = fs.readFileSync('./views/mpobs/mpobsbutton2.ejs', 'utf8');
-        cust.customers.queryAllCustomers(req.user.coId, function(err, cust_s) {
-            mpobs.mpobs.queryAllMpobs(req.user.coId, function(err, mpob_s) {
-                mpobs.mpobs.queryAllMpobsDisabled(req.user.coId, function(err, mpob_s_disabled) {
+        cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
+            mpobs.mpobs.queryAllMpobs(req.user.coId, function (err, mpob_s) {
+                mpobs.mpobs.queryAllMpobsDisabled(req.user.coId, function (err, mpob_s_disabled) {
                     res.render('mpobs/mpobs.ejs', {
                         successFlash: req.flash('success'),
                         errorFlash: req.flash('error'),
@@ -28,53 +28,55 @@ module.exports = {
             });
         });
     },
-    // createLand: (req, res) => {
-    //     lands.lands.createLand(req, function(err, land) {
-    //         if (err) {
-    //             if (err.code == "ER_DUP_ENTRY") {
-    //                 req.flash('error', 'Land Already Exist');
-    //             } else {
-    //                 req.flash('error', 'Unable to Save Land Data');
-    //             }
+    getEditMpobsPage: (req, res) => {
+        cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
+            mpobs.mpobs.queryMpob(req.params.mpobId, function (err, mpob) {
 
-    //             res.redirect('/lands/');
-    //         } else if (land) {
-    //             //console.log(customer);
-    //             var defaultfolder = `public/company/${req.user.coId}/lands/doc/`;
-    //             var filefolder = defaultfolder + land.insertId;
-    //             if (!fs.existsSync(filefolder)) {
-    //                 mkdirp(filefolder, function(err) {
-    //                     if (err) console.error(err)
-    //                     else console.log('dir created')
-    //                 });
-    //             }
-    //             req.flash('success', 'New Land Created');
-    //             if (req.files.docupload) {
-    //                 fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function(err) {
-    //                     if (err) {
-    //                         res.redirect('/lands/');
-    //                     }
-    //                 });
-    //                 res.redirect('/lands/');
-    //             } else { res.redirect('/lands/'); }
-    //         }
-    //     });
-    // },
+                res.render('mpobs/editmpob.ejs', {
+                    successFlash: req.flash('success'),
+                    errorFlash: req.flash('error'),
+                    mpob: mpob,
+                    cust_s: cust_s
+                });
+            });
+        });
+    },
+
+    createMpob: (req, res) => {
+        mpobs.mpobs.createMpob(req, function(err, mpob) {
+            if (err) {
+                if (err.code == "ER_DUP_ENTRY") {
+                    req.flash('error', 'MPOB Already Exist');
+                } else {
+                    req.flash('error', 'Unable to Save MPOB Data');
+                }
+
+                res.redirect('/mpobs/');
+            } else if (mpob) {
+                //console.log(customer);
+                var defaultfolder = `public/company/${req.user.coId}/mpobs/doc/`;
+                var filefolder = defaultfolder + mpob.insertId;
+                if (!fs.existsSync(filefolder)) {
+                    mkdirp(filefolder, function(err) {
+                        if (err) console.error(err)
+                        else console.log('dir created')
+                    });
+                }
+                req.flash('success', 'New MPOB Created');
+                if (req.files.docupload) {
+                    fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function(err) {
+                        if (err) {
+                            res.redirect('/mpobs/');
+                        }
+                    });
+                    res.redirect('/mpobs/');
+                } else { res.redirect('/mpobs/'); }
+            }
+        });
+    },
 
 
-    // getEditLandsPage: (req, res) => {
-    //     cust.customers.queryAllCustomers(req.user.coId, function(err, cust_s) {
-    //         lands.lands.queryLand(req.params.landId, function(err, land) {
 
-    //             res.render('lands/editland.ejs', {
-    //                 successFlash: req.flash('success'),
-    //                 errorFlash: req.flash('error'),
-    //                 land: land,
-    //                 cust_s: cust_s
-    //             });
-    //         });
-    //     });
-    // },
 
     // editLand: (req, res) => {
     //     lands.lands.editLand(req, function(err, land) {
@@ -175,6 +177,6 @@ module.exports = {
 };
 
 
-var getDirectories = function(src, callback) {
+var getDirectories = function (src, callback) {
     glob(src + '/**/*', callback);
 };

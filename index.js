@@ -33,8 +33,8 @@ app.use(busboyBodyParser({ multi: true }));
 
 
 passport.use(new Strategy(
-    function(username, password, cb) {
-        db.users.findByUsername(username, function(err, user) {
+    function (username, password, cb) {
+        db.users.findByUsername(username, function (err, user) {
             if (err) { return cb(err); }
             if (!user) { return cb(null, false); }
             if (user.userpassword != password) { return cb(null, false); } else
@@ -48,11 +48,11 @@ passport.use(new Strategy(
 // typical implementation of this is as simple as supplying the user ID when
 // serializing, and querying the user record by ID from the database when
 // deserializing.
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function (user, cb) {
     cb(null, user.userId);
 });
-passport.deserializeUser(function(id, cb) {
-    db.users.findById(id, function(err, user) {
+passport.deserializeUser(function (id, cb) {
+    db.users.findById(id, function (err, user) {
         if (err) { return cb(err); }
         cb(null, user);
     });
@@ -73,16 +73,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 // Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     // if there's a flash message in the session request, make it available in the response, then delete it
     res.locals.sessionFlash = req.session.sessionFlash;
     delete req.session.sessionFlash;
     next();
 });
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
-var requiresAdmin = function() {
+var requiresAdmin = function () {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
             if (req.user && req.user.administrator === 1)
                 next();
             else {
@@ -94,18 +94,43 @@ var requiresAdmin = function() {
         }
     ]
 };
-
-var checklotcompany = function(req) {
+var checkmpobcompany = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
+
+            var mpobId = req.params.mpobId;
+            process.nextTick(function () {
+                var firstquery = `SELECT coId FROM mpobs 
+    WHERE mpobId=${mpobId} LIMIT 1`;
+                //console.log(firstquery);
+
+                con.query(firstquery, function (err, result, fields) {
+                    //console.log(result);
+                    if (result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+                });
+            });
+        }
+    ]
+};
+var checklandcompany = function (req) {
+    return [
+        function (req, res, next) {
 
             var landId = req.params.landId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM lands 
     WHERE landId=${landId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
                     if (result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
@@ -122,17 +147,17 @@ var checklotcompany = function(req) {
     ]
 };
 
-var checkcustomercompany = function(req) {
+var checkcustomercompany = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
 
             var custId = req.params.custId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM customers 
     WHERE custId=${custId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
                     if (result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
@@ -181,9 +206,9 @@ app.post('/customers/editcustomer', editCustomer);
 /* lands */
 app.all('/lands*', ensureLoggedIn('/login'));
 app.get('/lands/', getLandsPage);
-app.get('/lands/:landId', checklotcompany(), getEditLandsPage);
-app.get('/lands/doc/:landId', checklotcompany(), getLandsDocPage);
-app.get('/lands/:disabledordelete/:landId/', checklotcompany(), disabledDeleteLand);
+app.get('/lands/:landId', checklandcompany(), getEditLandsPage);
+app.get('/lands/doc/:landId', checklandcompany(), getLandsDocPage);
+app.get('/lands/:disabledordelete/:landId/', checklandcompany(), disabledDeleteLand);
 app.post('/lands/doc/', uploadLandDocuments);
 app.post('/lands/createland', createLand);
 app.post('/lands/editland', editLand);
@@ -192,11 +217,11 @@ app.post('/lands/editland', editLand);
 /* mpobs */
 app.all('/mpobs*', ensureLoggedIn('/login'));
 app.get('/mpobs/', getMpobsPage);
-// app.get('/mpobs/:mpobId', checklotcompany(), getEditMpobsPage);
+app.get('/mpobs/:mpobId', checkmpobcompany(), getEditMpobsPage);
 // app.get('/mpobs/doc/:mpobId', checklotcompany(), getMpobsDocPage);
 // app.get('/mpobs/:disabledordelete/:mpobId/', checklotcompany(), disabledDeleteMpob);
 // app.post('/mpobs/doc/', uploadMpobDocuments);
-// app.post('/mpobs/creatempob', createMpob);
+app.post('/mpobs/creatempob', createMpob);
 // app.post('/mpobs/editmpob', editMpob);
 /* mpobs */
 
@@ -209,7 +234,7 @@ app.get('/company', getCompanyPage);
 
 /* test */
 
-var server = app.listen(process.env.PORT || 5000, function() {
+var server = app.listen(process.env.PORT || 5000, function () {
     var port = server.address().port;
     console.log("Express is working on port " + port);
 });

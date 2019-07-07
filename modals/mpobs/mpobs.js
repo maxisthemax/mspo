@@ -29,7 +29,52 @@ exports.queryAllMpobsDisabled = function(coId, cb) {
         });
     });
 }
+exports.queryMpob = function (mpobId, cb) {
+  process.nextTick(function () {
+    var firstquery = `SELECT * FROM mpobs 
+    WHERE mpobId=${mpobId} ORDER BY custId`;
+    //console.log(firstquery);
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.length) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
 
+
+exports.createMpob = function (req, cb) {
+  var coId = req.user.coId;
+  var mpob = req.body;
+  console.log(mpob);
+  process.nextTick(function () {
+
+    mpob.mpobLicNo = mpob.mpobLicNo ? [].concat(mpob.mpobLicNo) : [''];
+    mpob.expiredDate = mpob.expiredDate ? [].concat(mpob.expiredDate) : [''];
+    mpob.custId = mpob.custId ? [].concat(mpob.custId) : [''];
+
+
+    let firstquery = `INSERT INTO mpobs 
+    (mpobLicNo,expiredDate, custId, createdDate, disabled, coId)
+    VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}','CURRENT_TIMESTAMP','0','${coId}')`;
+
+    //console.log(firstquery);
+
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.insertId) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
 // exports.disableDeleteLand = function (disableDelete, landId, cb) {
 //   process.nextTick(function () {
 //     var firstquery =""
@@ -52,22 +97,7 @@ exports.queryAllMpobsDisabled = function(coId, cb) {
 //   });
 // }
 
-// exports.queryLand = function (landId, cb) {
-//   process.nextTick(function () {
-//     var firstquery = `SELECT * FROM lands 
-//     WHERE landId=${landId} ORDER BY custId`;
-//     //console.log(firstquery);
-//     con.query(firstquery, function (err, result, fields) {
-//       if (result) result = JSON.parse(JSON.stringify(result));
-//       if (result && result.length) {
-//         return cb(null, result);
-//       }
-//       else {
-//         return cb(err, null);
-//       }
-//     });
-//   });
-// }
+
 
 // exports.editLand = function (req, cb) {
 //   var land = req.body;
@@ -108,39 +138,7 @@ exports.queryAllMpobsDisabled = function(coId, cb) {
 //   });
 // }
 
-// exports.createLand = function (req, cb) {
-//   var coId = req.user.coId;
-//   var land = req.body;
-//   process.nextTick(function () {
 
-//     land.landId = land.landId ? [].concat(land.landId) : [''];
-//     land.lotNo = land.lotNo ? [].concat(land.lotNo) : [''];
-//     land.titleNo = land.titleNo ? [].concat(land.titleNo) : [''];
-//     land.area = land.area ? [].concat(land.area) : [''];
-//     land.custId = land.custId ? [].concat(land.custId) : [''];
-//     land.usageOfLand = land.usageOfLand ? [].concat(land.usageOfLand) : [''];
-//     land.typeOfCondition = land.typeOfCondition ? [].concat(land.typeOfCondition) : [''];
-//     land.gpsLocationLng = land.gpsLocationLng ? [].concat(land.gpsLocationLng) : [''];
-//     land.gpsLocationLat = land.gpsLocationLat ? [].concat(land.gpsLocationLat) : [''];
-
-//     let firstquery = `INSERT INTO lands 
-//     (lotNo,titleNo, area, custId, usageOfLand, typeOfCondition, gpsLocationLng, gpsLocationLat,coId,createdDate)
-//     VALUES ('${land.lotNo}','${land.titleNo}','${land.area}','${land.custId}'
-//     ,'${land.usageOfLand}','${land.typeOfCondition}','${land.gpsLocationLng}','${land.gpsLocationLat}','${coId}','CURRENT_TIMESTAMP')`;
-
-//     //console.log(firstquery);
-
-//     con.query(firstquery, function (err, result, fields) {
-//       if (result) result = JSON.parse(JSON.stringify(result));
-//       if (result && result.insertId) {
-//         return cb(null, result);
-//       }
-//       else {
-//         return cb(err, null);
-//       }
-//     });
-//   });
-// }
 
 
 function addescape(str) {

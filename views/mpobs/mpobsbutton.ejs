@@ -6,8 +6,8 @@
 <div id="cust_buttons" class="p-5">
     <p class="h4 mb-4">Actions</p>
     <div class="row">
-        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/customers/<%= mpob_s[4].data%>';">Edit This Customer</button>
-        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/customers/doc/<%= mpob_s[4].data%>';">View This Customer Documents</button>
-        <button type="button" class="btn btn-danger btnpadding" onclick="var retVal = confirm('Do you want to disabled this customer ?');if (retVal == true) {location.href = '/customers/disabled/<%= mpob_s[4].data%>'};">Disabled This Customer</button>
+        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/mpobs/<%= mpob_s[4].data%>';">Edit This Mpob</button>
+        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/mpobs/doc/<%= mpob_s[4].data%>';">View This Mpob Documents</button>
+        <button type="button" class="btn btn-danger btnpadding" onclick="var retVal = confirm('Do you want to disabled this Mpob ?');if (retVal == true) {location.href = '/mpobs/disabled/<%= mpob_s[4].data%>'};">Disabled This Mpob</button>
     </div>
 </div>
