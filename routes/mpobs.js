@@ -75,104 +75,100 @@ module.exports = {
         });
     },
 
+    editMpob: (req, res) => {
+        mpobs.mpobs.editMpob(req, function(err, mpob) {
+            if (err) {
+                req.flash('error', 'Unable to Edit MPOB Data');
+            } else if (mpob) {
+                req.flash('success', 'MPOB Data Saved');
+            }
+            res.redirect('/mpobs/');
+        });
+    },
 
+    getMpobsDocPage: (req, res) => {
 
+        var defaultfolder = `public/company/${req.user.coId}/mpobs/doc/`;
+        var mpob_doc = `${defaultfolder}/${req.params.mpobId}`;
+        var mpob_dirarray = [];
+        getDirectories(mpob_doc, function(err, dir) {
+            for (var i = 0; i < dir.length; i++) {
+                dirnew = dir[i].replace('public', '');
 
-    // editLand: (req, res) => {
-    //     lands.lands.editLand(req, function(err, land) {
-    //         if (err) {
-    //             req.flash('error', 'Unable to Edit Land Data');
-    //         } else if (land) {
-    //             req.flash('success', 'Land Data Saved');
-    //         }
-    //         res.redirect('/lands/');
-    //     });
-    // },
+                // date_time = '';
+                // date = path.basename(daynew).split("_")[1];
+                // time = path.basename(daynew).split("_")[2];
+                // newtime = time.split(".")[0];
+                // date_time = date + " " + newtime;
 
+                mpob_dirarray.push({ docfullpath: dirnew, docfilename: path.basename(dirnew) });
+            }
+            res.render('mpobs/mpobdocument.ejs', {
+                successFlash: req.flash('success'),
+                errorFlash: req.flash('error'),
+                mpob_dir: mpob_dirarray,
+                mpobId: req.params.mpobId
+            });
+        });
+    },
+    disabledDeleteMpob: (req, res) => {
+        mpobs.mpobs.disableDeleteMpob(
+            req.params.disabledordelete,
+            req.params.mpobId,
+            function(err, mpob) {
+                if (err) {
+                    console.log(err);
+                    res.redirect('/mpobs/');
+                } else {
+                    res.redirect('/mpobs/');
+                }
+            });
+    },
+    uploadMpobDocuments: (req, res) => {
+        //1 - upload
+        //2 - delete
+        var mode = req.body.mode;
+        //console.log(mode);
+        var defaultfolder = `public/company/${req.user.coId}/mpobs/doc/`;
+        var filefolder = defaultfolder + req.body.mpobId;
 
-    // getLandsDocPage: (req, res) => {
+        if (mode == 1) {
+            if (!fs.existsSync(filefolder)) {
+                mkdirp(filefolder, function(err) {
+                    if (err) console.error(err)
+                    else console.log('dir created')
+                });
+            }
+            //console.log(req.files.docupload);
+            if (req.files.docupload && req.files.docupload.length > 0) {
+                for (i = 0; i < req.files.docupload.length; i++) {
+                    var filetype = req.files.docupload[i].name.split('.').pop();
+                    var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
+                    fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function(err) {
+                        if (err) {
+                            //console.log(err);
+                            res.redirect(`/mpobs/doc/${req.body.mpobId}`);
+                        }
+                    });
+                }
 
-    //     var defaultfolder = `public/company/${req.user.coId}/lands/doc/`;
-    //     var land_doc = `${defaultfolder}/${req.params.landId}`;
-    //     var land_dirarray = [];
-    //     getDirectories(land_doc, function(err, dir) {
-    //         for (var i = 0; i < dir.length; i++) {
-    //             dirnew = dir[i].replace('public', '');
+                res.redirect(`/mpobs/doc/${req.body.mpobId}`);
 
-    //             // date_time = '';
-    //             // date = path.basename(daynew).split("_")[1];
-    //             // time = path.basename(daynew).split("_")[2];
-    //             // newtime = time.split(".")[0];
-    //             // date_time = date + " " + newtime;
+            } else { res.redirect(`/mpobs/doc/${req.body.mpobId}`); }
+        } else if (mode == 2) {
 
-    //             land_dirarray.push({ docfullpath: dirnew, docfilename: path.basename(dirnew) });
-    //         }
-    //         res.render('lands/landdocument.ejs', {
-    //             successFlash: req.flash('success'),
-    //             errorFlash: req.flash('error'),
-    //             land_dir: land_dirarray,
-    //             landId: req.params.landId
-    //         });
-    //     });
-    // },
-    // disabledDeleteLand: (req, res) => {
-    //     lands.lands.disableDeleteLand(
-    //         req.params.disabledordelete,
-    //         req.params.landId,
-    //         function(err, land) {
-    //             if (err) {
-    //                 console.log(err);
-    //                 res.redirect('/lands/');
-    //             } else {
-    //                 res.redirect('/lands/');
-    //             }
-    //         });
-    // },
-    // uploadLandDocuments: (req, res) => {
-    //     //1 - upload
-    //     //2 - delete
-    //     var mode = req.body.mode;
-    //     //console.log(mode);
-    //     var defaultfolder = `public/company/${req.user.coId}/lands/doc/`;
-    //     var filefolder = defaultfolder + req.body.landId;
-
-    //     if (mode == 1) {
-    //         if (!fs.existsSync(filefolder)) {
-    //             mkdirp(filefolder, function(err) {
-    //                 if (err) console.error(err)
-    //                 else console.log('dir created')
-    //             });
-    //         }
-    //         //console.log(req.files.docupload);
-    //         if (req.files.docupload && req.files.docupload.length > 0) {
-    //             for (i = 0; i < req.files.docupload.length; i++) {
-    //                 var filetype = req.files.docupload[i].name.split('.').pop();
-    //                 var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
-    //                 fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function(err) {
-    //                     if (err) {
-    //                         //console.log(err);
-    //                         res.redirect(`/lands/doc/${req.body.landId}`);
-    //                     }
-    //                 });
-    //             }
-
-    //             res.redirect(`/lands/doc/${req.body.landId}`);
-
-    //         } else { res.redirect(`/lands/doc/${req.body.landId}`); }
-    //     } else if (mode == 2) {
-
-    //         var filename = req.body.filenamedelete;
-    //         var filepath = filefolder + '/' + filename;
-    //         //console.log(filepath);
-    //         try {
-    //             fs.unlinkSync(filepath)
-    //                 //file removed
-    //         } catch (err) {
-    //             console.error(err)
-    //         }
-    //         res.redirect(`/lands/doc/${req.body.landId}`);
-    //     }
-    // },
+            var filename = req.body.filenamedelete;
+            var filepath = filefolder + '/' + filename;
+            //console.log(filepath);
+            try {
+                fs.unlinkSync(filepath)
+                    //file removed
+            } catch (err) {
+                console.error(err)
+            }
+            res.redirect(`/mpobs/doc/${req.body.mpobId}`);
+        }
+    },
 
 };
 

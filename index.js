@@ -218,11 +218,11 @@ app.post('/lands/editland', editLand);
 app.all('/mpobs*', ensureLoggedIn('/login'));
 app.get('/mpobs/', getMpobsPage);
 app.get('/mpobs/:mpobId', checkmpobcompany(), getEditMpobsPage);
-// app.get('/mpobs/doc/:mpobId', checklotcompany(), getMpobsDocPage);
-// app.get('/mpobs/:disabledordelete/:mpobId/', checklotcompany(), disabledDeleteMpob);
-// app.post('/mpobs/doc/', uploadMpobDocuments);
+app.get('/mpobs/doc/:mpobId', checkmpobcompany(), getMpobsDocPage);
+app.get('/mpobs/:disabledordelete/:mpobId/', checkmpobcompany(), disabledDeleteMpob);
+app.post('/mpobs/doc/', uploadMpobDocuments);
 app.post('/mpobs/creatempob', createMpob);
-// app.post('/mpobs/editmpob', editMpob);
+app.post('/mpobs/editmpob', editMpob);
 /* mpobs */
 
 /* company */

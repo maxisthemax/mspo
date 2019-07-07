@@ -6,9 +6,11 @@
         var mpob_s = <%- JSON.stringify(mpob_s)%>;
         var data = [];
         for (var i = 0; i < mpob_s.length; i++) {
+            //var expiredDate = new Date(mpob_s[i].expiredDate);
+          // outputs to "Thu May 28 2015"
             data.push([
                 mpob_s[i].mpobLicNo,
-                mpob_s[i].expiredDate,
+                changeToDateFormat(mpob_s[i].expiredDate),
                 mpob_s[i].custName,
                 mpob_s[i].custIC,
                 mpob_s[i].mpobId,
@@ -126,17 +128,14 @@
         var data = [];
         for (var i = 0; i < mpob_s_disabled.length; i++) {
             data.push([
-                mpob_s_disabled[i].lotNo,
-                mpob_s_disabled[i].titleNo,
-                `${mpob_s_disabled[i].custName} - ${mpob_s_disabled[i].custIC}`,
-                mpob_s_disabled[i].area,
-                mpob_s_disabled[i].usageOfmpob,
-                mpob_s_disabled[i].typeOfCondition,
-                `${mpob_s_disabled[i].gpsLocationLat},${mpob_s_disabled[i].gpsLocationLng}` + ` <a target="_blank" href='https://www.google.com/maps/search/${mpob_s_disabled[i].gpsLocationLat},${mpob_s_disabled[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
-                mpob_s_disabled[i].mpobId
+                mpob_s_disabled[i].mpobLicNo,
+                changeToDateFormat(mpob_s_disabled[i].expiredDate),
+                mpob_s_disabled[i].custName,
+                mpob_s_disabled[i].custIC,
+                mpob_s_disabled[i].mpobId,
             ]);
         }
-        //console.log(customers);
+
         var table = $('#mpob_s_disabled_view').DataTable({
             aaSorting: [],
             dom: 'Blfrtip',
@@ -149,7 +148,7 @@
                     "renderer": function(api, rowIdx, columns) {
                         // Show hidden columns in row details
                         var data = $.map(columns, function(col, i) {
-                            if (col.columnIndex == 7) {
+                            if (col.columnIndex == 4) {
                                 return;
                             } else {
                                 return col.hidden ?
@@ -186,4 +185,10 @@
             table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
         });
     });
+
+    function changeToDateFormat(date) {
+        var datenew = new Date(date);
+        datenew = moment(datenew).format('YYYY/MM/DD');
+        return datenew;
+    }
 </script>
