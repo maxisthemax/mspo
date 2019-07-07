@@ -132,7 +132,8 @@ $(document).ready(function () {
                 data.push( [ 
                     land_s_disabled[i].lotNo, 
                     land_s_disabled[i].titleNo, 
-                    `${land_s_disabled[i].custName} - ${land_s_disabled[i].custIC}`, 
+                    land_s_disabled[i].custName,
+                    land_s_disabled[i].custIC, 
                     land_s_disabled[i].area, 
                     land_s_disabled[i].usageOfLand, 
                     land_s_disabled[i].typeOfCondition,
@@ -153,7 +154,7 @@ $(document).ready(function () {
                     "renderer": function ( api, rowIdx, columns ) {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 7) 
+                            if (col.columnIndex == 8) 
                             {
                                 return;
                             }
