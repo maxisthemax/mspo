@@ -1,0 +1,1 @@
+exports.mspos = require('./mspos');

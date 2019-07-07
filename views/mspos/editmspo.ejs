@@ -1,0 +1,75 @@
+<% include partials/header.ejs %>
+<div id="mspo_edit" class="container-fluid">
+    <div class="" style="border:1px solid">
+        <form class="p-5" name="mspo_edit_form" method="POST" action="/mspos/editmspo">
+            <p class="h4 mb-4">Edit MSPO</p>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="textInput">MSPO Certificate No</label>
+                    <input type="text" id="mspoCertNo" name="mspoCertNo" class="form-control mb-4" required
+                        placeholder="Enter MSPO Certificate No Here" value="<%= mspo[0].mspoCertNo%>">
+                </div>
+                <div class="col-sm-6">
+                    <label for="textInput">Expired Date</label>
+                    <div class="input-group date" id="expiredDatePicker" data-target-input="nearest">
+                        <input type="text" required id="expiredDate" name="expiredDate" value="<%= mspo[0].expiredDate%>" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                        <div class="input-group-append" data-target="#expiredDatePicker" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <label for="custId">Customer Name</label>
+                        <select class="form-control mb-4" id="custId"name="custId" required style="width: 100%">
+                        <option></option>
+                        <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>                        
+                        <option value=<%= cust_s[i].custId %> <%if (cust_s[i].custId==mspo[0].custId){ %>selected<%}%> ><%= cust_s[i].custName %></option>
+                        <% }} %> 
+                    </select>  
+    
+                </div>
+            </div>
+            <br>
+
+            <input type="hidden" id="mspoId" name="mspoId" value="<%= mspo[0].mspoId%>">
+            <div class="row">
+                <div class="col-sm-3">
+                    <a href="/mspos/">
+                        <input type=button class="btn btn-secondary btn-block" value="Back" onclick="">
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-block" type="submit">Save MSPO</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<% include partials/footer.ejs %>
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>
+
+
+<script>
+    $(function() {
+        var chartformat = "YYYY-MM-DD";
+        $('#expiredDatePicker').datetimepicker({
+            format: chartformat,
+        });
+    
+        $("#custId").select2({
+            placeholder: "Select a Customer",
+            width: 'resolve',
+        });  
+    }); 
+</script>

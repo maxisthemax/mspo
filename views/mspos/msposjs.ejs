@@ -1,0 +1,194 @@
+<script src="../vendor/ejs/ejs.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var editmspohtml = <%- JSON.stringify(editmspohtml)%>;
+        var mspo_s = <%- JSON.stringify(mspo_s)%>;
+        var data = [];
+        for (var i = 0; i < mspo_s.length; i++) {
+            //var expiredDate = new Date(mspo_s[i].expiredDate);
+          // outputs to "Thu May 28 2015"
+            data.push([
+                mspo_s[i].mspoCertNo,
+                changeToDateFormat(mspo_s[i].expiredDate),
+                mspo_s[i].custName,
+                mspo_s[i].custIC,
+                mspo_s[i].mspoId,
+            ]);
+        }
+        var table = $('#mspo_s_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "responsive": {
+                "details": {
+                    "renderer": function(api, rowIdx, columns) {
+                        // Show hidden columns in row details
+                        var data = $.map(columns, function(col, i) {
+                            if (col.columnIndex == 4) {
+                                return;
+                            } else {
+                                return col.hidden ?
+                                    '<tr><td>' + col.title + ':</td> ' +
+                                    '<td>' + col.data + '</td></tr>' :
+                                    '';
+                            }
+                        }).join('');
+                        var htm = ejs.render(editmspohtml, {
+                            mspo_s: columns
+                        });
+                        data = $('<table width="100%"/>').append(data).prop('outerHTML');
+
+                        // Extra: Show custom content
+                        data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';
+                        data += htm;
+                        //console.log(html);
+                        data += '';
+
+                        data += '</div><br><br>';
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function() {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function() {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var editmspohtml2 = <%- JSON.stringify(editmspohtml2)%>;
+        var mspo_s_disabled = <%- JSON.stringify(mspo_s_disabled)%>;
+        var data = [];
+        for (var i = 0; i < mspo_s_disabled.length; i++) {
+            data.push([
+                mspo_s_disabled[i].mspoCertNo,
+                changeToDateFormat(mspo_s_disabled[i].expiredDate),
+                mspo_s_disabled[i].custName,
+                mspo_s_disabled[i].custIC,
+                mspo_s_disabled[i].mspoId,
+            ]);
+        }
+
+        var table = $('#mspo_s_disabled_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "responsive": {
+                "details": {
+                    "renderer": function(api, rowIdx, columns) {
+                        // Show hidden columns in row details
+                        var data = $.map(columns, function(col, i) {
+                            if (col.columnIndex == 4) {
+                                return;
+                            } else {
+                                return col.hidden ?
+                                    '<tr><td>' + col.title + ':</td> ' +
+                                    '<td>' + col.data + '</td></tr>' :
+                                    '';
+                            }
+                        }).join('');
+                        var htm2 = ejs.render(editmspohtml2, {
+                            mspo_s_disabled: columns
+                        });
+                        data = $('<table width="100%"/>').append(data).prop('outerHTML');
+                        // Extra: Show custom content
+                        data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';
+                        data += htm2;
+                        //console.log(html);
+                        data += '';
+                        data += '</div><br><br>';
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function() {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function() {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+    });
+
+    function changeToDateFormat(date) {
+        var datenew = new Date(date);
+        datenew = moment(datenew).format('YYYY/MM/DD');
+        return datenew;
+    }
+</script>

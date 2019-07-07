@@ -18,6 +18,7 @@ const { getLoginPage, postLoginPage, getLogout } = require('./routes/auth');
 const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage, getCustomerDocPage, uploadCustomerDocuments, disabledDeleteCustomer } = require('./routes/customers');
 const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments, createLand, editLand, disabledDeleteLand } = require('./routes/lands');
 const { getMpobsPage, getEditMpobsPage, getMpobsDocPage, uploadMpobDocuments, createMpob, editMpob, disabledDeleteMpob } = require('./routes/mpobs');
+const { getMsposPage, getEditMsposPage, getMsposDocPage, uploadMspoDocuments, createMspo, editMspo, disabledDeleteMspo } = require('./routes/mspos');
 
 const { getCompanyPage } = require('./routes/company');
 
@@ -120,6 +121,34 @@ var checkmpobcompany = function (req) {
         }
     ]
 };
+
+var checkmspocompany = function (req) {
+    return [
+        function (req, res, next) {
+
+            var mspoId = req.params.mspoId;
+            process.nextTick(function () {
+                var firstquery = `SELECT coId FROM mspos 
+                WHERE mspoId=${mspoId} LIMIT 1`;
+                //console.log(firstquery);
+
+                con.query(firstquery, function (err, result, fields) {
+                    //console.log(result);
+                    if (result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+                });
+            });
+        }
+    ]
+};
+
 var checklandcompany = function (req) {
     return [
         function (req, res, next) {
@@ -224,6 +253,19 @@ app.post('/mpobs/doc/', uploadMpobDocuments);
 app.post('/mpobs/creatempob', createMpob);
 app.post('/mpobs/editmpob', editMpob);
 /* mpobs */
+
+/* mspos */
+app.all('/mspos*', ensureLoggedIn('/login'));
+app.get('/mspos/', getMsposPage);
+app.get('/mspos/:mspoId', checkmspocompany(), getEditMsposPage);
+app.get('/mspos/doc/:mspoId', checkmspocompany(), getMsposDocPage);
+app.get('/mspos/:disabledordelete/:mspoId/', checkmspocompany(), disabledDeleteMspo);
+app.post('/mspos/doc/', uploadMspoDocuments);
+app.post('/mspos/createmspo', createMspo);
+app.post('/mspos/editmspo', editMspo);
+/* mspos */
+
+
 
 /* company */
 app.all('/company*', ensureLoggedIn('/login'));
