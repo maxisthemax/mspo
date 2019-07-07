@@ -1,43 +1,49 @@
 <!-- Footer -->
 <style>
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color:#f8f9fa;
-  color: black;
-  text-align: center;
-}
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f8f9fa;
+        color: black;
+        text-align: center;
+    }
 </style>
 <br><br>
-  <div class="footer">
+<div class="footer">
     <p class="m-0 text-center">MSPO App - 2019</p>
 
-</footer>
+    </footer>
 
 
-<!-- Bootstrap core JavaScript -->
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/vendor/notify/notify.js"></script>
-<script src="/vendor/moment/js/moment.js"></script>
-<script src="/vendor/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
-<!-- Menu Toggle Script -->
-<script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/notify/notify.js"></script>
+    <script src="/vendor/moment/js/moment.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <script src="/vendor/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
+    <!-- Menu Toggle Script -->
+    <script>
+        $(document).ready(function() {
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        });
 
-$( document ).ready(function() {
-  $("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-  });
-});
+        <% if ( (locals.successFlash) && successFlash.length > 0 ) { %>
+        $.notify("<%= successFlash %>", {
+            className: "success",
+            position: "right bottom"
+        });
+        <% } %>
 
-<% if ( (locals.successFlash) && successFlash.length > 0 ) { %>
-$.notify("<%= successFlash %>",{ className:"success",position:"right bottom" });
-<% } %>
-
-<% if ( (locals.errorFlash) && errorFlash.length > 0 ) { %>
-$.notify("<%= errorFlash %>",{ className:"error",position:"right bottom" });
-<% } %>
-</script>
+        <% if ( (locals.errorFlash) && errorFlash.length > 0 ) { %>
+        $.notify("<%= errorFlash %>", {
+            className: "error",
+            position: "right bottom"
+        });
+        <% } %>
+    </script>

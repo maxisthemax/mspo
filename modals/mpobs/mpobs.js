@@ -29,62 +29,60 @@ exports.queryAllMpobsDisabled = function(coId, cb) {
         });
     });
 }
-exports.queryMpob = function (mpobId, cb) {
-  process.nextTick(function () {
-    var firstquery = `SELECT * FROM mpobs 
+exports.queryMpob = function(mpobId, cb) {
+    process.nextTick(function() {
+        var firstquery = `SELECT * FROM mpobs 
     WHERE mpobId=${mpobId} ORDER BY custId`;
-    //console.log(firstquery);
-    con.query(firstquery, function (err, result, fields) {
-      if (result) result = JSON.parse(JSON.stringify(result));
-      if (result && result.length) {
-        return cb(null, result);
-      }
-      else {
-        return cb(err, null);
-      }
+        //console.log(firstquery);
+        con.query(firstquery, function(err, result, fields) {
+            if (result) result = JSON.parse(JSON.stringify(result));
+            if (result && result.length) {
+                return cb(null, result);
+            } else {
+                return cb(err, null);
+            }
+        });
     });
-  });
 }
 
 
-exports.createMpob = function (req, cb) {
-  var coId = req.user.coId;
-  var mpob = req.body;
-  console.log(mpob);
-  process.nextTick(function () {
+exports.createMpob = function(req, cb) {
+        var coId = req.user.coId;
+        var mpob = req.body;
+        console.log(mpob);
+        process.nextTick(function() {
 
-    mpob.mpobLicNo = mpob.mpobLicNo ? [].concat(mpob.mpobLicNo) : [''];
-    mpob.expiredDate = mpob.expiredDate ? [].concat(mpob.expiredDate) : [''];
-    mpob.custId = mpob.custId ? [].concat(mpob.custId) : [''];
+            mpob.mpobLicNo = mpob.mpobLicNo ? [].concat(mpob.mpobLicNo) : [''];
+            mpob.expiredDate = mpob.expiredDate ? [].concat(mpob.expiredDate) : [''];
+            mpob.custId = mpob.custId ? [].concat(mpob.custId) : [''];
 
 
-    let firstquery = `INSERT INTO mpobs 
+            let firstquery = `INSERT INTO mpobs 
     (mpobLicNo,expiredDate, custId, createdDate, disabled, coId)
-    VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}','CURRENT_TIMESTAMP','0','${coId}')`;
+    VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}',CURRENT_TIMESTAMP,'0','${coId}')`;
 
-    //console.log(firstquery);
+            console.log(firstquery);
 
-    con.query(firstquery, function (err, result, fields) {
-      if (result) result = JSON.parse(JSON.stringify(result));
-      if (result && result.insertId) {
-        return cb(null, result);
-      }
-      else {
-        return cb(err, null);
-      }
-    });
-  });
-}
-// exports.disableDeleteLand = function (disableDelete, landId, cb) {
-//   process.nextTick(function () {
-//     var firstquery =""
-//     if (disableDelete == "disabled") {
-//       firstquery = `UPDATE lands SET disabled = 1 WHERE landId = ${landId}`;
-//     } else if (disableDelete == "restore") {
-//       firstquery = `UPDATE lands SET disabled = 0 WHERE landId = ${landId}`;
-//     } else if (disableDelete == "delete") {
-//       firstquery = `DELETE FROM lands WHERE landId = ${landId}`;
-//     }
+            con.query(firstquery, function(err, result, fields) {
+                if (result) result = JSON.parse(JSON.stringify(result));
+                if (result && result.insertId) {
+                    return cb(null, result);
+                } else {
+                    return cb(err, null);
+                }
+            });
+        });
+    }
+    // exports.disableDeleteLand = function (disableDelete, landId, cb) {
+    //   process.nextTick(function () {
+    //     var firstquery =""
+    //     if (disableDelete == "disabled") {
+    //       firstquery = `UPDATE lands SET disabled = 1 WHERE landId = ${landId}`;
+    //     } else if (disableDelete == "restore") {
+    //       firstquery = `UPDATE lands SET disabled = 0 WHERE landId = ${landId}`;
+    //     } else if (disableDelete == "delete") {
+    //       firstquery = `DELETE FROM lands WHERE landId = ${landId}`;
+    //     }
 
 //     con.query(firstquery, function (err, result, fields) {
 //       if (result) {
