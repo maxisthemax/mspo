@@ -1,18 +1,12 @@
-//var comp = require("../modals/company");
+var comp = require("../modals/company");
 
 module.exports = {
     getCompanyPage: (req, res) => {
-
-        //cust.customers.queryAllCustomers(null, function (err, customers) {
-            //ejs.renderFile('./views/customers/editcustomers.ejs', '', {}, function (err, str) {
+        comp.company.queryCompany(req.user.coId, function (err, company) {
             res.render('company/company.ejs', {
-                successFlash: req.flash('success'),
-                errorFlash: req.flash('error'),
-                //customers: customers,
-                //cust: [],
+                company: company,
             });
-            //});
-        //});
+        });
     },
     createCompany: (req, res) => {
         // cust.customers.createCustomer(req.body, function (err, customer) {
