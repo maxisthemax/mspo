@@ -1,8 +1,8 @@
-exports.queryCompany = function(coId, cb) {
-    process.nextTick(function() {
+exports.queryCompany = function (coId, cb) {
+    process.nextTick(function () {
         var firstquery = `SELECT * FROM company WHERE coId = ${coId} Limit 1`;
         //console.log(firstquery);
-        con.query(firstquery, function(err, result, fields) {
+        con.query(firstquery, function (err, result, fields) {
             if (result) result = JSON.parse(JSON.stringify(result));
             if (result && result.length) {
                 return cb(null, result);
@@ -13,19 +13,19 @@ exports.queryCompany = function(coId, cb) {
     });
 }
 
-exports.saveCompany = function(comp, cb) {
+exports.saveCompany = function (comp, cb) {
 
     comp.compname = comp.compname ? [].concat(comp.compname) : [''];
     comp.compadd = comp.compadd ? [].concat(comp.compadd) : [''];
     comp.comptel = comp.comptel ? [].concat(comp.comptel) : [''];
     comp.coId = comp.coId ? [].concat(comp.coId) : [''];
-    process.nextTick(function() {
+    process.nextTick(function () {
         var firstquery = `UPDATE company SET 
         coName = "${comp.compname}",
         coAdd = "${comp.compadd}",
         coTel = "${comp.comptel}" where coId =${comp.coId}`;
 
-        con.query(firstquery, function(err, result, fields) {
+        con.query(firstquery, function (err, result, fields) {
             if (result) result = JSON.parse(JSON.stringify(result));
             if (result && result.length) {
                 return cb(null, result);
@@ -68,52 +68,64 @@ exports.saveCompany = function(comp, cb) {
 // }
 
 
-exports.createCompany = function(req, cb) {
+exports.createCompany = function (req, cb) {
 
-        var comp = req.body;
-        //console.log(mspo);
-        process.nextTick(function() {
+    var comp = req.body;
+    //console.log(mspo);
+    process.nextTick(function () {
 
-            comp.compname = comp.compname ? [].concat(comp.compname) : [''];
-            comp.compadd = comp.compadd ? [].concat(comp.compadd) : [''];
-            comp.comptel = comp.comptel ? [].concat(comp.comptel) : [''];
+        comp.compname = comp.compname ? [].concat(comp.compname) : [''];
+        comp.compadd = comp.compadd ? [].concat(comp.compadd) : [''];
+        comp.comptel = comp.comptel ? [].concat(comp.comptel) : [''];
+        comp.username = comp.username ? [].concat(comp.username) : [''];
+        comp.password = comp.password ? [].concat(comp.password) : [''];
 
-            let firstquery = `INSERT INTO company 
+        let firstquery = `INSERT INTO company 
     (coName,coAdd,coTel, deactivated, createdDate)
     VALUES ('${comp.compname}','${comp.compadd}','${comp.comptel}','0',CURRENT_TIMESTAMP)`;
 
-            //console.log(firstquery);
-
-            con.query(firstquery, function(err, result, fields) {
-                if (result) result = JSON.parse(JSON.stringify(result));
-                if (result && result.insertId) {
-                    return cb(null, result);
-                } else {
-                    return cb(err, null);
-                }
-            });
+        //console.log(firstquery);
+        con.query(firstquery, function (err, result, fields) {
+            if (result) result = JSON.parse(JSON.stringify(result));
+            if (result && result.insertId) {
+                var thisId = result.insertId;
+                let secondquery = `INSERT INTO USERS (username,userpassword,displayname,deactivated,administrator,coId) VALUES (
+                        '${comp.username}','${comp.password}','${comp.compname}','0','1',${thisId})`;
+                    console.log(secondquery);    
+                con.query(secondquery, function (err, result, fields) {
+                    if (result) result = JSON.parse(JSON.stringify(result));
+                    if (result && result.insertId) {
+                        return cb(null, result);
+                    } else {
+                        return cb(err, null);
+                    }
+                });
+            } else {
+                return cb(err, null);
+            }
         });
-    }
-    // exports.disableDeleteMspo = function (disableDelete, mspoId, cb) {
-    //       process.nextTick(function () {
-    //         var firstquery =""
-    //         if (disableDelete == "disabled") {
-    //           firstquery = `UPDATE mspos SET disabled = 1 WHERE mspoId = ${mspoId}`;
-    //         } else if (disableDelete == "restore") {
-    //           firstquery = `UPDATE mspos SET disabled = 0 WHERE mspoId = ${mspoId}`;
-    //         } else if (disableDelete == "delete") {
-    //           firstquery = `DELETE FROM mspos WHERE mspoId = ${mspoId}`;
-    //         }
-    //     con.query(firstquery, function (err, result, fields) {
-    //       if (result) {
-    //         return cb(null, result);
-    //       }
-    //       else {
-    //         return cb(err, null);
-    //       }
-    //     });
-    //   });
-    // }
+    });
+}
+// exports.disableDeleteMspo = function (disableDelete, mspoId, cb) {
+//       process.nextTick(function () {
+//         var firstquery =""
+//         if (disableDelete == "disabled") {
+//           firstquery = `UPDATE mspos SET disabled = 1 WHERE mspoId = ${mspoId}`;
+//         } else if (disableDelete == "restore") {
+//           firstquery = `UPDATE mspos SET disabled = 0 WHERE mspoId = ${mspoId}`;
+//         } else if (disableDelete == "delete") {
+//           firstquery = `DELETE FROM mspos WHERE mspoId = ${mspoId}`;
+//         }
+//     con.query(firstquery, function (err, result, fields) {
+//       if (result) {
+//         return cb(null, result);
+//       }
+//       else {
+//         return cb(err, null);
+//       }
+//     });
+//   });
+// }
 
 
 

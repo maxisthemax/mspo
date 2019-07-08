@@ -1,10 +1,14 @@
 <% include partials/header.ejs %>
 
     <div class="container-fluid">
-
-
+        <div class="tab">
+            <button class="tablinks" onclick="openTabs(event, 'company')">Company</button>
+            <%if(company[0].coId == 1 && user.administrator){%>
+            <button class="tablinks" onclick="openTabs(event, 'createcompany')">Create Company</button>
+            <%}%>
+        </div>
         <div class="" style="border:1px solid">
-            <div id="company">
+            <div id="company" class="tabcontent">
                 <!-- Default form contact -->
                 <div class="p-5">
                     <table>
@@ -61,7 +65,13 @@
                         <button class="btn btn-primary btn-block" type="submit">Save</button>
                     </form>
                     <%}%>
-                        <%if(company[0].coId == 1 && user.administrator){%>
+
+                                <!-- Default form contact -->
+            </div>
+
+            <%if(company[0].coId == 1 && user.administrator){%>
+            <div id="createcompany" class="tabcontent">
+                                    
                             <form style="background-color: beige" class="p-5" name="companycreate" method="POST" action="/company/create">
                                 <p class="h4 mb-4">Create Company</p>
                                 <label for="textInput">Company Name</label>
@@ -72,13 +82,18 @@
 
                                 <label for="textInput">Company Tel. No</label>
                                 <input type="text" id="comptel" name="comptel" class="form-control mb-4" required>
-                                <input type="hidden" name=coId value="<%if(company && company.length>0){%><%=company[0].coId%><%}%>">
+
+                                <label for="textInput">Username</label>
+                                <input type="text" id="username" name="username" class="form-control mb-4" required placeholder="Enter Your Username Here">
+            
+                                <label for="textInput">Password</label>
+                                <input type="password" id="password" name="password" class="form-control mb-4" required placeholder="Enter Your Password Here">
+            
                                 <input type="button" class="btn btn-primary btn-block" onclick="getConfirmation();" value="Create">
                             </form>
-                            <%}%>
-                                <!-- Default form contact -->
+                          
             </div>
-
+            <%}%>
         </div>
     </div>
     <% include partials/footer.ejs %>
@@ -93,6 +108,69 @@
         </html>
 
         <script>
+            function openTabs(evt, tabname) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabname).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+
+            function changetoedit(obj, userId) {
+                var html_displayname = $(obj).parents('tr').find('td.editDisplayName').html();
+                var html_email = $(obj).parents('tr').find('td.editEmail').html();
+                var html_admin = $(obj).parents('tr').find('td.editAdmin').html();
+                var html_deactivated = $(obj).parents('tr').find('td.editDeactivated').html();
+
+                var input_displayname = $('<input type="text" name="displayname"/>');
+                var input_email = $('<input type="text" name="email"/>');
+                var input_admin = $('<select name="admin"><option value = 1>Yes</option><option value = 0>No</option></select>');
+                var input_deactivated = $('<select name="deactivated"><option value = 1>Yes</option><option value = 0>No</option></select>');
+
+
+                input_displayname.val(html_displayname);
+                input_email.val(html_email);
+                html_admin = (html_admin == "Yes") ? 1 : 0;
+                html_deactivated = (html_deactivated == "Yes") ? 1 : 0;
+
+                input_deactivated.val(html_deactivated);
+                input_admin.val(html_admin);
+
+                var inputhiddenuserId = $('<input type="hidden" name="userId" value="' + userId + '"/>');
+
+                $(obj).parents('tr').find('td.editDisplayName').html(input_displayname)
+                $(obj).parents('tr').find('td.editEmail').html(input_email);
+                $(obj).parents('tr').find('td.editAdmin').html(input_admin);
+                $(obj).parents('tr').find('td.editDeactivated').html(input_deactivated);
+                $(obj).parents('tr').find('td.editDisplayName').append(inputhiddenuserId);
+
+                obj.style.display = 'none';
+                $('#saveuserbutton').show();
+            }
+
+            $(document).ready(function() {
+                $(function() {
+                    $('a').each(function() {
+                        if ($(this).prop('href') == window.location.href) {
+                            $(this).addClass('active');
+                            $(this).parents('li').addClass('active');
+                        }
+                    });
+                });
+                document.getElementsByClassName('tablinks')[0].click();
+
+                $(function() {
+                    $('input[type="text"]').change(function() {
+                        this.value = $.trim(this.value);
+                    });
+                });
+            });
             function getConfirmation() {
                 var retVal = confirm("Do you want to create this company ?");
                 if (retVal == true) {
