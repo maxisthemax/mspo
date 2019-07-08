@@ -1,71 +1,121 @@
-
 <% include partials/header.ejs %>
 
-<script src="vendor/ejs/ejs.js"></script>
-
-<div class="container-fluid">
-    <div class="tab">
-        <button class="tablinks" onclick="openTabs(event, 'company')" value=company>Company</button>
-    </div>
-    <div class="" style="border:1px solid">
-        <div id="company" class="tabcontent">
-            <div class="panel-heading">
-                <h3>Company Name</h3>
-            </div>
-            <div class="panel-body">
-                <table id="companyview" class="display" cellspacing="0" width="100%">
-
-                </table>
-            </div>
-            <!-- /#page-content-wrapper -->
+    <div class="container-fluid">
+        <div class="tab">
+            <button class="tablinks" onclick="openTabs(event, 'company')">Comapny Profile</button>
         </div>
 
+        <div class="" style="border:1px solid">
+            <div id="company" class="tabcontent">
+                <!-- Default form contact -->
+            <div class="p-5">
+                <table>
+                    <tr >
+                    <td><p class="h4 mb-4">Company Name</p></td> 
+                    <td><p class="h4 mb-4"> : <%if(company && company.length>0){%> <%=company[0].coName%><%}%></p></td>
+                    </tr>
+                    <tr>
+                    <td><p class="h4 mb-4">Company Address</p></td> 
+                    <td><p class="h4 mb-4"> : <%if(company && company.length>0){%> <%=company[0].coAdd%><%}%></p></td>
+                    </tr>
+                    <tr>
+                    <td><p class="h4 mb-4">Company Tel. No</p></td> 
+                    <td><p class="h4 mb-4"> : <%if(company && company.length>0){%> <%=company[0].coTel%><%}%></p></td>
+                    </tr>                                        
+                </table>    
+            </div>                            
+                <form class="p-5" name="company" method="POST" action="/company/editCompany">
+                    <p class="h4 mb-4">Edit Company</p>
+                    <label for="textInput">Company Name</label>
+                    <input type="text" id="compname" name="compname" class="form-control mb-4" value="<%if(company && company.length>0){%> <%=company[0].coName%><%}%>">
+
+                    <label for="textInput">Company Address</label>
+                    <input type="text" id="compadd" name="compadd" class="form-control mb-4" value="<%if(company && company.length>0){%> <%=company[0].coAdd%><%}%>">
+
+                    <label for="textInput">Company Tel. No</label>
+                    <input type="text" id="comptel" name="comptel" class="form-control mb-4"value="<%if(company && company.length>0){%> <%=company[0].coTel%><%}%>">
+
+                    <button class="btn btn-primary btn-block" type="submit">Save</button>
+                </form>
+
+                <!-- Default form contact -->
+            </div>
+
+        </div>
     </div>
-</div>
-<% include partials/footer.ejs %>
+    <% include partials/footer.ejs %>
 
-</div>
-<!-- /#page-content-wrapper -->
-</div>
+        </div>
+        <!-- /#page-content-wrapper -->
+        </div>
+        <!-- /#wrapper -->
 
-</body>
+        </body>
 
-</html>
-<script>
-    function openTabs(evt, tabname) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabname).style.display = "block";
-    evt.currentTarget.className += " active";
-    localStorage.setItem('activeCompTab', tabname);
-    }
+        </html>
 
-    $(document).ready(function () {
-        $(function () {
-            $('a').each(function () {
-                if ($(this).prop('href') == window.location.href) {
-                    $(this).addClass('active'); $(this).parents('li').addClass('active');
+        <script>
+            function openTabs(evt, tabname) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
                 }
-            });
-        });
-
-        tablinks = document.getElementsByClassName('tablinks');
-        var activeCompTab = localStorage.getItem('activeCompTab');
-        //console.log(activeCompTab);
-        if (activeCompTab === null) {
-            tablinks[0].click();
-        } else {
-            for (i = 0; i < tablinks.length; i++) {
-                if (tablinks[i].value == activeCompTab)
-                tablinks[i].click();
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabname).style.display = "block";
+                evt.currentTarget.className += " active";
             }
-        }
-    });
-</script>
+
+            function changetoedit(obj, userId) {
+                var html_displayname = $(obj).parents('tr').find('td.editDisplayName').html();
+                var html_email = $(obj).parents('tr').find('td.editEmail').html();
+                var html_admin = $(obj).parents('tr').find('td.editAdmin').html();
+                var html_deactivated = $(obj).parents('tr').find('td.editDeactivated').html();
+
+                var input_displayname = $('<input type="text" name="displayname"/>');
+                var input_email = $('<input type="text" name="email"/>');
+                var input_admin = $('<select name="admin"><option value = 1>Yes</option><option value = 0>No</option></select>');
+                var input_deactivated = $('<select name="deactivated"><option value = 1>Yes</option><option value = 0>No</option></select>');
+
+
+                input_displayname.val(html_displayname);
+                input_email.val(html_email);
+                html_admin = (html_admin == "Yes") ? 1 : 0;
+                html_deactivated = (html_deactivated == "Yes") ? 1 : 0;
+
+                input_deactivated.val(html_deactivated);
+                input_admin.val(html_admin);
+
+                var inputhiddenuserId = $('<input type="hidden" name="userId" value="' + userId + '"/>');
+
+                $(obj).parents('tr').find('td.editDisplayName').html(input_displayname)
+                $(obj).parents('tr').find('td.editEmail').html(input_email);
+                $(obj).parents('tr').find('td.editAdmin').html(input_admin);
+                $(obj).parents('tr').find('td.editDeactivated').html(input_deactivated);
+                $(obj).parents('tr').find('td.editDisplayName').append(inputhiddenuserId);
+
+                obj.style.display = 'none';
+                $('#saveuserbutton').show();
+            }
+
+            $(document).ready(function() {
+                $(function() {
+                    $('a').each(function() {
+                        if ($(this).prop('href') == window.location.href) {
+                            $(this).addClass('active');
+                            $(this).parents('li').addClass('active');
+                        }
+                    });
+                });
+                document.getElementsByClassName('tablinks')[0].click();
+
+                $(function() {
+                    $('input[type="text"]').change(function() {
+                        this.value = $.trim(this.value);
+                    });
+                });
+            });
+        </script>
