@@ -3,7 +3,7 @@ var db = require('../modals/users');
 module.exports = {
     getAdminPage: (req, res) => {
         db.users.findAllUsers(req.user.coId, function(err, users) {
-            fs.readFile("config.json", "utf8", (err, config) => {
+            fs.readFile(".config", "utf8", (err, config) => {
                 res.render('admin.ejs', {
                     user: req.user,
                     successFlash: req.flash('success'),
