@@ -13,6 +13,29 @@ exports.queryCompany = function(coId, cb) {
     });
 }
 
+exports.saveCompany = function(comp, cb) {
+
+    comp.compname = comp.compname ? [].concat(comp.compname) : [''];
+    comp.compadd = comp.compadd ? [].concat(comp.compadd) : [''];
+    comp.comptel = comp.comptel ? [].concat(comp.comptel) : [''];
+    comp.coId = comp.coId ? [].concat(comp.coId) : [''];
+    process.nextTick(function() {
+        var firstquery = `UPDATE company SET 
+        coName = "${comp.compname}",
+        coAdd = "${comp.compadd}",
+        coTel = "${comp.comptel}" where coId =${comp.coId}`;
+
+        con.query(firstquery, function(err, result, fields) {
+            if (result) result = JSON.parse(JSON.stringify(result));
+            if (result && result.length) {
+                return cb(null, result);
+            } else {
+                return cb(err, null);
+            }
+        });
+    });
+}
+
 // exports.queryAllMsposDisabled = function(coId, cb) {
 //     process.nextTick(function() {
 //         var firstquery = `SELECT a.*,b.custName,b.custIC FROM mspos a LEFT JOIN customers b on a.custId = b.custId
@@ -45,53 +68,52 @@ exports.queryCompany = function(coId, cb) {
 // }
 
 
-// exports.createMspo = function(req, cb) {
-//         var coId = req.user.coId;
-//         var mspo = req.body;
-//         //console.log(mspo);
-//         process.nextTick(function() {
+exports.createCompany = function(req, cb) {
 
-//             mspo.mspoCertNo = mspo.mspoCertNo ? [].concat(mspo.mspoCertNo) : [''];
-//             mspo.expiredDate = mspo.expiredDate ? [].concat(mspo.expiredDate) : [''];
-//             mspo.custId = mspo.custId ? [].concat(mspo.custId) : [''];
-//             mspo.mspoStandard = mspo.mspoStandard ? [].concat(mspo.mspoStandard) : [''];
+        var comp = req.body;
+        //console.log(mspo);
+        process.nextTick(function() {
 
-//             let firstquery = `INSERT INTO mspos 
-//     (mspoCertNo,expiredDate,standard, custId, createdDate, disabled, coId)
-//     VALUES ('${mspo.mspoCertNo}','${mspo.expiredDate}','${mspo.mspoStandard}','${mspo.custId}',CURRENT_TIMESTAMP,'0','${coId}')`;
+            comp.compname = comp.compname ? [].concat(comp.compname) : [''];
+            comp.compadd = comp.compadd ? [].concat(comp.compadd) : [''];
+            comp.comptel = comp.comptel ? [].concat(comp.comptel) : [''];
 
-//             console.log(firstquery);
+            let firstquery = `INSERT INTO company 
+    (coName,coAdd,coTel, deactivated, createdDate)
+    VALUES ('${comp.compname}','${comp.compadd}','${comp.comptel}','0',CURRENT_TIMESTAMP)`;
 
-//             con.query(firstquery, function(err, result, fields) {
-//                 if (result) result = JSON.parse(JSON.stringify(result));
-//                 if (result && result.insertId) {
-//                     return cb(null, result);
-//                 } else {
-//                     return cb(err, null);
-//                 }
-//             });
-//         });
-//     }
-// exports.disableDeleteMspo = function (disableDelete, mspoId, cb) {
-//       process.nextTick(function () {
-//         var firstquery =""
-//         if (disableDelete == "disabled") {
-//           firstquery = `UPDATE mspos SET disabled = 1 WHERE mspoId = ${mspoId}`;
-//         } else if (disableDelete == "restore") {
-//           firstquery = `UPDATE mspos SET disabled = 0 WHERE mspoId = ${mspoId}`;
-//         } else if (disableDelete == "delete") {
-//           firstquery = `DELETE FROM mspos WHERE mspoId = ${mspoId}`;
-//         }
-//     con.query(firstquery, function (err, result, fields) {
-//       if (result) {
-//         return cb(null, result);
-//       }
-//       else {
-//         return cb(err, null);
-//       }
-//     });
-//   });
-// }
+            //console.log(firstquery);
+
+            con.query(firstquery, function(err, result, fields) {
+                if (result) result = JSON.parse(JSON.stringify(result));
+                if (result && result.insertId) {
+                    return cb(null, result);
+                } else {
+                    return cb(err, null);
+                }
+            });
+        });
+    }
+    // exports.disableDeleteMspo = function (disableDelete, mspoId, cb) {
+    //       process.nextTick(function () {
+    //         var firstquery =""
+    //         if (disableDelete == "disabled") {
+    //           firstquery = `UPDATE mspos SET disabled = 1 WHERE mspoId = ${mspoId}`;
+    //         } else if (disableDelete == "restore") {
+    //           firstquery = `UPDATE mspos SET disabled = 0 WHERE mspoId = ${mspoId}`;
+    //         } else if (disableDelete == "delete") {
+    //           firstquery = `DELETE FROM mspos WHERE mspoId = ${mspoId}`;
+    //         }
+    //     con.query(firstquery, function (err, result, fields) {
+    //       if (result) {
+    //         return cb(null, result);
+    //       }
+    //       else {
+    //         return cb(err, null);
+    //       }
+    //     });
+    //   });
+    // }
 
 
 
