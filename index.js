@@ -22,7 +22,7 @@ const { getMsposPage, getEditMsposPage, getMsposDocPage, uploadMspoDocuments, cr
 
 const { getCompanyPage, saveCompany } = require('./routes/company');
 const { getsuperadminPage, getEditsuperadminPage, getsuperadminDocPage, uploadsuperadminDocuments, createsuperadmin, 
-    editsuperadmin, disabledDeletesuperadmin } = require('./routes/superadmin');
+    editsuperadmin, deactivateCompany } = require('./routes/superadmin');
 
 
 // Create a new Express application.
@@ -301,8 +301,7 @@ app.all('/superadmin*',ensureLoggedIn('/login'), checksuperadmin());
 app.get('/superadmin/', getsuperadminPage);
 app.get('/superadmin/:superadminId', getEditsuperadminPage);
 app.get('/superadmin/doc/:superadminId', getsuperadminDocPage);
-app.get('/superadmin/:disabledordelete/:mspoId/', disabledDeletesuperadmin);
-app.post('/superadmin/doc/', uploadMspoDocuments);
+app.get('/superadmin/:mode/:coId/', deactivateCompany);
 app.post('/superadmin/create', createsuperadmin);
 app.post('/superadmin/edit', editsuperadmin);
 /* superadmin */

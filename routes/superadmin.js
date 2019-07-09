@@ -95,10 +95,10 @@ module.exports = {
             });
         });
     },
-    disabledDeletesuperadmin: (req, res) => {
-        superadmin.superadmin.disableDeletesuperadmin(
-            req.params.disabledordelete,
-            req.params.superadminId,
+    deactivateCompany: (req, res) => {
+        superadmin.superadmin.deactivateCompany(
+            req.params.mode,
+            req.params.coId,
             function(err, superadmin) {
                 if (err) {
                     console.log(err);

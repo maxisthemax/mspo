@@ -7,6 +7,7 @@
     <p class="h4 mb-4">Actions</p>
     <div class="row">
         <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/superadmin/<%= superadmin_s[0].data%>';">Edit This superadmin</button>
-        <button type="button" class="btn btn-danger btnpadding" onclick="var retVal = confirm('Do you want to disabled this superadmin ?');if (retVal == true) {location.href = '/superadmin/disabled/<%= superadmin_s[0].data%>'};">Deactivated This Company</button>
+        <button type="button" class="btn btn-danger btnpadding" onclick="var retVal = confirm('Do you want to disabled this superadmin ?');if (retVal == true) {location.href = '/superadmin/deactivate/<%= superadmin_s[0].data%>'};">Deactivated This Company</button>
+        <button type="button" class="btn btn-info btnpadding" onclick="var retVal = confirm('Do you want to disabled this superadmin ?');if (retVal == true) {location.href = '/superadmin/activate/<%= superadmin_s[0].data%>'};">Activate This Company</button>    
     </div>
 </div>

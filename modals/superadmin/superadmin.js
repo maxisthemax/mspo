@@ -1,6 +1,6 @@
 exports.queryAllsuperadmin = function (coId, cb) {
   process.nextTick(function () {
-    var firstquery = `SELECT * FROM company ORDER BY coName`;
+    var firstquery = `SELECT * FROM company where coId <> 1 ORDER BY coName`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
@@ -67,16 +67,16 @@ exports.createsuperadmin = function (req, cb) {
     });
   });
 }
-exports.deactivatesuperadmin = function (disableDelete, mspoId, cb) {
+exports.deactivateCompany = function (mode,coId, cb) {
+
+  if(mode == "deactivate")
+  var modeNo = 1;
+  else if (mode == "activate")
+  var modeNo = 0;
+
   process.nextTick(function () {
-    var firstquery = ""
-    if (disableDelete == "disabled") {
-      firstquery = `UPDATE mspos SET disabled = 1 WHERE mspoId = ${mspoId}`;
-    } else if (disableDelete == "restore") {
-      firstquery = `UPDATE mspos SET disabled = 0 WHERE mspoId = ${mspoId}`;
-    } else if (disableDelete == "delete") {
-      firstquery = `DELETE FROM mspos WHERE mspoId = ${mspoId}`;
-    }
+    var  firstquery = `UPDATE company SET deactivated = ${modeNo} WHERE coId = ${coId}`;
+
     con.query(firstquery, function (err, result, fields) {
       if (result) {
         return cb(null, result);

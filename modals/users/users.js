@@ -5,7 +5,8 @@ var recordsadmin = JSON.parse(fs.readFileSync('./modals/users/users.json', 'utf8
 exports.findById = function(id, cb) {
     process.nextTick(function() {
 
-        let firstquery = "select * FROM USERS where IFNULL(deactivated,0) != 1 and userId='" + id + "'" + " LIMIT 1";
+        let firstquery = `select * FROM USERS a LEFT JOIN company b ON a.coId = b.coId 
+        where IFNULL(a.deactivated,0) != 1 and IFNULL(b.deactivated,0) != 1 and userId='${id}' LIMIT 1`;
         con.query(firstquery, function(err, result, fields) {
             if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
             var records = [];
@@ -29,7 +30,8 @@ exports.findById = function(id, cb) {
 
 exports.findByUsername = function(username, cb) {
     process.nextTick(function() {
-        let firstquery = "select * FROM USERS where IFNULL(deactivated,0) != 1 and username='" + username + "'" + " LIMIT 1";
+        let firstquery = `select * FROM USERS a LEFT JOIN company b ON a.coId = b.coId 
+        where IFNULL(a.deactivated,0) != 1 and IFNULL(b.deactivated,0) != 1 and userName='${username}' LIMIT 1`;
 
         con.query(firstquery, function(err, result, fields) {
             if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
