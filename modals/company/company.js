@@ -67,45 +67,6 @@ exports.saveCompany = function (comp, cb) {
 //     });
 // }
 
-
-exports.createCompany = function (req, cb) {
-
-    var comp = req.body;
-    //console.log(mspo);
-    process.nextTick(function () {
-
-        comp.compname = comp.compname ? [].concat(comp.compname) : [''];
-        comp.compadd = comp.compadd ? [].concat(comp.compadd) : [''];
-        comp.comptel = comp.comptel ? [].concat(comp.comptel) : [''];
-        comp.username = comp.username ? [].concat(comp.username) : [''];
-        comp.password = comp.password ? [].concat(comp.password) : [''];
-
-        let firstquery = `INSERT INTO company 
-    (coName,coAdd,coTel, deactivated, createdDate)
-    VALUES ('${comp.compname}','${comp.compadd}','${comp.comptel}','0',CURRENT_TIMESTAMP)`;
-
-        //console.log(firstquery);
-        con.query(firstquery, function (err, result, fields) {
-            if (result) result = JSON.parse(JSON.stringify(result));
-            if (result && result.insertId) {
-                var thisId = result.insertId;
-                let secondquery = `INSERT INTO USERS (username,userpassword,displayname,deactivated,administrator,coId) VALUES (
-                        '${comp.username}','${comp.password}','${comp.compname}','0','1',${thisId})`;
-                    console.log(secondquery);    
-                con.query(secondquery, function (err, result, fields) {
-                    if (result) result = JSON.parse(JSON.stringify(result));
-                    if (result && result.insertId) {
-                        return cb(null, result);
-                    } else {
-                        return cb(err, null);
-                    }
-                });
-            } else {
-                return cb(err, null);
-            }
-        });
-    });
-}
 // exports.disableDeleteMspo = function (disableDelete, mspoId, cb) {
 //       process.nextTick(function () {
 //         var firstquery =""

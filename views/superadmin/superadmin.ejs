@@ -1,0 +1,142 @@
+<% include partials/header.ejs %>
+    <div class="container-fluid">
+        <div class="tab">
+            <button class="tablinks" onclick="openTabs(event, 'superadmin_s')" value=superadmin_s>Company List</button>
+            <button class="tablinks" onclick="openTabs(event, 'superadmin_create')" value=superadmin_create>Create
+            Company</button>
+        </div>
+        <div class="" style="border:1px solid">
+            <div id="superadmin_s" class="tabcontent">
+                <div class="panel-heading">
+                    <h3>Company List</h3>
+                </div>
+                <div class="panel-body">
+                    <table id="superadmin_s_view" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Company Id</th>
+                                <th>Company Name</th>
+                                <th>Company Add</th>
+                                <th>Company Tel</th>
+                                <th>Deactivated</th>
+                                <th>Created Date</th>
+                                <th class="none"></th>
+                                <!-- <th class="none">Address 3</th>
+                                <th class="none">Cust Id</th> -->
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Company Id</th>
+                                <th>Company Name</th>
+                                <th>Company Add</th>
+                                <th>Company Tel</th>
+                                <th>Deactivated</th>
+                                <th>Created Date</th>
+                                <th class="none"></th>
+                                <!-- <th class="none">Address 3</th>
+                                <th class="none">Cust Id</th> -->
+                            </tr>
+                        </tfoot>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /#page-content-wrapper -->
+            </div>
+
+            <div id="superadmin_create" class="tabcontent">
+                <form class="p-5" name="superadmincreate" method="POST" action="/superadmin/create">
+                    <p class="h4 mb-4">Create Company</p>
+                    <label for="textInput">Company Name</label>
+                    <input type="text" id="compname" name="compname" required class="form-control mb-4">
+
+                    <label for="textInput">Company Address</label>
+                    <input type="text" id="compadd" name="compadd" required class="form-control mb-4">
+
+                    <label for="textInput">Company Tel. No</label>
+                    <input type="text" id="comptel" name="comptel" class="form-control mb-4" required>
+
+                    <label for="textInput">Username</label>
+                    <input type="text" id="username" name="username" class="form-control mb-4" required placeholder="Enter Your Username Here">
+
+                    <label for="textInput">Password</label>
+                    <input type="password" id="password" name="password" class="form-control mb-4" required placeholder="Enter Your Password Here">
+
+                    <input type="button" class="btn btn-primary btn-block" onclick="getConfirmation();" value="Create">
+                </form>  
+            </div>
+
+        </div>
+    </div>
+    <% include partials/footer.ejs %>
+
+        </div>
+        <!-- /#page-content-wrapper -->
+        </div>
+
+        </body>
+
+        </html>
+        <script>
+            function openTabs(evt, tabname) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabname).style.display = "block";
+                evt.currentTarget.className += " active";
+                localStorage.setItem('activesuperadmin_Tab', tabname);
+            }
+
+            $(document).ready(function() {
+                $(function() {
+                    $('a').each(function() {
+                        if ($(this).prop('href') == window.location.href) {
+                            $(this).addClass('active');
+                            $(this).parents('li').addClass('active');
+                        }
+                    });
+                });
+
+                tablinks = document.getElementsByClassName('tablinks');
+                var activesuperadmin_Tab = localStorage.getItem('activesuperadmin_Tab');
+                if (activesuperadmin_Tab === null) {
+                    tablinks[0].click();
+                } else {
+                    for (i = 0; i < tablinks.length; i++) {
+                        if (tablinks[i].value == activesuperadmin_Tab)
+                            tablinks[i].click();
+                    }
+                }
+            });
+            $(function() {
+                var chartformat = "YYYY-MM-DD";
+                $('#expiredDatePicker').datetimepicker({
+                    format: chartformat,
+                    defaultDate: moment(),
+                });
+            });
+            $("#custId").select2({
+                placeholder: "Select a Customer",
+                width: 'resolve',
+            });
+
+            function getConfirmation() {
+                var retVal = confirm("Do you want to create this company ?");
+                if (retVal == true) {
+
+                    superadmincreate.submit();
+                    return true;
+                } else {
+                    return false;
+                }
+            }            
+        </script>
+        <% include superadmin/superadminjs.ejs %>

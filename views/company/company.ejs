@@ -3,9 +3,6 @@
     <div class="container-fluid">
         <div class="tab">
             <button class="tablinks" onclick="openTabs(event, 'company')">Company</button>
-            <%if(company[0].coId == 1 && user.administrator){%>
-            <button class="tablinks" onclick="openTabs(event, 'createcompany')">Create Company</button>
-            <%}%>
         </div>
         <div class="" style="border:1px solid">
             <div id="company" class="tabcontent">
@@ -68,32 +65,6 @@
 
                                 <!-- Default form contact -->
             </div>
-
-            <%if(company[0].coId == 1 && user.administrator){%>
-            <div id="createcompany" class="tabcontent">
-                                    
-                            <form style="background-color: beige" class="p-5" name="companycreate" method="POST" action="/company/create">
-                                <p class="h4 mb-4">Create Company</p>
-                                <label for="textInput">Company Name</label>
-                                <input type="text" id="compname" name="compname" required class="form-control mb-4">
-
-                                <label for="textInput">Company Address</label>
-                                <input type="text" id="compadd" name="compadd" required class="form-control mb-4">
-
-                                <label for="textInput">Company Tel. No</label>
-                                <input type="text" id="comptel" name="comptel" class="form-control mb-4" required>
-
-                                <label for="textInput">Username</label>
-                                <input type="text" id="username" name="username" class="form-control mb-4" required placeholder="Enter Your Username Here">
-            
-                                <label for="textInput">Password</label>
-                                <input type="password" id="password" name="password" class="form-control mb-4" required placeholder="Enter Your Password Here">
-            
-                                <input type="button" class="btn btn-primary btn-block" onclick="getConfirmation();" value="Create">
-                            </form>
-                          
-            </div>
-            <%}%>
         </div>
     </div>
     <% include partials/footer.ejs %>

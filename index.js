@@ -20,7 +20,9 @@ const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments, cr
 const { getMpobsPage, getEditMpobsPage, getMpobsDocPage, uploadMpobDocuments, createMpob, editMpob, disabledDeleteMpob } = require('./routes/mpobs');
 const { getMsposPage, getEditMsposPage, getMsposDocPage, uploadMspoDocuments, createMspo, editMspo, disabledDeleteMspo } = require('./routes/mspos');
 
-const { getCompanyPage, saveCompany, createCompany } = require('./routes/company');
+const { getCompanyPage, saveCompany } = require('./routes/company');
+const { getsuperadminPage, getEditsuperadminPage, getsuperadminDocPage, uploadsuperadminDocuments, createsuperadmin, 
+    editsuperadmin, disabledDeletesuperadmin } = require('./routes/superadmin');
 
 
 // Create a new Express application.
@@ -134,7 +136,8 @@ var checkmspocompany = function(req) {
 
                 con.query(firstquery, function(err, result, fields) {
                     //console.log(result);
-                    if (result.length == 0) {
+
+                    if (result && result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
                         res.redirect('/');
                     } else {
@@ -143,6 +146,7 @@ var checkmspocompany = function(req) {
                             res.redirect('/');
                         } else { next(); }
                     }
+
                 });
             });
         }
@@ -189,6 +193,33 @@ var checkcustomercompany = function(req) {
                 con.query(firstquery, function(err, result, fields) {
                     //console.log(result);
                     if (result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+                });
+            });
+        }
+    ]
+};
+
+
+var checksuperadmin = function(req) {
+    return [
+        function(req, res, next) {
+
+            var custId = req.params.custId;
+            process.nextTick(function() {
+                var firstquery = `SELECT coId FROM customers 
+    WHERE ${req.user.coId}=1 LIMIT 1`;
+
+                con.query(firstquery, function(err, result, fields) {
+                    //console.log(result);
+                    if (result && result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
                         res.redirect('/');
                     } else {
@@ -265,13 +296,22 @@ app.post('/mspos/createmspo', createMspo);
 app.post('/mspos/editmspo', editMspo);
 /* mspos */
 
+/* superadmin */
+app.all('/superadmin*',ensureLoggedIn('/login'), checksuperadmin());
+app.get('/superadmin/', getsuperadminPage);
+app.get('/superadmin/:superadminId', getEditsuperadminPage);
+app.get('/superadmin/doc/:superadminId', getsuperadminDocPage);
+app.get('/superadmin/:disabledordelete/:mspoId/', disabledDeletesuperadmin);
+app.post('/superadmin/doc/', uploadMspoDocuments);
+app.post('/superadmin/create', createsuperadmin);
+app.post('/superadmin/edit', editsuperadmin);
+/* superadmin */
 
 
 /* company */
 app.all('/company*', ensureLoggedIn('/login'));
 app.get('/company/', getCompanyPage);
 app.post('/company/edit', saveCompany);
-app.post('/company/create', createCompany);
 /* company */
 
 /* test */

@@ -1,0 +1,12 @@
+<style>
+    .btnpadding {
+        margin: 10px;
+    }
+</style>
+<div id="cust_buttons" class="p-5">
+    <p class="h4 mb-4">Actions</p>
+    <div class="row">
+        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/superadmin/<%= superadmin_s[0].data%>';">Edit This superadmin</button>
+        <button type="button" class="btn btn-danger btnpadding" onclick="var retVal = confirm('Do you want to disabled this superadmin ?');if (retVal == true) {location.href = '/superadmin/disabled/<%= superadmin_s[0].data%>'};">Deactivated This Company</button>
+    </div>
+</div>
