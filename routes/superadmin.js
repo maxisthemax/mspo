@@ -24,8 +24,7 @@ module.exports = {
     },
     getEditsuperadminPage: (req, res) => {
         cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
-            superadmin.superadmin.querysuperadmin(req.params.superadminId, function (err, superadmin) {
-
+            superadmin.superadmin.querysuperadmin(req.params.coId, function (err, superadmin) {
                 res.render('superadmin/editsuperadmin.ejs', {
                     successFlash: req.flash('success'),
                     errorFlash: req.flash('error'),

@@ -120,9 +120,10 @@ module.exports = {
             req.params.landId,
             function (err, land) {
                 if (err) {
-                    console.log(err);
+                    req.flash('error', 'Fail');
                     res.redirect('/lands/');
                 } else {
+                    req.flash('success', 'Success');    
                     res.redirect('/lands/');
                 }
             });
@@ -149,12 +150,12 @@ module.exports = {
                     var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
                     fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
                         if (err) {
-                            //console.log(err);
+                            req.flash('error', 'Failed To Upload');
                             res.redirect(`/lands/doc/${req.body.landId}`);
                         }
                     });
                 }
-
+                req.flash('success', 'Upload Complete');     
                 res.redirect(`/lands/doc/${req.body.landId}`);
 
             } else { res.redirect(`/lands/doc/${req.body.landId}`); }
@@ -165,9 +166,11 @@ module.exports = {
             var filepath = filefolder + '/' + filename;
             //console.log(filepath);
             try {
+                req.flash('success', 'Delete Complete');
                 fs.unlinkSync(filepath)
                 //file removed
             } catch (err) {
+                req.flash('error', 'Fail to Delete');
                 console.error(err)
             }
             res.redirect(`/lands/doc/${req.body.landId}`);

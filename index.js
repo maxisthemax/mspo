@@ -299,8 +299,8 @@ app.post('/mspos/editmspo', editMspo);
 /* superadmin */
 app.all('/superadmin*',ensureLoggedIn('/login'), checksuperadmin());
 app.get('/superadmin/', getsuperadminPage);
-app.get('/superadmin/:superadminId', getEditsuperadminPage);
-app.get('/superadmin/doc/:superadminId', getsuperadminDocPage);
+app.get('/superadmin/:coId', getEditsuperadminPage);
+app.get('/superadmin/doc/:coId', getsuperadminDocPage);
 app.get('/superadmin/:mode/:coId/', deactivateCompany);
 app.post('/superadmin/create', createsuperadmin);
 app.post('/superadmin/edit', editsuperadmin);

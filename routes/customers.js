@@ -83,11 +83,12 @@ module.exports = {
                     fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
                         if (err) {
                             //console.log(err);
+                            req.flash('error', 'Failed To Upload');
                             res.redirect(`/customers/doc/${req.body.custId}`);
                         }
                     });
                 }
-
+                req.flash('success', 'Upload Complete');
                 res.redirect(`/customers/doc/${req.body.custId}`);
 
             } else { res.redirect(`/customers/doc/${req.body.custId}`); }
@@ -98,10 +99,14 @@ module.exports = {
             var filepath = filefolder + '/' + filename;
             try {
                 fs.unlinkSync(filepath)
+                req.flash('success', 'Delete Complete');
                 //file removed
             } catch (err) {
                 console.error(err)
+                req.flash('error', 'Failed To Delete');
+                res.redirect(`/customers/doc/${req.body.custId}`);
             }
+            
             res.redirect(`/customers/doc/${req.body.custId}`);
         }
     },
@@ -160,9 +165,11 @@ module.exports = {
             req.params.custId,
             function (err, customer) {
                 if (err) {
-                    console.log(err);
+                    
+                    req.flash('error', 'Fail');
                     res.redirect('/customers/');
                 } else {
+                    req.flash('success', 'Success');  
                     res.redirect('/customers/');
                 }
             });

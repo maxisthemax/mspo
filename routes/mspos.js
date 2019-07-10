@@ -118,8 +118,10 @@ module.exports = {
             function(err, mspo) {
                 if (err) {
                     console.log(err);
+                    req.flash('error', 'Fail');
                     res.redirect('/mspos/');
                 } else {
+                    req.flash('success', 'Success');
                     res.redirect('/mspos/');
                 }
             });
@@ -146,12 +148,12 @@ module.exports = {
                     var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
                     fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function(err) {
                         if (err) {
-                            //console.log(err);
+                            req.flash('error', 'Fail to Upload');
                             res.redirect(`/mspos/doc/${req.body.mspoId}`);
                         }
                     });
                 }
-
+                req.flash('success', 'Upload Complete');
                 res.redirect(`/mspos/doc/${req.body.mspoId}`);
 
             } else { res.redirect(`/mspos/doc/${req.body.mspoId}`); }
@@ -162,8 +164,10 @@ module.exports = {
             //console.log(filepath);
             try {
                 fs.unlinkSync(filepath)
+                req.flash('success', 'Delete Complete');
                     //file removed
             } catch (err) {
+                req.flash('error', 'Fail to Delete');
                 console.error(err)
             }
             res.redirect(`/mspos/doc/${req.body.mspoId}`);

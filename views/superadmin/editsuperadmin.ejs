@@ -1,56 +1,31 @@
 <% include partials/header.ejs %>
 <div id="superadmin_edit" class="container-fluid">
     <div class="" style="border:1px solid">
-        <form class="p-5" name="superadmin_edit_form" method="POST" action="/superadmin/editsuperadmin">
-            <p class="h4 mb-4">Edit superadmin</p>
+        <form class="p-5" name="superadmin_edit_form" method="POST" action="/superadmin/edit">
+            <p class="h4 mb-4">Edit Company</p>
 
-            <div class="row">
-                <div class="col-sm-6">
-                    <label for="textInput">superadmin Certificate No</label>
-                    <input type="text" id="superadminCertNo" name="superadminCertNo" class="form-control mb-4" required
-                        placeholder="Enter superadmin Certificate No Here" value="<%= superadmin[0].superadminCertNo%>">
-                </div>
-                <div class="col-sm-6">
-                    <label for="textInput">Expired Date</label>
-                    <div class="input-group date" id="expiredDatePicker" data-target-input="nearest">
-                        <input type="text" required id="expiredDate" name="expiredDate" value="<%= superadmin[0].expiredDate%>" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
-                        <div class="input-group-append" data-target="#expiredDatePicker" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
+                <label for="textInput">Company Name</label>
+                <input type="text" id="compname" name="compname" required class="form-control mb-4" value="<%= superadmin[0].coName %>">
+
+                <label for="textInput">Company Address</label>
+                <input type="text" id="compadd" name="compadd" required class="form-control mb-4"  value="<%= superadmin[0].coAdd %>">
+
+                <label for="textInput">Company Tel. No</label>
+                <input type="text" id="comptel" name="comptel" class="form-control mb-4" required value="<%= superadmin[0].coTel %>">
+
+                <input type="hidden" id="coId" name="coId" value="<%= superadmin[0].coId%>">
+                <br><br>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <a href="/superadmin/">
+                            <input type=button class="btn btn-secondary btn-block" value="Back" onclick="">
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-primary btn-block" type="submit">Save Company</button>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                        <div class="col-sm-6">
-                            <label for="textInput">Standard</label>
-                            <input type="text" id="superadmintandard" name="superadmintandard" class="form-control mb-4" value="<%= superadmin[0].standard%>" placeholder="Enter superadmin Standard">
-                        </div>                   
-                <div class="col-sm-6">
-
-                    <label for="custId">Customer Name</label>
-                        <select class="form-control mb-4" id="custId"name="custId" required style="width: 100%">
-                        <option></option>
-                        <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>                        
-                        <option value=<%= cust_s[i].custId %> <%if (cust_s[i].custId==superadmin[0].custId){ %>selected<%}%> ><%= cust_s[i].custName %></option>
-                        <% }} %> 
-                    </select>  
-    
-                </div>
-            </div>
-            <br>
-
-            <input type="hidden" id="superadminId" name="superadminId" value="<%= superadmin[0].superadminId%>">
-            <div class="row">
-                <div class="col-sm-3">
-                    <a href="/superadmin/">
-                        <input type=button class="btn btn-secondary btn-block" value="Back" onclick="">
-                    </a>
-                </div>
-                <div class="col-sm-3">
-                    <button class="btn btn-primary btn-block" type="submit">Save superadmin</button>
-                </div>
-            </div>
-        </form>
+            </form>
     </div>
 </div>
 
@@ -65,15 +40,15 @@
 
 
 <script>
-    $(function() {
+    $(function () {
         var chartformat = "YYYY-MM-DD";
         $('#expiredDatePicker').datetimepicker({
             format: chartformat,
         });
-    
+
         $("#custId").select2({
             placeholder: "Select a Customer",
             width: 'resolve',
-        });  
+        });
     }); 
 </script>

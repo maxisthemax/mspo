@@ -13,10 +13,9 @@ exports.queryAllsuperadmin = function (coId, cb) {
   });
 }
 
-exports.querysuperadmin = function (mspoId, cb) {
+exports.querysuperadmin = function (coId, cb) {
   process.nextTick(function () {
-    var firstquery = `SELECT * FROM mspos 
-    WHERE mspoId=${mspoId} ORDER BY custId`;
+    var firstquery = `SELECT * FROM company where coId = ${coId} LIMIT 1`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
@@ -89,22 +88,20 @@ exports.deactivateCompany = function (mode,coId, cb) {
 }
 
 exports.editsuperadmin = function (req, cb) {
-  var mspo = req.body;
+  var company = req.body;
   process.nextTick(function () {
+    //console.log(company);
+    company.coId = company.coId ? [].concat(company.coId) : [''];
+    company.compname = company.compname ? [].concat(company.compname) : [''];
+    company.compadd = company.compadd ? [].concat(company.compadd) : [''];
+    company.comptel = company.comptel ? [].concat(company.comptel) : [''];
 
-    mspo.mspoId = mspo.mspoId ? [].concat(mspo.mspoId) : [''];
-    mspo.mspoCertNo = mspo.mspoCertNo ? [].concat(mspo.mspoCertNo) : [''];
-    mspo.expiredDate = mspo.expiredDate ? [].concat(mspo.expiredDate) : [''];
-    mspo.custId = mspo.custId ? [].concat(mspo.custId) : [''];
-    mspo.mspoStandard = mspo.mspoStandard ? [].concat(mspo.mspoStandard) : [''];
-
-    let firstquery = `UPDATE mspos SET 
-    mspoCertNo = "${mspo.mspoCertNo[0]}",
-    expiredDate = "${mspo.expiredDate[0]}",
-    standard = "${mspo.mspoStandard[0]}",
-    custId = "${mspo.custId[0]}"
-    where mspoId= "${mspo.mspoId[0]}"`
-
+    let firstquery = `UPDATE company SET 
+    coName = "${company.compname[0]}",
+    coAdd = "${company.compadd[0]}",
+    coTel = "${company.comptel[0]}"
+    where coId= "${company.coId[0]}"`
+    //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       //console.log(result);

@@ -14,7 +14,7 @@
                 superadmin_s[i].coName,
                 superadmin_s[i].coAdd,
                 superadmin_s[i].coTel,
-                superadmin_s[i].deactivated,
+                (superadmin_s[i].deactivated == 1)?"DEACTIVE":"ACTIVE",
                 changeToDateFormat(createdDate),
                 ''
             ]);

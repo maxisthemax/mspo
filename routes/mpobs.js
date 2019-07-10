@@ -118,8 +118,10 @@ module.exports = {
             function(err, mpob) {
                 if (err) {
                     console.log(err);
+                    req.flash('error', 'Fail'); 
                     res.redirect('/mpobs/');
                 } else {
+                    req.flash('success', 'Success'); 
                     res.redirect('/mpobs/');
                 }
             });
@@ -146,12 +148,12 @@ module.exports = {
                     var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
                     fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function(err) {
                         if (err) {
-                            //console.log(err);
+                            req.flash('error', 'Failed to Upload'); 
                             res.redirect(`/mpobs/doc/${req.body.mpobId}`);
                         }
                     });
                 }
-
+                req.flash('success', 'Upload Complete'); 
                 res.redirect(`/mpobs/doc/${req.body.mpobId}`);
 
             } else { res.redirect(`/mpobs/doc/${req.body.mpobId}`); }
@@ -162,8 +164,10 @@ module.exports = {
             //console.log(filepath);
             try {
                 fs.unlinkSync(filepath)
+                req.flash('success', 'Delete Complete'); 
                     //file removed
             } catch (err) {
+                req.flash('error', 'Failed to Delete');
                 console.error(err)
             }
             res.redirect(`/mpobs/doc/${req.body.mpobId}`);
