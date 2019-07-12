@@ -88,7 +88,7 @@ module.exports = {
 
     getMsposDocPage: (req, res) => {
 
-        var defaultfolder = `public/company/${req.user.coId}/mspos/doc/`;
+        var defaultfolder = `public/company/${req.user.coId}/mspos/doc`;
         var mspo_doc = `${defaultfolder}/${req.params.mspoId}`;
         var mspo_dirarray = [];
         getDirectories(mspo_doc, function(err, dir) {

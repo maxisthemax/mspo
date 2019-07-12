@@ -88,7 +88,7 @@ module.exports = {
 
     getMpobsDocPage: (req, res) => {
 
-        var defaultfolder = `public/company/${req.user.coId}/mpobs/doc/`;
+        var defaultfolder = `public/company/${req.user.coId}/mpobs/doc`;
         var mpob_doc = `${defaultfolder}/${req.params.mpobId}`;
         var mpob_dirarray = [];
         getDirectories(mpob_doc, function(err, dir) {

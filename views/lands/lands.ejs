@@ -193,7 +193,7 @@
 
         tablinks = document.getElementsByClassName('tablinks');
         var activeLand_Tab = localStorage.getItem('activeLand_Tab');
-        if (activeLand_Tab === null) {
+        if (activeLand_Tab === null || activeLand_Tab == '') {
             tablinks[0].click();
         } else {
             for (i = 0; i < tablinks.length; i++) {

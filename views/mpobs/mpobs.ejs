@@ -171,7 +171,7 @@
 
                 tablinks = document.getElementsByClassName('tablinks');
                 var activeMpob_Tab = localStorage.getItem('activeMpob_Tab');
-                if (activeMpob_Tab === null) {
+                if (activeMpob_Tab === null || activeMpob_Tab == '') {
                     tablinks[0].click();
                 } else {
                     for (i = 0; i < tablinks.length; i++) {

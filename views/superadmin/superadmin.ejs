@@ -107,7 +107,7 @@
 
                 tablinks = document.getElementsByClassName('tablinks');
                 var activesuperadmin_Tab = localStorage.getItem('activesuperadmin_Tab');
-                if (activesuperadmin_Tab === null) {
+                if (activesuperadmin_Tab === null || activesuperadmin_Tab == '') {
                     tablinks[0].click();
                 } else {
                     for (i = 0; i < tablinks.length; i++) {

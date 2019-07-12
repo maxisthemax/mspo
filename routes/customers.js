@@ -36,7 +36,7 @@ module.exports = {
         });
     },
     getCustomerDocPage: (req, res) => {
-        var defaultfolder = `public/company/${req.user.coId}/customers/doc/`;
+        var defaultfolder = `public/company/${req.user.coId}/customers/doc`;
         var cust_doc = `${defaultfolder}/${req.params.custId}`;
         var cust_dirarray = [];
         getDirectories(cust_doc, function (err, dir) {

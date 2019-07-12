@@ -91,7 +91,7 @@ module.exports = {
 
     getLandsDocPage: (req, res) => {
 
-        var defaultfolder = `public/company/${req.user.coId}/lands/doc/`;
+        var defaultfolder = `public/company/${req.user.coId}/lands/doc`;
         var land_doc = `${defaultfolder}/${req.params.landId}`;
         var land_dirarray = [];
         getDirectories(land_doc, function (err, dir) {

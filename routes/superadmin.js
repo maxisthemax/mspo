@@ -71,7 +71,7 @@ module.exports = {
 
     getsuperadminDocPage: (req, res) => {
 
-        var defaultfolder = `public/company/${req.user.coId}/superadmin/doc/`;
+        var defaultfolder = `public/company/${req.user.coId}/superadmin/doc`;
         var superadmin_doc = `${defaultfolder}/${req.params.superadminId}`;
         var superadmin_dirarray = [];
         getDirectories(superadmin_doc, function(err, dir) {
