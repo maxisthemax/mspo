@@ -17,12 +17,15 @@ module.exports = {
                 cust: [],
                 lands: [],
                 mpobs: [],
-                msops: [],
+                mspos: [],
                 summspodir: [],
                 summpobdir: [],
                 sumlanddir: [],
                 sumcustdir: [],
                 summspodir: [],
+                summarybutton_mpob: [],
+                summarybutton_mspo: [],
+                summarybutton_land: []
             });
         });
     },
@@ -141,7 +144,9 @@ module.exports = {
                                         }
                                     }
                                 }
-
+                                var summarybutton_land_1 = fs.readFileSync('./views/summary/summarybutton_land.ejs', 'utf8');
+                                var summarybutton_mpob_1 = fs.readFileSync('./views/summary/summarybutton_mpob.ejs', 'utf8');
+                                var summarybutton_mspo_1 = fs.readFileSync('./views/summary/summarybutton_mspo.ejs', 'utf8');
                                 res.render('summary/summary.ejs', {
                                     successFlash: req.flash('success'),
                                     errorFlash: req.flash('error'),
@@ -149,11 +154,14 @@ module.exports = {
                                     cust: (summary.length > 0 && summary[0]) ? summary[0] : [],
                                     lands: (summary.length > 0 && summary[1]) ? summary[1] : [],
                                     mpobs: (summary.length > 0 && summary[2]) ? summary[2] : [],
-                                    msops: (summary.length > 0 && summary[3]) ? summary[3] : [],
+                                    mspos: (summary.length > 0 && summary[3]) ? summary[3] : [],
                                     summspodir: mspo_doc_array,
                                     summpobdir: mpob_doc_array,
                                     sumlanddir: land_doc_array,
                                     sumcustdir: custdir,
+                                    summarybutton_mpob: summarybutton_mpob_1,
+                                    summarybutton_mspo: summarybutton_mspo_1,
+                                    summarybutton_land: summarybutton_land_1
                                 });
                             });
                         });

@@ -59,7 +59,12 @@
                         </tr>
                         <% } %>
                     </table>
-                </div>
+                    <br><br>
+                    <% if(cust.length > 0) {%>            
+                        <button type="button" class="btn btn-primary btnpadding" 
+                        onclick="location.href = '/customers/<%= cust[0].custId %>';">Go To This Page</button>
+                    <% } %>                       
+                </div>           
                 <div class="panel-heading">
                     <h3>Documents</h3>
                 </div>
@@ -194,7 +199,7 @@
                     <h1>MSPO</h1>
                 </div>
                 <div class="panel-body">
-                    <table id="msops_view" class="display" cellspacing="0" width="100%">
+                    <table id="mspos_view" class="display" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>MSPO Certificate No</th>

@@ -2,6 +2,7 @@
 
 <script>
     $(document).ready(function() {
+        var summarybutton_land = <%- JSON.stringify(summarybutton_land)%>;
         var lands = <%- JSON.stringify(lands)%>;
         var data = [];
         for (var i = 0; i < lands.length; i++) {
@@ -35,6 +36,16 @@
                             }
                         }).join('');
 
+                        var htm2 = ejs.render(summarybutton_land, {
+                            lands: columns
+                        });
+                        data = $('<table width="100%"/>').append(data).prop('outerHTML');
+                        // Extra: Show custom content
+                        data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';
+                        data += htm2;
+                        //console.log(html);
+                        data += '';
+                        data += '</div><br><br>';
                         return data;
                     }
                 }
@@ -56,6 +67,7 @@
     });
 
     $(document).ready(function() {
+        var summarybutton_mpob = <%- JSON.stringify(summarybutton_mpob)%>;
         var mpobs = <%- JSON.stringify(mpobs)%>;
         var data = [];
         for (var i = 0; i < mpobs.length; i++) {
@@ -74,7 +86,7 @@
                 "details": {
                     "renderer": function(api, rowIdx, columns) {
                         // Show hidden columns in row details
-                        var data = $.map(columns, function(col, i) {
+                        var data = $.map(columns, function(col, i) { 
                             if (col.columnIndex == 2) {
                                 return;
                             } else {
@@ -84,7 +96,16 @@
                                     '';
                             }
                         }).join('');
-
+                        var htm2 = ejs.render(summarybutton_mpob, {
+                            mpobs: columns
+                        });
+                        data = $('<table width="100%"/>').append(data).prop('outerHTML');
+                        // Extra: Show custom content
+                        data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';
+                        data += htm2;
+                        //console.log(html);
+                        data += '';
+                        data += '</div><br><br>';
                         return data;
                     }
                 }
@@ -106,17 +127,18 @@
     });
 
     $(document).ready(function() {
-        var msops = <%- JSON.stringify(msops)%>;
+        var summarybutton_mspo = <%- JSON.stringify(summarybutton_mspo)%>;
+        var mspos = <%- JSON.stringify(mspos)%>;
         var data = [];
-        for (var i = 0; i < msops.length; i++) {
+        for (var i = 0; i < mspos.length; i++) {
             data.push([
-                msops[i].mspoCertNo,
-                changeToDateFormat(msops[i].expiredDate),
-                msops[i].standard,
-                msops[i].mspoId,
+                mspos[i].mspoCertNo,
+                changeToDateFormat(mspos[i].expiredDate),
+                mspos[i].standard,
+                mspos[i].mspoId,
             ]);
         }
-        var table = $('#msops_view').DataTable({
+        var table = $('#mspos_view').DataTable({
             aaSorting: [],
             dom: 'Blfrtip',
             data: data,
@@ -135,7 +157,16 @@
                                     '';
                             }
                         }).join('');
-
+                        var htm2 = ejs.render(summarybutton_mspo, {
+                            mspos: columns
+                        });
+                        data = $('<table width="100%"/>').append(data).prop('outerHTML');
+                        // Extra: Show custom content
+                        data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';
+                        data += htm2;
+                        //console.log(html);
+                        data += '';
+                        data += '</div><br><br>';
                         return data;
                     }
                 }
