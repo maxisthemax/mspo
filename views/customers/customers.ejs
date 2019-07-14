@@ -103,12 +103,12 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="textInput">Customer IC</label>
-                        <input type="text" id="custIC" name="custIC" class="form-control mb-4" required
+                        <input type='text' pattern="[0-9]{6}[-]{1}[0-9]{2}[-]{1}[0-9]{4}" oninvalid="alert('Please Enter The IC in XXXXX-XX-XXX format');" id="custIC" name="custIC" class="form-control mb-4" required
                             placeholder="Enter Customer IC Here">
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Customer Tel.</label>
-                        <input type="text" id="custTel" name="custTel" class="form-control mb-4"
+                        <input type="number" id="custTel" name="custTel" class="form-control mb-4"
                             placeholder="Enter Customer Name Here">
                     </div>
                 </div>

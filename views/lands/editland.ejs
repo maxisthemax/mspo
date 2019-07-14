@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-sm-6">
                     <label for="textInput">Area (hektar)</label>
-                    <input type="text" id="area" name="area" class="form-control mb-4" required
+                    <input type="number" step="any" id="area" name="area" class="form-control mb-4" required
                         value="<%= land[0].area%>">
                 </div>
             </div>
@@ -49,12 +49,12 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <label for="textInput">Latitude</label>
-                        <input type="text" id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4" required
+                        <input type="number" step="any" id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4" required
                         value="<%= land[0].gpsLocationLat%>">
                     </div>                   
                     <div class="col-sm-3">
                         <label for="textInput">Longitude</label>
-                        <input type="text" id="gpsLocationLng" name="gpsLocationLng" class="form-control mb-4" required
+                        <input type="number" step="any" id="gpsLocationLng" name="gpsLocationLng" class="form-control mb-4" required
                         value="<%= land[0].gpsLocationLng%>">
                     </div>                 
                 </div>    
