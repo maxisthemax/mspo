@@ -43,7 +43,7 @@ module.exports = {
     },
 
     createMpob: (req, res) => {
-        mpobs.mpobs.createMpob(req, function(err, mpob) {
+        mpobs.mpobs.createMpob(req, function (err, mpob) {
             if (err) {
                 if (err.code == "ER_DUP_ENTRY") {
                     req.flash('error', 'MPOB Already Exist');
@@ -56,27 +56,38 @@ module.exports = {
                 //console.log(customer);
                 var defaultfolder = `public/company/${req.user.coId}/mpobs/doc/`;
                 var filefolder = defaultfolder + mpob.insertId;
-                if (!fs.existsSync(filefolder)) {
-                    mkdirp(filefolder, function(err) {
-                        if (err) console.error(err)
-                        else console.log('dir created')
-                    });
-                }
                 req.flash('success', 'New MPOB Created');
-                if (req.files.docupload) {
-                    fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function(err) {
-                        if (err) {
-                            res.redirect('/mpobs/');
+                if (!fs.existsSync(filefolder)) {
+                    mkdirp(filefolder, function (err) {
+                        if (err) console.error(err)
+                        else {
+                            console.log('dir created'); if (req.files.docupload) {
+                                fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
+                                    if (err) {
+                                        res.redirect('/mpobs/');
+                                    }
+                                });
+                                res.redirect('/mpobs/');
+                            } else { res.redirect('/mpobs/'); }
                         }
                     });
-                    res.redirect('/mpobs/');
-                } else { res.redirect('/mpobs/'); }
+                } else {
+                    
+                    if (req.files.docupload) {
+                        fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
+                            if (err) {
+                                res.redirect('/mpobs/');
+                            }
+                        });
+                        res.redirect('/mpobs/');
+                    } else { res.redirect('/mpobs/'); }
+                }
             }
         });
     },
 
     editMpob: (req, res) => {
-        mpobs.mpobs.editMpob(req, function(err, mpob) {
+        mpobs.mpobs.editMpob(req, function (err, mpob) {
             if (err) {
                 req.flash('error', 'Unable to Edit MPOB Data');
             } else if (mpob) {
@@ -91,7 +102,7 @@ module.exports = {
         var defaultfolder = `public/company/${req.user.coId}/mpobs/doc`;
         var mpob_doc = `${defaultfolder}/${req.params.mpobId}`;
         var mpob_dirarray = [];
-        getDirectories(mpob_doc, function(err, dir) {
+        getDirectories(mpob_doc, function (err, dir) {
             for (var i = 0; i < dir.length; i++) {
                 dirnew = dir[i].replace('public', '');
 
@@ -115,13 +126,13 @@ module.exports = {
         mpobs.mpobs.disableDeleteMpob(
             req.params.disabledordelete,
             req.params.mpobId,
-            function(err, mpob) {
+            function (err, mpob) {
                 if (err) {
                     console.log(err);
-                    req.flash('error', 'Fail'); 
+                    req.flash('error', 'Fail');
                     res.redirect('/mpobs/');
                 } else {
-                    req.flash('success', 'Success'); 
+                    req.flash('success', 'Success');
                     res.redirect('/mpobs/');
                 }
             });
@@ -136,27 +147,44 @@ module.exports = {
 
         if (mode == 1) {
             if (!fs.existsSync(filefolder)) {
-                mkdirp(filefolder, function(err) {
+                mkdirp(filefolder, function (err) {
                     if (err) console.error(err)
-                    else console.log('dir created')
-                });
-            }
-            //console.log(req.files.docupload);
-            if (req.files.docupload && req.files.docupload.length > 0) {
-                for (i = 0; i < req.files.docupload.length; i++) {
-                    var filetype = req.files.docupload[i].name.split('.').pop();
-                    var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
-                    fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function(err) {
-                        if (err) {
-                            req.flash('error', 'Failed to Upload'); 
+                    else {
+                        console.log('dir created'); if (req.files.docupload && req.files.docupload.length > 0) {
+                            for (i = 0; i < req.files.docupload.length; i++) {
+                                var filetype = req.files.docupload[i].name.split('.').pop();
+                                var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
+                                fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
+                                    if (err) {
+                                        req.flash('error', 'Failed to Upload');
+                                        res.redirect(`/mpobs/doc/${req.body.mpobId}`);
+                                    }
+                                });
+                            }
+                            req.flash('success', 'Upload Complete');
                             res.redirect(`/mpobs/doc/${req.body.mpobId}`);
-                        }
-                    });
-                }
-                req.flash('success', 'Upload Complete'); 
-                res.redirect(`/mpobs/doc/${req.body.mpobId}`);
 
-            } else { res.redirect(`/mpobs/doc/${req.body.mpobId}`); }
+                        } else { res.redirect(`/mpobs/doc/${req.body.mpobId}`); }
+                    }
+                });
+            } else {
+                //console.log(req.files.docupload);
+                if (req.files.docupload && req.files.docupload.length > 0) {
+                    for (i = 0; i < req.files.docupload.length; i++) {
+                        var filetype = req.files.docupload[i].name.split('.').pop();
+                        var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
+                        fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
+                            if (err) {
+                                req.flash('error', 'Failed to Upload');
+                                res.redirect(`/mpobs/doc/${req.body.mpobId}`);
+                            }
+                        });
+                    }
+                    req.flash('success', 'Upload Complete');
+                    res.redirect(`/mpobs/doc/${req.body.mpobId}`);
+
+                } else { res.redirect(`/mpobs/doc/${req.body.mpobId}`); }
+            }
         } else if (mode == 2) {
 
             var filename = req.body.filenamedelete;
@@ -164,8 +192,8 @@ module.exports = {
             //console.log(filepath);
             try {
                 fs.unlinkSync(filepath)
-                req.flash('success', 'Delete Complete'); 
-                    //file removed
+                req.flash('success', 'Delete Complete');
+                //file removed
             } catch (err) {
                 req.flash('error', 'Failed to Delete');
                 console.error(err)

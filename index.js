@@ -19,9 +19,9 @@ const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage, ge
 const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments, createLand, editLand, disabledDeleteLand } = require('./routes/lands');
 const { getMpobsPage, getEditMpobsPage, getMpobsDocPage, uploadMpobDocuments, createMpob, editMpob, disabledDeleteMpob } = require('./routes/mpobs');
 const { getMsposPage, getEditMsposPage, getMsposDocPage, uploadMspoDocuments, createMspo, editMspo, disabledDeleteMspo } = require('./routes/mspos');
-
+const { getSummaryPage,postSummaryPage } = require('./routes/summary');
 const { getCompanyPage, saveCompany } = require('./routes/company');
-const { getsuperadminPage, getEditsuperadminPage, getsuperadminDocPage, uploadsuperadminDocuments, createsuperadmin, 
+const { getsuperadminPage, getEditsuperadminPage, getsuperadminDocPage, createsuperadmin, 
     editsuperadmin, deactivateCompany } = require('./routes/superadmin');
 
 
@@ -118,6 +118,35 @@ var checkmpobcompany = function(req) {
                             res.redirect('/');
                         } else { next(); }
                     }
+                });
+            });
+        }
+    ]
+};
+
+var checksummarycustid = function(req) {
+    return [
+        function(req, res, next) {
+
+            var queryCustId = req.params.queryCustId;
+            process.nextTick(function() {
+                var firstquery = `SELECT coId FROM customers 
+                WHERE custId=${queryCustId} LIMIT 1`;
+                //console.log(firstquery);
+
+                con.query(firstquery, function(err, result, fields) {
+                    //console.log(result);
+
+                    if (result && result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+
                 });
             });
         }
@@ -306,6 +335,11 @@ app.post('/superadmin/create', createsuperadmin);
 app.post('/superadmin/edit', editsuperadmin);
 /* superadmin */
 
+/* summary */
+app.all('/summary*', ensureLoggedIn('/login'));
+app.get('/summary/', getSummaryPage);
+app.post('/summary/', postSummaryPage);
+/* summary */
 
 /* company */
 app.all('/company*', ensureLoggedIn('/login'));

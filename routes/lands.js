@@ -18,9 +18,9 @@ module.exports = {
                     res.render('lands/lands.ejs', {
                         successFlash: req.flash('success'),
                         errorFlash: req.flash('error'),
-                        cust_s: (cust_s)?cust_s:[],
-                        land_s_disabled:(land_s_disabled)?land_s_disabled:[],
-                        land_s: (land_s)?land_s:[],
+                        cust_s: (cust_s) ? cust_s : [],
+                        land_s_disabled: (land_s_disabled) ? land_s_disabled : [],
+                        land_s: (land_s) ? land_s : [],
                         editlandhtml: htmlContent,
                         editlandhtml2: htmlContent2,
                     });
@@ -43,21 +43,32 @@ module.exports = {
                 //console.log(customer);
                 var defaultfolder = `public/company/${req.user.coId}/lands/doc/`;
                 var filefolder = defaultfolder + land.insertId;
+                req.flash('success', 'New Land Created');
                 if (!fs.existsSync(filefolder)) {
                     mkdirp(filefolder, function (err) {
                         if (err) console.error(err)
-                        else console.log('dir created')
-                    });
-                }
-                req.flash('success', 'New Land Created');
-                if (req.files.docupload) {
-                    fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
-                        if (err) {
-                            res.redirect('/lands/');
+                        else {
+                            console.log('dir created'); if (req.files.docupload) {
+                                fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
+                                    if (err) {
+                                        res.redirect('/lands/');
+                                    }
+                                });
+                                res.redirect('/lands/');
+                            } else { res.redirect('/lands/'); }
                         }
                     });
-                    res.redirect('/lands/');
-                } else { res.redirect('/lands/'); }
+                } else {
+
+                    if (req.files.docupload) {
+                        fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
+                            if (err) {
+                                res.redirect('/lands/');
+                            }
+                        });
+                        res.redirect('/lands/');
+                    } else { res.redirect('/lands/'); }
+                }
             }
         });
     },
@@ -123,7 +134,7 @@ module.exports = {
                     req.flash('error', 'Fail');
                     res.redirect('/lands/');
                 } else {
-                    req.flash('success', 'Success');    
+                    req.flash('success', 'Success');
                     res.redirect('/lands/');
                 }
             });
@@ -140,25 +151,48 @@ module.exports = {
             if (!fs.existsSync(filefolder)) {
                 mkdirp(filefolder, function (err) {
                     if (err) console.error(err)
-                    else console.log('dir created')
-                });
-            }
-            //console.log(req.files.docupload);
-            if (req.files.docupload && req.files.docupload.length > 0) {
-                for (i = 0; i < req.files.docupload.length; i++) {
-                    var filetype = req.files.docupload[i].name.split('.').pop();
-                    var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
-                    fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
-                        if (err) {
-                            req.flash('error', 'Failed To Upload');
+                    else {
+                        console.log('dir created');
+                        if (req.files.docupload && req.files.docupload.length > 0) {
+                            for (i = 0; i < req.files.docupload.length; i++) {
+                                var filetype = req.files.docupload[i].name.split('.').pop();
+                                var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
+                                fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
+                                    if (err) {
+                                        req.flash('error', 'Failed To Upload');
+                                        res.redirect(`/lands/doc/${req.body.landId}`);
+                                    }
+                                });
+                            }
+                            req.flash('success', 'Upload Complete');
                             res.redirect(`/lands/doc/${req.body.landId}`);
-                        }
-                    });
-                }
-                req.flash('success', 'Upload Complete');     
-                res.redirect(`/lands/doc/${req.body.landId}`);
 
-            } else { res.redirect(`/lands/doc/${req.body.landId}`); }
+                        } else { res.redirect(`/lands/doc/${req.body.landId}`); }
+                    }
+                });
+
+
+
+            }
+            else {
+                if (fs.existsSync(filefolder)) {
+                    if (req.files.docupload && req.files.docupload.length > 0) {
+                        for (i = 0; i < req.files.docupload.length; i++) {
+                            var filetype = req.files.docupload[i].name.split('.').pop();
+                            var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
+                            fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
+                                if (err) {
+                                    req.flash('error', 'Failed To Upload');
+                                    res.redirect(`/lands/doc/${req.body.landId}`);
+                                }
+                            });
+                        }
+                        req.flash('success', 'Upload Complete');
+                        res.redirect(`/lands/doc/${req.body.landId}`);
+
+                    } else { res.redirect(`/lands/doc/${req.body.landId}`); }
+                }
+            }
         }
         else if (mode == 2) {
 

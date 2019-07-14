@@ -1,0 +1,165 @@
+<script src="../vendor/ejs/ejs.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var lands = <%- JSON.stringify(lands)%>;
+        var data = [];
+        for (var i = 0; i < lands.length; i++) {
+            data.push([
+                    lands[i].lotNo, 
+                    lands[i].titleNo, 
+                    lands[i].area, 
+                    lands[i].usageOfLand, 
+                    lands[i].typeOfCondition,
+                    `${lands[i].gpsLocationLat},${lands[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${lands[i].gpsLocationLat},${lands[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
+                    lands[i].landId
+                    ] );
+        }
+        var table = $('#lands_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [],
+            "responsive": {
+                "details": {
+                    "renderer": function(api, rowIdx, columns) {
+                        // Show hidden columns in row details
+                        var data = $.map(columns, function(col, i) {
+                            if (col.columnIndex == 6) {
+                                return;
+                            } else {
+                                return col.hidden ?
+                                    '<tr><td>' + col.title + ':</td> ' +
+                                    '<td>' + col.data + '</td></tr>' :
+                                    '';
+                            }
+                        }).join('');
+
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function() {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function() {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+    });
+
+    $(document).ready(function() {
+        var mpobs = <%- JSON.stringify(mpobs)%>;
+        var data = [];
+        for (var i = 0; i < mpobs.length; i++) {
+            data.push([
+                mpobs[i].mpobLicNo,
+                changeToDateFormat(mpobs[i].expiredDate),
+                mpobs[i].mpobId,
+            ]);
+        }
+        var table = $('#mpobs_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [],
+            "responsive": {
+                "details": {
+                    "renderer": function(api, rowIdx, columns) {
+                        // Show hidden columns in row details
+                        var data = $.map(columns, function(col, i) {
+                            if (col.columnIndex == 2) {
+                                return;
+                            } else {
+                                return col.hidden ?
+                                    '<tr><td>' + col.title + ':</td> ' +
+                                    '<td>' + col.data + '</td></tr>' :
+                                    '';
+                            }
+                        }).join('');
+
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function() {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function() {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+    });
+
+    $(document).ready(function() {
+        var msops = <%- JSON.stringify(msops)%>;
+        var data = [];
+        for (var i = 0; i < msops.length; i++) {
+            data.push([
+                msops[i].mspoCertNo,
+                changeToDateFormat(msops[i].expiredDate),
+                msops[i].standard,
+                msops[i].mspoId,
+            ]);
+        }
+        var table = $('#msops_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [],
+            "responsive": {
+                "details": {
+                    "renderer": function(api, rowIdx, columns) {
+                        // Show hidden columns in row details
+                        var data = $.map(columns, function(col, i) {
+                            if (col.columnIndex == 2) {
+                                return;
+                            } else {
+                                return col.hidden ?
+                                    '<tr><td>' + col.title + ':</td> ' +
+                                    '<td>' + col.data + '</td></tr>' :
+                                    '';
+                            }
+                        }).join('');
+
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function() {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function() {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+    });
+
+
+    function changeToDateFormat(date) {
+        var datenew = new Date(date);
+        datenew = moment(datenew).format('YYYY/MM/DD');
+        return datenew;
+    }
+</script>

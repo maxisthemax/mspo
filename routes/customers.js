@@ -17,7 +17,7 @@ module.exports = {
                 res.render('customers/customers.ejs', {
                     successFlash: req.flash('success'),
                     errorFlash: req.flash('error'),
-                    cust_s: (cust_s)?cust_s:[],
+                    cust_s: (cust_s) ? cust_s : [],
                     cust_s_disabled: (cust_s_disabled) ? cust_s_disabled : [],
                     editcustomerhtml: htmlContent,
                     editcustomerhtml2: htmlContent2,
@@ -72,26 +72,45 @@ module.exports = {
             if (!fs.existsSync(filefolder)) {
                 mkdirp(filefolder, function (err) {
                     if (err) console.error(err)
-                    else console.log('dir created')
-                });
-            }
-            //console.log(req.files.docupload);
-            if (req.files.docupload && req.files.docupload.length > 0) {
-                for (i = 0; i < req.files.docupload.length; i++) {
-                    var filetype = req.files.docupload[i].name.split('.').pop();
-                    var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
-                    fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
-                        if (err) {
-                            //console.log(err);
-                            req.flash('error', 'Failed To Upload');
+                    else {
+                        console.log('dir created')
+                        if (req.files.docupload && req.files.docupload.length > 0) {
+                            for (i = 0; i < req.files.docupload.length; i++) {
+                                var filetype = req.files.docupload[i].name.split('.').pop();
+                                var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
+                                fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
+                                    if (err) {
+                                        //console.log(err);
+                                        req.flash('error', 'Failed To Upload');
+                                        res.redirect(`/customers/doc/${req.body.custId}`);
+                                    }
+                                });
+                            }
+                            req.flash('success', 'Upload Complete');
                             res.redirect(`/customers/doc/${req.body.custId}`);
-                        }
-                    });
-                }
-                req.flash('success', 'Upload Complete');
-                res.redirect(`/customers/doc/${req.body.custId}`);
 
-            } else { res.redirect(`/customers/doc/${req.body.custId}`); }
+                        } else { res.redirect(`/customers/doc/${req.body.custId}`); }
+                    }
+                });
+            } else {
+                //console.log(req.files.docupload);
+                if (req.files.docupload && req.files.docupload.length > 0) {
+                    for (i = 0; i < req.files.docupload.length; i++) {
+                        var filetype = req.files.docupload[i].name.split('.').pop();
+                        var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
+                        fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
+                            if (err) {
+                                //console.log(err);
+                                req.flash('error', 'Failed To Upload');
+                                res.redirect(`/customers/doc/${req.body.custId}`);
+                            }
+                        });
+                    }
+                    req.flash('success', 'Upload Complete');
+                    res.redirect(`/customers/doc/${req.body.custId}`);
+
+                } else { res.redirect(`/customers/doc/${req.body.custId}`); }
+            }
         }
         else if (mode == 2) {
 
@@ -106,7 +125,7 @@ module.exports = {
                 req.flash('error', 'Failed To Delete');
                 res.redirect(`/customers/doc/${req.body.custId}`);
             }
-            
+
             res.redirect(`/customers/doc/${req.body.custId}`);
         }
     },
@@ -127,23 +146,37 @@ module.exports = {
                 //console.log(customer);
                 var defaultfolder = `public/company/${req.user.coId}/customers/doc/`;
                 var filefolder = defaultfolder + customer.insertId;
+                req.flash('success', 'New Customer Created');
                 if (!fs.existsSync(filefolder)) {
                     mkdirp(filefolder, function (err) {
                         if (err) console.error(err)
-                        else console.log('dir created')
-                    });
-                }
-                req.flash('success', 'New Customer Created');
-                if (req.files.icupload && req.files.icupload.length > 0) {
-                    var filetype = req.files.icupload[0].name.split('.').pop();
-                    var filename = (req.body[`icrename[0]`] == "") ? req.files.icupload[0].name : req.body[`icrename[0]`] + "." + filetype;
-                    fs.writeFileSync(filefolder + '/' + filename, req.files.icupload[0].data, function (err) {
-                        if (err) {
-                            res.redirect('/customers/');
+                        else {
+                            console.log('dir created');
+                            if (req.files.icupload && req.files.icupload.length > 0) {
+                                var filetype = req.files.icupload[0].name.split('.').pop();
+                                var filename = (req.body[`icrename[0]`] == "") ? req.files.icupload[0].name : req.body[`icrename[0]`] + "." + filetype;
+                                fs.writeFileSync(filefolder + '/' + filename, req.files.icupload[0].data, function (err) {
+                                    if (err) {
+                                        res.redirect('/customers/');
+                                    }
+                                });
+                                res.redirect('/customers/');
+                            } else { res.redirect('/customers/'); }
                         }
                     });
-                    res.redirect('/customers/');
-                } else { res.redirect('/customers/'); }
+                }
+                else {
+                    if (req.files.icupload && req.files.icupload.length > 0) {
+                        var filetype = req.files.icupload[0].name.split('.').pop();
+                        var filename = (req.body[`icrename[0]`] == "") ? req.files.icupload[0].name : req.body[`icrename[0]`] + "." + filetype;
+                        fs.writeFileSync(filefolder + '/' + filename, req.files.icupload[0].data, function (err) {
+                            if (err) {
+                                res.redirect('/customers/');
+                            }
+                        });
+                        res.redirect('/customers/');
+                    } else { res.redirect('/customers/'); }
+                }
             }
         });
     },
@@ -165,11 +198,11 @@ module.exports = {
             req.params.custId,
             function (err, customer) {
                 if (err) {
-                    
+
                     req.flash('error', 'Fail');
                     res.redirect('/customers/');
                 } else {
-                    req.flash('success', 'Success');  
+                    req.flash('success', 'Success');
                     res.redirect('/customers/');
                 }
             });

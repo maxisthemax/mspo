@@ -43,7 +43,7 @@ module.exports = {
     },
 
     createMspo: (req, res) => {
-        mspos.mspos.createMspo(req, function(err, mspo) {
+        mspos.mspos.createMspo(req, function (err, mspo) {
             if (err) {
                 if (err.code == "ER_DUP_ENTRY") {
                     req.flash('error', 'MSPO Already Exist');
@@ -53,30 +53,41 @@ module.exports = {
 
                 res.redirect('/mspos/');
             } else if (mspo) {
+                req.flash('success', 'New MSPO Created');
                 //console.log(customer);
                 var defaultfolder = `public/company/${req.user.coId}/mspos/doc/`;
                 var filefolder = defaultfolder + mspo.insertId;
                 if (!fs.existsSync(filefolder)) {
-                    mkdirp(filefolder, function(err) {
+                    mkdirp(filefolder, function (err) {
                         if (err) console.error(err)
-                        else console.log('dir created')
-                    });
-                }
-                req.flash('success', 'New MSPO Created');
-                if (req.files.docupload) {
-                    fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function(err) {
-                        if (err) {
-                            res.redirect('/mspos/');
+                        else {
+                            console.log('dir created'); if (req.files.docupload) {
+                                fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
+                                    if (err) {
+                                        res.redirect('/mspos/');
+                                    }
+                                });
+                                res.redirect('/mspos/');
+                            } else { res.redirect('/mspos/'); }
                         }
                     });
-                    res.redirect('/mspos/');
-                } else { res.redirect('/mspos/'); }
+                } else {
+
+                    if (req.files.docupload) {
+                        fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
+                            if (err) {
+                                res.redirect('/mspos/');
+                            }
+                        });
+                        res.redirect('/mspos/');
+                    } else { res.redirect('/mspos/'); }
+                }
             }
         });
     },
 
     editMspo: (req, res) => {
-        mspos.mspos.editMspo(req, function(err, mspo) {
+        mspos.mspos.editMspo(req, function (err, mspo) {
             if (err) {
                 req.flash('error', 'Unable to Edit MSPO Data');
             } else if (mspo) {
@@ -91,7 +102,7 @@ module.exports = {
         var defaultfolder = `public/company/${req.user.coId}/mspos/doc`;
         var mspo_doc = `${defaultfolder}/${req.params.mspoId}`;
         var mspo_dirarray = [];
-        getDirectories(mspo_doc, function(err, dir) {
+        getDirectories(mspo_doc, function (err, dir) {
             for (var i = 0; i < dir.length; i++) {
                 dirnew = dir[i].replace('public', '');
 
@@ -115,7 +126,7 @@ module.exports = {
         mspos.mspos.disableDeleteMspo(
             req.params.disabledordelete,
             req.params.mspoId,
-            function(err, mspo) {
+            function (err, mspo) {
                 if (err) {
                     console.log(err);
                     req.flash('error', 'Fail');
@@ -136,27 +147,44 @@ module.exports = {
 
         if (mode == 1) {
             if (!fs.existsSync(filefolder)) {
-                mkdirp(filefolder, function(err) {
+                mkdirp(filefolder, function (err) {
                     if (err) console.error(err)
-                    else console.log('dir created')
-                });
-            }
-            //console.log(req.files.docupload);
-            if (req.files.docupload && req.files.docupload.length > 0) {
-                for (i = 0; i < req.files.docupload.length; i++) {
-                    var filetype = req.files.docupload[i].name.split('.').pop();
-                    var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
-                    fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function(err) {
-                        if (err) {
-                            req.flash('error', 'Fail to Upload');
+                    else {
+                        console.log('dir created'); if (req.files.docupload && req.files.docupload.length > 0) {
+                            for (i = 0; i < req.files.docupload.length; i++) {
+                                var filetype = req.files.docupload[i].name.split('.').pop();
+                                var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
+                                fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
+                                    if (err) {
+                                        req.flash('error', 'Fail to Upload');
+                                        res.redirect(`/mspos/doc/${req.body.mspoId}`);
+                                    }
+                                });
+                            }
+                            req.flash('success', 'Upload Complete');
                             res.redirect(`/mspos/doc/${req.body.mspoId}`);
-                        }
-                    });
-                }
-                req.flash('success', 'Upload Complete');
-                res.redirect(`/mspos/doc/${req.body.mspoId}`);
 
-            } else { res.redirect(`/mspos/doc/${req.body.mspoId}`); }
+                        } else { res.redirect(`/mspos/doc/${req.body.mspoId}`); }
+                    }
+                });
+            } else {
+                //console.log(req.files.docupload);
+                if (req.files.docupload && req.files.docupload.length > 0) {
+                    for (i = 0; i < req.files.docupload.length; i++) {
+                        var filetype = req.files.docupload[i].name.split('.').pop();
+                        var filename = (req.body[`rename[${i}]`] == "") ? req.files.docupload[i].name : req.body[`rename[${i}]`] + "." + filetype;
+                        fs.writeFileSync(filefolder + '/' + filename, req.files.docupload[i].data, function (err) {
+                            if (err) {
+                                req.flash('error', 'Fail to Upload');
+                                res.redirect(`/mspos/doc/${req.body.mspoId}`);
+                            }
+                        });
+                    }
+                    req.flash('success', 'Upload Complete');
+                    res.redirect(`/mspos/doc/${req.body.mspoId}`);
+
+                } else { res.redirect(`/mspos/doc/${req.body.mspoId}`); }
+            }
         } else if (mode == 2) {
 
             var filename = req.body.filenamedelete;
@@ -165,7 +193,7 @@ module.exports = {
             try {
                 fs.unlinkSync(filepath)
                 req.flash('success', 'Delete Complete');
-                    //file removed
+                //file removed
             } catch (err) {
                 req.flash('error', 'Fail to Delete');
                 console.error(err)

@@ -1,0 +1,324 @@
+<% include partials/header.ejs %>
+<div class="container-fluid">
+    <div class="tab">
+        <button class="tablinks" onclick="openTabs(event, 'summary')" value=summary>Summary</button>
+    </div>
+    <div class="" style="border:1px solid">
+        <div id="summary" class="tabcontent">
+            <div class="panel-heading">
+                <h3>Search</h3>
+            </div>
+
+            <form class="p-1" name="summary_form" method="POST">
+                <div class="col-sm-9">
+                    <label for="custId">Customer Name</label>
+                    <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%">
+                        <option></option>
+                        <% if(custs){ for(var i = 0; i < custs.length; i++) {%>
+                        <option value=<%= custs[i].custId %>><%= custs[i].custName %> - <%= custs[i].custIC %></option>
+                        <% }} %>
+                    </select>
+                </div>
+                <button type=submit class="btn btn-primary">Search</button>
+            </form>
+
+            <br><br>
+            <div style="border: 4px solid black; padding: 20px">
+                <div class="panel-heading">
+                    <h1>Customer</h1>
+                    <table>
+                        <% if(cust.length > 0) {%>
+                        <tr>
+                            <td>Name</td>
+                            <td> : <%= cust[0].custName %></td>
+                        </tr>
+                        <tr>
+                            <td>IC</td>
+                            <td> : <%= cust[0].custIC %></td>
+                        </tr>
+                        <tr>
+                            <td>Customer No</td>
+                            <td> : <%= cust[0].custNo %></td>
+                        </tr>
+                        <tr>
+                            <td>Customer Tel</td>
+                            <td> : <%= cust[0].custTel %></td>
+                        </tr>
+                        <tr>
+                            <td>Customer Address 1</td>
+                            <td> : <%= cust[0].custAdd1 %></td>
+                        </tr>
+                        <tr>
+                            <td>Customer Address 2</td>
+                            <td> : <%= cust[0].custAdd2 %></td>
+                        </tr>
+                        <tr>
+                            <td>Customer Address 3</td>
+                            <td> : <%= cust[0].custAdd3 %></td>
+                        </tr>
+                        <% } %>
+                    </table>
+                </div>
+                <div class="panel-heading">
+                    <h3>Documents</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group list-group-custom">
+                        <% if(sumcustdir){ for(var j = 0; j < sumcustdir.length; j++) {%>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <a href="<%= sumcustdir[j].docfullpath %>" target="_blank"
+                                        class="list-group-item"><%= i+1 %>.
+                                        <%= sumcustdir[j].docfilename %>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <% }} %>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div style="border: 4px solid black; padding: 20px">
+                <div class="panel-heading">
+                    <h1>Land</h1>
+                </div>
+                <div class="panel-body">
+                    <table id="lands_view" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Lot No</th>
+                                <th>Tilte No</th>
+                                <th>Area</th>
+                                <th class="none">Usage of Land</th>
+                                <th class="none">Type of Condition</th>
+                                <th class="none">Gps Location (Lat,Long)</th>
+                                <th class="none"></th>
+                                <!-- <th class="none">Address 3</th>
+                                <th class="none">Cust Id</th> -->
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div class="panel-heading">
+                    <h3>Documents</h3>
+                </div>
+                <div class="panel-body">
+                    <% if(sumlanddir){ for(var i = 0; i < sumlanddir.length; i++) {%>
+                    <ul class="list-group list-group-custom">
+                       
+                        <% if(sumlanddir[i].folderpath){ for(var j = 0; j < sumlanddir[i].folderpath.length; j++) {%>
+                        <h5>Lot No : <%= sumlanddir[i].lotNo %></h5> 
+                        <h5>Title No : <%= sumlanddir[i].titleNo %></h5>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <a href="<%= sumlanddir[i].folderpath[j].folderitem %>" target="_blank"
+                                        class="list-group-item"><%= i+1 %>.
+                                        <%= sumlanddir[i].folderpath[j].filename %>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                        <% }} %>
+                    </ul>
+                    <% }} %>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div style="border: 4px solid black; padding: 20px">
+                <div class="panel-heading">
+                    <h3>MPOB List</h3>
+                </div>
+                <div class="panel-body">
+                    <table id="mpobs_view" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>MPOB License No</th>
+                                <th>Expired Date</th>
+                                <th class="none"></th>
+                                <!-- <th class="none">Address 3</th>
+                                    <th class="none">Cust Id</th> -->
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                
+                <div class="panel-heading">
+                    <h3>Documents</h3>
+                </div>
+                <div class="panel-body">
+                    <% if(summpobdir){ for(var i = 0; i < summpobdir.length; i++) {%>
+                    <ul class="list-group list-group-custom">
+                        <h4>MPOB License No : <%= summpobdir[i].mpobLicNo %></h4>
+                        <% if(summpobdir[i].folderpath){ for(var j = 0; j < summpobdir[i].folderpath.length; j++) {%>
+
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <a href="<%= summpobdir[i].folderpath[j].folderitem %>" target="_blank"
+                                        class="list-group-item"><%= i+1 %>.
+                                        <%= summpobdir[i].folderpath[j].filename %>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                        <% }} %>
+                    </ul>
+                    <% }} %>
+                </div>
+            </div>
+            <br>
+            <br>
+
+            <div style="border: 4px solid black; padding: 20px">
+                <div class="panel-heading">
+                    <h3>MSPO List</h3>
+                </div>
+                <div class="panel-body">
+                    <table id="msops_view" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>MSPO Certificate No</th>
+                                <th>Expired Date</th>
+                                <th class="none"></th>
+                                <th>Standard</th>
+                                <!-- <th class="none">Address 3</th>
+                                    <th class="none">Cust Id</th> -->
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div class="panel-heading">
+                    <h3>Documents</h3>
+                </div>
+                <div class="panel-body">
+                    <% if(summspodir){ for(var i = 0; i < summspodir.length; i++) {%>
+                    <ul class="list-group list-group-custom">
+                        <h4>MSPO No : <%= summspodir[i].mspoCertNo %></h4>
+                        <% if(summspodir[i].folderpath){ for(var j = 0; j < summspodir[i].folderpath.length; j++) {%>
+
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <a href="<%= summspodir[i].folderpath[j].folderitem %>" target="_blank"
+                                        class="list-group-item"><%= i+1 %>.
+                                        <%= summspodir[i].folderpath[j].filename %>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                        <% }} %>
+                    </ul>
+                    <% }} %>
+                </div>
+            </div>    
+
+
+
+            <!-- /#page-content-wrapper -->
+        </div>
+
+
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<% include partials/footer.ejs %>
+
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>
+<script>
+    function openTabs(evt, tabname) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabname).style.display = "block";
+        evt.currentTarget.className += " active";
+        localStorage.setItem('summary_tab', tabname);
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            $('a').each(function () {
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active');
+                    $(this).parents('li').addClass('active');
+                }
+            });
+        });
+
+        tablinks = document.getElementsByClassName('tablinks');
+        var summary_tab = localStorage.getItem('summary_tab');
+        if (summary_tab === null || summary_tab == '') {
+            tablinks[0].click();
+        } else {
+            for (i = 0; i < tablinks.length; i++) {
+                if (tablinks[i].value == summary_tab)
+                    tablinks[i].click();
+            }
+        }
+    });
+    $(function () {
+        var chartformat = "YYYY-MM-DD";
+        $('#expiredDatePicker').datetimepicker({
+            format: chartformat,
+            defaultDate: moment(),
+        });
+    });
+
+</script>
+<% include summary/summaryjs.ejs %>
