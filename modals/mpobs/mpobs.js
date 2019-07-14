@@ -45,7 +45,6 @@ exports.queryMpob = function(mpobId, cb) {
     });
 }
 
-
 exports.createMpob = function(req, cb) {
         var coId = req.user.coId;
         var mpob = req.body;
@@ -55,11 +54,12 @@ exports.createMpob = function(req, cb) {
             mpob.mpobLicNo = mpob.mpobLicNo ? [].concat(mpob.mpobLicNo) : [''];
             mpob.expiredDate = mpob.expiredDate ? [].concat(mpob.expiredDate) : [''];
             mpob.custId = mpob.custId ? [].concat(mpob.custId) : [''];
+            mpob.landId = mpob.landId ? [].concat(mpob.landId) : [''];
 
 
             let firstquery = `INSERT INTO mpobs 
-    (mpobLicNo,expiredDate, custId, createdDate, disabled, coId)
-    VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}',CURRENT_TIMESTAMP,'0','${coId}')`;
+    (mpobLicNo,expiredDate, custId, createdDate, disabled, coId, landId)
+    VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}',CURRENT_TIMESTAMP,'0','${coId}','${mpob.landId}')`;
 
             //console.log(firstquery);
 
@@ -104,11 +104,13 @@ exports.editMpob = function (req, cb) {
     mpob.mpobLicNo = mpob.mpobLicNo ? [].concat(mpob.mpobLicNo) : [''];
     mpob.expiredDate = mpob.expiredDate ? [].concat(mpob.expiredDate) : [''];
     mpob.custId = mpob.custId ? [].concat(mpob.custId) : [''];
+    mpob.landId = mpob.landId ? [].concat(mpob.landId) : [''];
  
     let firstquery = `UPDATE mpobs SET 
     mpobLicNo = "${mpob.mpobLicNo[0]}",
     expiredDate = "${mpob.expiredDate[0]}",
-    custId = "${mpob.custId[0]}"
+    custId = "${mpob.custId[0]}",
+    landId = "${mpob.landId[0]}"
     where mpobId= "${mpob.mpobId[0]}"`
 
     con.query(firstquery, function (err, result, fields) {

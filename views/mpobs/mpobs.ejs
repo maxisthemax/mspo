@@ -106,7 +106,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <label for="custId">Customer Name</label>
-                            <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%">
+                            <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%"  onchange="configureDropDownLists(this,document.getElementById('landId'))">
                                     <option></option>
                                     <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>
                                     <option value=<%= cust_s[i].custId %>><%= cust_s[i].custName  %> - <%= cust_s[i].custIC  %>
@@ -114,6 +114,13 @@
                                     <% }} %>
                                 </select>
                         </div>
+                        <div class="col-sm-6">
+                            <label for="landId">Lands</label>
+                            <select class="form-control mb-4" id="landId" name="landId" required style="width: 100%">
+                                    <option></option>
+                                    
+                                </select>
+                        </div>                        
                     </div>
                     <br>
                     <p class="h4 mb-4">Upload Document Here</p>
@@ -190,5 +197,28 @@
                 placeholder: "Select a Customer",
                 width: 'resolve',
             });
+            $("#landId").select2({
+                placeholder: "Select a Land",
+                width: 'resolve',
+            }); 
+
+        function configureDropDownLists(ddl1, ddl2) {
+            var land_s = <%- JSON.stringify(land_s)%>;
+            const arr1 = land_s.filter(d => d.custId == ddl1.value);
+            if(arr1 && arr1.length>0) {
+                for (i = 0; i < arr1.length; i++) {
+                        createOption(ddl2, arr1[i].lotNo, arr1[i].landId);
+                    }
+                } else {
+                    $("#landId").find('option').not(':first').remove();
+                }
+            }
+
+        function createOption(ddl, text, value) {
+            var opt = document.createElement('option');
+            opt.value = value;
+            opt.text = text;
+            ddl.options.add(opt);
+        }               
         </script>
         <% include mpobs/mpobsjs.ejs %>

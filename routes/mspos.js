@@ -1,5 +1,6 @@
 var mspos = require("../modals/mspos");
 var cust = require("../modals/customers");
+var lands = require("../modals/lands");
 var fs = require("fs");
 var ejs = require("ejs");
 var formidable = require('formidable');
@@ -15,14 +16,17 @@ module.exports = {
         cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
             mspos.mspos.queryAllMspos(req.user.coId, function (err, mspo_s) {
                 mspos.mspos.queryAllMsposDisabled(req.user.coId, function (err, mspo_s_disabled) {
-                    res.render('mspos/mspos.ejs', {
-                        successFlash: req.flash('success'),
-                        errorFlash: req.flash('error'),
-                        cust_s: (cust_s) ? cust_s : [],
-                        mspo_s_disabled: (mspo_s_disabled) ? mspo_s_disabled : [],
-                        mspo_s: (mspo_s) ? mspo_s : [],
-                        editmspohtml: htmlContent,
-                        editmspohtml2: htmlContent2,
+                    lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
+                        res.render('mspos/mspos.ejs', {
+                            successFlash: req.flash('success'),
+                            errorFlash: req.flash('error'),
+                            cust_s: (cust_s) ? cust_s : [],
+                            mspo_s_disabled: (mspo_s_disabled) ? mspo_s_disabled : [],
+                            mspo_s: (mspo_s) ? mspo_s : [],
+                            editmspohtml: htmlContent,
+                            editmspohtml2: htmlContent2,
+                            land_s:land_s
+                        });
                     });
                 });
             });
@@ -31,13 +35,15 @@ module.exports = {
     getEditMsposPage: (req, res) => {
         cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
             mspos.mspos.queryMspo(req.params.mspoId, function (err, mspo) {
-
-                res.render('mspos/editmspo.ejs', {
-                    successFlash: req.flash('success'),
-                    errorFlash: req.flash('error'),
-                    mspo: mspo,
-                    cust_s: cust_s
-                });
+                lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
+                    res.render('mspos/editmspo.ejs', {
+                        successFlash: req.flash('success'),
+                        errorFlash: req.flash('error'),
+                        mspo: mspo,
+                        cust_s: cust_s,
+                        land_s:land_s
+                    });
+                });    
             });
         });
     },

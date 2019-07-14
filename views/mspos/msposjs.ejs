@@ -4,6 +4,7 @@
     $(document).ready(function() {
         var editmspohtml = <%- JSON.stringify(editmspohtml)%>;
         var mspo_s = <%- JSON.stringify(mspo_s)%>;
+        
         var data = [];
         for (var i = 0; i < mspo_s.length; i++) {
             //var expiredDate = new Date(mspo_s[i].expiredDate);
@@ -68,11 +69,7 @@
             table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
         });
 
-
-
-
-
-
+        
 
 
 
