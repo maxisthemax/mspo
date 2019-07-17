@@ -23,6 +23,8 @@ const { getSummaryPage,postSummaryPage } = require('./routes/summary');
 const { getCompanyPage, saveCompany } = require('./routes/company');
 const { getsuperadminPage, getEditsuperadminPage, getsuperadminDocPage, createsuperadmin, 
     editsuperadmin, deactivateCompany } = require('./routes/superadmin');
+const { getTicketsPage, getEditTicketsPage, getTicketsDocPage, 
+    uploadTicketDocuments, createTicket, editTicket, disabledDeleteTicket } = require('./routes/tickets');
 
 
 // Create a new Express application.
@@ -209,6 +211,33 @@ var checklandcompany = function(req) {
     ]
 };
 
+var checkticketcompany = function(req) {
+    return [
+        function(req, res, next) {
+
+            var ticketId = req.params.ticketId;
+            process.nextTick(function() {
+                var firstquery = `SELECT coId FROM tickets 
+    WHERE ticketId=${ticketId} LIMIT 1`;
+                //console.log(firstquery);
+
+                con.query(firstquery, function(err, result, fields) {
+                    //console.log(result);
+                    if (result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+                });
+            });
+        }
+    ]
+};
+
 var checkcustomercompany = function(req) {
     return [
         function(req, res, next) {
@@ -302,6 +331,18 @@ app.post('/lands/doc/', uploadLandDocuments);
 app.post('/lands/createland', createLand);
 app.post('/lands/editland', editLand);
 /* lands */
+
+/* tickets */
+app.all('/tickets*', ensureLoggedIn('/login'));
+app.get('/tickets/', getTicketsPage);
+app.get('/tickets/:ticketId', checkticketcompany(), getEditTicketsPage);
+app.get('/tickets/doc/:ticketId', checkticketcompany(), getTicketsDocPage);
+app.get('/tickets/:disabledordelete/:ticketId/', checkticketcompany(), disabledDeleteTicket);
+app.post('/tickets/doc/', uploadTicketDocuments);
+app.post('/tickets/createticket', createTicket);
+app.post('/tickets/editticket', editTicket);
+/* tickets */
+
 
 /* mpobs */
 app.all('/mpobs*', ensureLoggedIn('/login'));

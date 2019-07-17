@@ -51,7 +51,7 @@ exports.createsuperadmin = function (req, cb) {
         var thisId = result.insertId;
         let secondquery = `INSERT INTO USERS (username,userpassword,displayname,deactivated,administrator,coId) VALUES (
                       '${comp.username}','${comp.password}','${comp.compname}','0','1',${thisId})`;
-        console.log(secondquery);
+  
         con.query(secondquery, function (err, result, fields) {
           if (result) result = JSON.parse(JSON.stringify(result));
           if (result && result.insertId) {

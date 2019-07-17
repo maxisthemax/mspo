@@ -1,0 +1,257 @@
+<% include partials/header.ejs %>
+<div class="container-fluid">
+    <div class="tab">
+        <button class="tablinks" onclick="openTabs(event, 'ticket_create')" value=ticket_create>Create Ticket</button>
+        <button class="tablinks" onclick="openTabs(event, 'ticket_s')" value=ticket_s>Tickets</button>
+
+    </div>
+    <div class="" style="border:1px solid">
+        <div id="ticket_s" class="tabcontent">
+            <div class="panel-heading">
+                <h3>Tickets List</h3>
+            </div>
+            <div class="panel-body">
+                <table id="ticket_s_view" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Ticket Date</th>
+                            <th>Ticket No</th>
+                            <th>Vehicle No</th>
+                            <th>Buyer Name</th>
+                            <th class="none">First Weight</th>
+                            <th class="none">Second Weight</th>
+                            <th class="none">Deduction</th>
+                            <th class="none">Nett Weight</th>
+                            <th class="none">Price 1mt</th>
+                            <th class="none">Total Price</th>
+                            <th class="none">OER (%)</th>
+                            <th class="none"></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Ticket Date</th>
+                            <th>Ticket No</th>
+                            <th>Vehicle No</th>
+                            <th>Buyer Name</th>
+                            <th class="none">First Weight</th>
+                            <th class="none">Second Weight</th>
+                            <th class="none">Deduction</th>
+                            <th class="none">Nett Weight</th>
+                            <th class="none">Price 1mt</th>
+                            <th class="none">Total Price</th>
+                            <th class="none">OER (%)</th>
+                            <th class="none"></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <br> <br> <br> <br>
+            <div class="panel-heading">
+                <h3>Disabled Customers List</h3>
+                <h4>You have <%= ticket_s_disabled.length%> disabled customers</h4>
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Disabled List (<%= ticket_s_disabled.length%>)</button>
+
+            </div>
+            <br> <br>
+            <div id="demo" class="collapse">
+                <table id="ticket_s_disabled_view" class="display" cellspacing="0" width="100%">
+                     <thead>
+                        <tr>
+                            <th>Ticket Date</th>
+                            <th>Ticket No</th>
+                            <th>Vehicle No</th>
+                            <th>Buyer Name</th>
+                            <th class="none">First Weight</th>
+                            <th class="none">Second Weight</th>
+                            <th class="none">Deduction</th>
+                            <th class="none">Nett Weight</th>
+                            <th class="none">Price 1mt</th>
+                            <th class="none">Total Price</th>
+                            <th class="none">OER (%)</th>
+                            <th class="none"></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Ticket Date</th>
+                            <th>Ticket No</th>
+                            <th>Vehicle No</th>
+                            <th>Buyer Name</th>
+                            <th class="none">First Weight</th>
+                            <th class="none">Second Weight</th>
+                            <th class="none">Deduction</th>
+                            <th class="none">Nett Weight</th>
+                            <th class="none">Price 1mt</th>
+                            <th class="none">Total Price</th>
+                            <th class="none">OER (%)</th>
+                            <th class="none"></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="ticket_create" class="tabcontent">
+            <form class="p-5" name="user" method="POST" action="/tickets/createticket" enctype="multipart/form-data">
+                <p class="h4 mb-4">Create New ticket</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Ticket Date</label>
+                        <div class="input-group date" id="ticketDatePicker" data-target-input="nearest">
+                            <input type="text" id="ticketDate" name="ticketDate" required class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                            <div class="input-group-append" data-target="#ticketDatePicker" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>    
+                    </div>
+             
+                    <div class="col-sm-6">
+                        <label for="textInput">Ticket No</label>
+                        <input type="text" id="ticketNo" name="ticketNo" class="form-control mb-4" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Vehicle No</label>
+                        <input type="text" id="vehicleNo" name="vehicleNo" class="form-control mb-4" required>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Buyer Name</label>
+                        <input type="text" id="buyerId" name="buyerId" class="form-control mb-4" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="textInput">First Weight</label>
+                        <input type="number" step="0.01" id="firstWeight" name="firstWeight" class="form-control mb-4" required onchange="calculateNettWeight();">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="textInput">Second Weight</label>
+                        <input type="number" step="0.01" id="secondWeight" name="secondWeight" class="form-control mb-4" required onchange="calculateNettWeight();">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="textInput">Deduction</label>
+                        <input type="number" step="0.01" id="deduction" name="deduction" class="form-control mb-4" required onchange="calculateNettWeight();">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="textInput">Nett Weight</label>
+                        <input readonly=1 type="number" step="0.01" id="nettWeight" name="nettWeight" class="form-control mb-4" required>
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="textInput">Price 1mt</label>
+                        <input type="number" step="0.01" id="priceMt" name="priceMt" class="form-control mb-4" required onchange="calculateTotalWeight();">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="textInput">Total Price</label>
+                        <input readonly=1 type="number" step="0.01" id="totalPrice" name="totalPrice" class="form-control mb-4" required>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="textInput">OER</label>
+                        <input type="number" step="0.01" id="oer" name="oer" class="form-control mb-4" required>
+                    </div>                  
+                </div>           
+                <p class="h4 mb-4">Upload Document Here</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="docupload">Document</label><br>
+                        <input type="file" name="docupload"><br>
+                    </div>
+                </div>
+                <p class="h4 mb-4"></p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button class="btn btn-primary btn-block" type="submit">Create New ticket</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<% include partials/footer.ejs %>
+
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>
+<script>
+    function openTabs(evt, tabname) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabname).style.display = "block";
+        evt.currentTarget.className += " active";
+        localStorage.setItem('activeticket_Tab', tabname);
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            $('a').each(function () {
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active'); $(this).parents('li').addClass('active');
+                }
+            });
+        });
+
+        tablinks = document.getElementsByClassName('tablinks');
+        var activeticket_Tab = localStorage.getItem('activeticket_Tab');
+        if (activeticket_Tab === null || activeticket_Tab == '') {
+            tablinks[0].click();
+        } else {
+            for (i = 0; i < tablinks.length; i++) {
+                if (tablinks[i].value == activeticket_Tab)
+                    tablinks[i].click();
+            }
+        }
+
+                var chartformat = "YYYY-MM-DD";
+                $('#ticketDatePicker').datetimepicker({
+                    format: chartformat,
+                    defaultDate: moment(),
+                });        
+    });
+
+    $("#custId").select2({
+        placeholder: "Select a Customer",
+        width: 'resolve',
+    });
+
+function calculateNettWeight(){
+    var firstWeight = $('#firstWeight').val();
+    var secondWeight =  $('#secondWeight').val();
+    var deduction =  $('#deduction').val();
+    var nettWeight = firstWeight-secondWeight-deduction;
+
+    $('#nettWeight').val(nettWeight.toFixed(2));
+
+    var priceMt = $('#priceMt').val();
+    var totalPrice = priceMt * nettWeight;
+    $('#totalPrice').val(totalPrice.toFixed(2));    
+}
+function calculateTotalWeight(){
+    var priceMt = $('#priceMt').val();
+    var nettWeight =  $('#nettWeight').val();
+    var totalPrice = priceMt * nettWeight;
+    $('#totalPrice').val(totalPrice.toFixed(2));
+}
+</script>
+<% include tickets/ticketsjs.ejs %>

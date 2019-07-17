@@ -1,0 +1,211 @@
+<script src="../vendor/ejs/ejs.js"></script>
+
+<script> 
+$(document).ready(function () {
+        var edittickethtml = <%- JSON.stringify(edittickethtml)%>;
+        var ticket_s = <%- JSON.stringify(ticket_s)%>;
+        var data = [];
+        console.log();
+        for ( var i=0 ; i<ticket_s.length ; i++ ) {
+                data.push( [  
+                    changeToDateFormat(ticket_s[i].ticketDate), 
+                    ticket_s[i].ticketNo,
+                    ticket_s[i].vehicleNo, 
+                    ticket_s[i].buyerId, 
+                    ticket_s[i].firstWeight, 
+                    ticket_s[i].secondWeight,
+                    ticket_s[i].deduction,
+                    ticket_s[i].nettWeight,
+                    ticket_s[i].totalPrice,
+                    ticket_s[i].oer,
+                    ticket_s[i].priceMt,
+                    ticket_s[i].ticketId,
+                    ] );
+            }       
+ 
+        var table = $('#ticket_s_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "responsive": {
+                "details": {
+                    "renderer": function ( api, rowIdx, columns ) {
+
+                        // Show hidden columns in row details
+                        var data = $.map( columns, function ( col, i ) {
+                            console.log(col.columnIndex);
+                            if (col.columnIndex == 11) 
+                            {
+                                return;
+                            }
+                            else {
+                                return col.hidden 
+                                ? '<tr><td>'+col.title+':</td> '+
+                                    '<td>'+col.data+'</td></tr>' 
+                                : '';
+                            }
+                        } ).join('');
+                            var htm = ejs.render(edittickethtml,{ticket_s: columns});
+                            data = $('<table width="100%"/>').append( data ).prop('outerHTML');
+                            
+                            // Extra: Show custom content
+                            data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  
+                            data += htm;
+                            //console.log(html);
+                            data += '';
+
+                            data += '</div><br><br>';  
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function () {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function () {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var edittickethtml2 = <%- JSON.stringify(edittickethtml2)%>;
+        var ticket_s_disabled = <%- JSON.stringify(ticket_s_disabled)%>;
+        var data = [];
+        for ( var i=0 ; i<ticket_s_disabled.length ; i++ ) {
+                data.push( [  
+                    changeToDateFormat(ticket_s_disabled[i].ticketDate), 
+                    ticket_s_disabled[i].ticketNo,
+                    ticket_s_disabled[i].vehicleNo, 
+                    ticket_s_disabled[i].buyerId, 
+                    ticket_s_disabled[i].firstWeight, 
+                    ticket_s_disabled[i].secondWeight,
+                    ticket_s_disabled[i].deduction,
+                    ticket_s_disabled[i].nettWeight,
+                    ticket_s_disabled[i].totalPrice,
+                    ticket_s_disabled[i].oer,
+                    ticket_s_disabled[i].priceMt,
+                    ticket_s_disabled[i].ticketId,
+                    ] );
+            }          
+        //console.log(customers);
+        var table = $('#ticket_s_disabled_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "responsive": {
+                "details": {
+                    "renderer": function ( api, rowIdx, columns ) {
+                        // Show hidden columns in row details
+                        var data = $.map( columns, function ( col, i ) {
+                            if (col.columnIndex == 11) 
+                            {
+                                return;
+                            }
+                            else {
+                                return col.hidden 
+                                ? '<tr><td>'+col.title+':</td> '+
+                                    '<td>'+col.data+'</td></tr>' 
+                                : '';
+                            }
+                        } ).join('');
+                            var htm2 = ejs.render(edittickethtml2,{ticket_s_disabled: columns});
+                            data = $('<table width="100%"/>').append( data ).prop('outerHTML');                       
+                            // Extra: Show custom content
+                            data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  
+                            data += htm2;
+                            //console.log(html);
+                            data += '';
+                            data += '</div><br><br>';  
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function () {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function () {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+    });
+
+
+    function changeToDateFormat(date) {
+        var datenew = new Date(date);
+        datenew = moment(datenew).format('YYYY/MM/DD');
+        return datenew;
+    }    
+</script>

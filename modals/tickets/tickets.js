@@ -1,0 +1,160 @@
+exports.queryAllTickets = function (coId, cb) {
+  process.nextTick(function () {
+    var firstquery = `SELECT * FROM tickets a LEFT JOIN company b ON a.coId = b.coId where a.coId = ${coId} and disabled = 0`;
+    //console.log(firstquery);
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.length) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
+exports.queryAllTicketsDisabled = function (coId, cb) {
+  process.nextTick(function () {
+    var firstquery = `SELECT * FROM tickets a LEFT JOIN company b ON a.coId = b.coId where a.coId = ${coId} and disabled = 1`;
+    //console.log(firstquery);
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.length) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
+exports.disableDeleteTicket = function (disableDelete, ticketId, cb) {
+  process.nextTick(function () {
+    var firstquery =""
+    if (disableDelete == "disabled") {
+      firstquery = `UPDATE tickets SET disabled = 1 WHERE ticketId = ${ticketId}`;
+    } else if (disableDelete == "restore") {
+      firstquery = `UPDATE tickets SET disabled = 0 WHERE ticketId = ${ticketId}`;
+    } else if (disableDelete == "delete") {
+      firstquery = `DELETE FROM tickets WHERE ticketId = ${ticketId}`;
+    }
+    
+    con.query(firstquery, function (err, result, fields) {
+      if (result) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
+exports.queryTicket = function (ticketId, cb) {
+  process.nextTick(function () {
+    var firstquery = `SELECT * FROM tickets 
+    WHERE ticketId=${ticketId}`;
+    //console.log(firstquery);
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.length) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
+exports.editTicket = function (req, cb) {
+  var ticket = req.body;
+  process.nextTick(function () {
+
+    ticket.ticketDate = ticket.ticketDate ? [].concat(ticket.ticketDate) : [''];
+    ticket.ticketNo = ticket.ticketNo ? [].concat(ticket.ticketNo) : [''];
+    ticket.vehicleNo = ticket.vehicleNo ? [].concat(ticket.vehicleNo) : [''];
+    ticket.buyerId = ticket.buyerId ? [].concat(ticket.buyerId) : [''];
+    ticket.firstWeight = ticket.firstWeight ? [].concat(ticket.firstWeight) : [''];
+    ticket.secondWeight = ticket.secondWeight ? [].concat(ticket.secondWeight) : [''];
+    ticket.deduction = ticket.deduction ? [].concat(ticket.deduction) : [''];
+    ticket.nettWeight = ticket.nettWeight ? [].concat(ticket.nettWeight) : [''];
+    ticket.priceMt = ticket.priceMt ? [].concat(ticket.priceMt) : [''];
+    ticket.totalPrice = ticket.totalPrice ? [].concat(ticket.totalPrice) : [''];
+    ticket.oer = ticket.oer ? [].concat(ticket.oer) : [''];
+    ticket.ticketId = ticket.ticketId ? [].concat(ticket.ticketId) : [''];
+
+    let firstquery = `UPDATE tickets SET 
+    ticketDate = "${ticket.ticketDate[0]}",
+    ticketNo = "${ticket.ticketNo[0]}",
+    vehicleNo = "${ticket.vehicleNo[0]}",
+    buyerId = "${ticket.buyerId[0]}",
+    firstWeight = "${ticket.firstWeight[0]}",
+    secondWeight = "${ticket.secondWeight[0]}",
+    deduction = "${ticket.deduction[0]}",
+    nettWeight = "${ticket.nettWeight[0]}",
+    priceMt = "${ticket.priceMt[0]}",
+    totalPrice = "${ticket.totalPrice[0]}",
+    oer = "${ticket.oer[0]}"
+    where ticketId= "${ticket.ticketId[0]}"`
+
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      //console.log(result);
+      if (result) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
+exports.createTicket = function (req, cb) {
+  var coId = req.user.coId;
+  var ticket = req.body;
+
+  process.nextTick(function () {
+
+    ticket.ticketDate = ticket.ticketDate ? [].concat(ticket.ticketDate) : [''];
+    ticket.ticketNo = ticket.ticketNo ? [].concat(ticket.ticketNo) : [''];
+    ticket.vehicleNo = ticket.vehicleNo ? [].concat(ticket.vehicleNo) : [''];
+    ticket.buyerId = ticket.buyerId ? [].concat(ticket.buyerId) : [''];
+    ticket.firstWeight = ticket.firstWeight ? [].concat(ticket.firstWeight) : [''];
+    ticket.secondWeight = ticket.secondWeight ? [].concat(ticket.secondWeight) : [''];
+    ticket.deduction = ticket.deduction ? [].concat(ticket.deduction) : [''];
+    ticket.nettWeight = ticket.nettWeight ? [].concat(ticket.nettWeight) : [''];
+    ticket.priceMt = ticket.priceMt ? [].concat(ticket.priceMt) : [''];
+    ticket.totalPrice = ticket.totalPrice ? [].concat(ticket.totalPrice) : [''];
+    ticket.oer = ticket.oer ? [].concat(ticket.oer) : [''];
+
+    let firstquery = `INSERT INTO tickets 
+    (ticketDate,ticketNo, vehicleNo, buyerId, firstWeight, secondWeight, deduction, nettWeight,priceMt,totalPrice,oer,coId,createdDate)
+    VALUES ('${ticket.ticketDate}','${ticket.ticketNo}','${ticket.vehicleNo}','${ticket.buyerId}'
+    ,'${ticket.firstWeight}','${ticket.secondWeight}','${ticket.deduction}','${ticket.nettWeight}','${ticket.priceMt}'
+    ,'${ticket.totalPrice}','${ticket.oer}','${coId}','CURRENT_TIMESTAMP')`;
+
+    con.query(firstquery, function (err, result, fields) {
+      if (result) result = JSON.parse(JSON.stringify(result));
+      if (result && result.insertId) {
+        return cb(null, result);
+      }
+      else {
+        return cb(err, null);
+      }
+    });
+  });
+}
+
+
+function addescape(str) {
+  var strconv = '';
+  strconv = str;
+  if (typeof strconv === 'string') {
+    strconv = strconv.replace("'", "''");
+  }
+  return strconv;
+} 

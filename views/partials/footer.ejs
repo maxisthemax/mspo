@@ -36,14 +36,14 @@
         <% if ( (locals.successFlash) && successFlash.length > 0 ) { %>
         $.notify("<%= successFlash %>", {
             className: "success",
-            position: "top center",
+            position: "bottom center",
         });
         <% } %>
 
         <% if ( (locals.errorFlash) && errorFlash.length > 0 ) { %>
         $.notify("<%= errorFlash %>", {
             className: "error",
-            position: "right bottom"
+            position: "bottom center"
         });
         <% } %>
     </script>
