@@ -1,0 +1,69 @@
+<% include partials/header.ejs %>
+<div id="buyer_edit" class="container-fluid">
+    <div class="" style="border:1px solid">
+    
+        <form class="p-5" name="buyer_edit_form" method="POST" action="/buyers/editbuyer">
+
+            <p class="h4 mb-4">Edit buyer</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Buyer Name</label>
+                        <input type="text" id="buyerName" name="buyerName" class="form-control mb-4" required value="<%=buyer[0].buyerName%>"=>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Buyer Address</label>
+                        <input type="text" id="buyerAddress" name="buyerAddress" class="form-control mb-4" required value="<%=buyer[0].buyerAddress%>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Buyer Category</label>
+                        <select class="form-control mb-4" id="buyerCategory"name="buyerCategory" required style="width: 100%">
+                            <option></option>            
+
+                            <option value=1 <% if (buyer[0].buyerCategory == 1 ){%>selected<%}%>>Oil Mil</option>
+                            <option value=2 <% if (buyer[0].buyerCategory == 2 ){%>selected<%}%>>Dealer</option>
+
+                        </select>        
+                    </div>
+                </div>
+                 <br>
+
+            <input type="hidden" id="buyerId" name="buyerId" value="<%= buyer[0].buyerId%>">
+            <div class="row">
+                <div class="col-sm-3">
+                    <a href="/buyers/">
+                        <input type=button class="btn btn-secondary btn-block" value="Back" onclick="">
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-block" type="submit">Save buyer</button>
+                </div>
+            </div>            
+
+        </form>
+    </div>
+</div>
+
+<% include partials/footer.ejs %>
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>
+
+<script>
+$(document).ready(function () {
+    var chartformat = "YYYY-MM-DD";
+    $('#buyerDatePicker').datetimepicker({
+        format: chartformat,
+    });  
+});  
+    $("#buyerCategory").select2({
+        placeholder: "Select a Buyer Category",
+        width: 'resolve',
+    });
+</script>

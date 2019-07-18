@@ -1,0 +1,170 @@
+<% include partials/header.ejs %>
+<div class="container-fluid">
+    <div class="tab">
+        <button class="tablinks" onclick="openTabs(event, 'buyer_s')" value=buyer_s>Buyers</button>
+        <button class="tablinks" onclick="openTabs(event, 'buyer_create')" value=buyer_create>Create Buyer</button>
+    </div>
+    <div class="" style="border:1px solid">
+        <div id="buyer_s" class="tabcontent">
+            <div class="panel-heading">
+                <h3>buyers List</h3>
+            </div>
+            <div class="panel-body">
+                <table id="buyer_s_view" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Buyer Name</th>
+                            <th>Buyer Address</th>
+                            <th>Buyer Category</th>
+                             <th class="none"></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Buyer Name</th>
+                            <th>Buyer Address</th>
+                            <th>Buyer Category</th>
+                             <th class="none"></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <br> <br> <br> <br>
+            <div class="panel-heading">
+                <h3>Disabled Customers List</h3>
+                <h4>You have <%= buyer_s_disabled.length%> disabled customers</h4>
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Disabled List (<%= buyer_s_disabled.length%>)</button>
+
+            </div>
+            <br> <br>
+            <div id="demo" class="collapse">
+                <table id="buyer_s_disabled_view" class="display" cellspacing="0" width="100%">
+                     <thead>
+                        <tr>
+                            <th>Buyer Name</th>
+                            <th>Buyer Address</th>
+                            <th>Buyer Category</th>
+                            <th class="none"></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Buyer Name</th>
+                            <th>Buyer Address</th>
+                            <th>Buyer Category</th>
+                            <th class="none"></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="buyer_create" class="tabcontent">
+            <form class="p-5" name="user" method="POST" action="/buyers/createbuyer" enctype="multipart/form-data">
+                <p class="h4 mb-4">Create New buyer</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Buyer Name</label>
+                        <input type="text" id="buyerName" name="buyerName" class="form-control mb-4" required>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Buyer Address</label>
+                        <input type="text" id="buyerAddress" name="buyerAddress" class="form-control mb-4" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Buyer Category</label>
+                        <select class="form-control mb-4" id="buyerCategory"name="buyerCategory" required style="width: 100%">
+                            <option></option>                   
+                            <option value=1>Oil Mil</option>
+                            <option value=2>Dealer</option>
+                        </select>        
+                    </div>
+                </div>
+                 <br>
+                <p class="h4 mb-4">Upload Document Here</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="docupload">Document</label><br>
+                        <input type="file" name="docupload"><br>
+                    </div>
+                </div>
+                <p class="h4 mb-4"></p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button class="btn btn-primary btn-block" type="submit">Create New Buyer</button>
+                    </div>
+                </div>
+               
+            </form>
+        </div>
+
+    </div>
+</div>
+<% include partials/footer.ejs %>
+
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>
+<script>
+    function openTabs(evt, tabname) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabname).style.display = "block";
+        evt.currentTarget.className += " active";
+        localStorage.setItem('activebuyer_Tab', tabname);
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            $('a').each(function () {
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active'); $(this).parents('li').addClass('active');
+                }
+            });
+        });
+
+        tablinks = document.getElementsByClassName('tablinks');
+        var activebuyer_Tab = localStorage.getItem('activebuyer_Tab');
+        if (activebuyer_Tab === null || activebuyer_Tab == '') {
+            tablinks[0].click();
+        } else {
+            for (i = 0; i < tablinks.length; i++) {
+                if (tablinks[i].value == activebuyer_Tab)
+                    tablinks[i].click();
+            }
+        }
+
+                var chartformat = "YYYY-MM-DD";
+                $('#buyerDatePicker').datetimepicker({
+                    format: chartformat,
+                    defaultDate: moment(),
+                });        
+    });
+
+    $("#buyerCategory").select2({
+        placeholder: "Select a Buyer Category",
+        width: 'resolve',
+    });
+
+</script>
+<% include buyers/buyersjs.ejs %>

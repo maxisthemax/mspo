@@ -1,0 +1,15 @@
+<style>
+.btnpadding {
+    margin: 10px;
+}
+</style>
+<div id="buyersbuttons" class="p-5">
+    <p class="h4 mb-4">Actions</p>
+    <div class="row">
+        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/buyers/<%= buyer_s[3].data%>';" >Edit This buyers</button>
+        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/buyers/doc/<%= buyer_s[3].data%>';" >View This Customer's buyer Documents</button>
+        <button type="button" class="btn btn-danger btnpadding"
+            onclick="var retVal = confirm('Do you want to disabled this buyer ?');if (retVal == true) {location.href = '/buyers/disabled/<%= buyer_s[3].data%>'};">Disabled This buyer</button>    
+    </div>
+</div>
+

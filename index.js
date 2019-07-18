@@ -25,8 +25,12 @@ const { getsuperadminPage, getEditsuperadminPage, getsuperadminDocPage, createsu
     editsuperadmin, deactivateCompany } = require('./routes/superadmin');
 const { getTicketsPage, getEditTicketsPage, getTicketsDocPage, 
     uploadTicketDocuments, createTicket, editTicket, disabledDeleteTicket } = require('./routes/tickets');
+    const { getBuyersPage, getEditBuyersPage, getBuyersDocPage, 
+        uploadBuyerDocuments, createBuyer, editBuyer, disabledDeleteBuyer } = require('./routes/buyers');    
 
 
+ 
+    
 // Create a new Express application.
 var app = express();
 app.use(busboyBodyParser({ multi: true }));
@@ -238,6 +242,33 @@ var checkticketcompany = function(req) {
     ]
 };
 
+var checkbuyercompany = function(req) {
+    return [
+        function(req, res, next) {
+
+            var buyerId = req.params.buyerId;
+            process.nextTick(function() {
+                var firstquery = `SELECT coId FROM buyers 
+    WHERE buyerId=${buyerId} LIMIT 1`;
+                //console.log(firstquery);
+
+                con.query(firstquery, function(err, result, fields) {
+                    //console.log(result);
+                    if (result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+                });
+            });
+        }
+    ]
+};
+
 var checkcustomercompany = function(req) {
     return [
         function(req, res, next) {
@@ -342,6 +373,17 @@ app.post('/tickets/doc/', uploadTicketDocuments);
 app.post('/tickets/createticket', createTicket);
 app.post('/tickets/editticket', editTicket);
 /* tickets */
+
+/* buyers */
+app.all('/buyers*', ensureLoggedIn('/login'));
+app.get('/buyers/', getBuyersPage);
+app.get('/buyers/:buyerId', checkbuyercompany(), getEditBuyersPage);
+app.get('/buyers/doc/:buyerId', checkbuyercompany(), getBuyersDocPage);
+app.get('/buyers/:disabledordelete/:buyerId/', checkbuyercompany(), disabledDeleteBuyer);
+app.post('/buyers/doc/', uploadBuyerDocuments);
+app.post('/buyers/createbuyer', createBuyer);
+app.post('/buyers/editbuyer', editBuyer);
+/* buyers */
 
 
 /* mpobs */
