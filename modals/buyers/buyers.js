@@ -76,13 +76,13 @@ exports.editBuyer = function (req, cb) {
     buyer.mspoLicNo = buyer.mspoLicNo ? [].concat(buyer.mspoLicNo) : [''];
     buyer.mpobLicNo = buyer.mpobLicNo ? [].concat(buyer.mpobLicNo) : [''];
     buyer.buyerName = buyer.buyerName ? [].concat(buyer.buyerName) : [''];
-    buyer.buyerAddress = buyer.buyerAddress ? [].concat(buyer.buyerAddress) : [''];
+    buyer.buyerAdd = buyer.buyerAdd ? [].concat(buyer.buyerAdd) : [''];
     buyer.buyerCategory = buyer.buyerCategory ? [].concat(buyer.buyerCategory) : [''];
     buyer.buyerId = buyer.buyerId ? [].concat(buyer.buyerId) : [''];
 
     let firstquery = `UPDATE buyers SET 
     buyerName = "${buyer.buyerName[0]}",
-    buyerAddress = "${buyer.buyerAddress[0]}",
+    buyerAdd = "${buyer.buyerAdd[0]}",
     buyerCategory = "${buyer.buyerCategory[0]}",
     mspoLicNo = "${buyer.mspoLicNo[0]}",
     mpobLicNo = "${buyer.mpobLicNo[0]}"
@@ -110,12 +110,12 @@ exports.createBuyer = function (req, cb) {
     buyer.mspoLicNo = buyer.mspoLicNo ? [].concat(buyer.mspoLicNo) : [''];
     buyer.mpobLicNo = buyer.mpobLicNo ? [].concat(buyer.mpobLicNo) : [''];
     buyer.buyerName = buyer.buyerName ? [].concat(buyer.buyerName) : [''];
-    buyer.buyerAddress = buyer.buyerAddress ? [].concat(buyer.buyerAddress) : [''];
+    buyer.buyerAdd = buyer.buyerAdd ? [].concat(buyer.buyerAdd) : [''];
     buyer.buyerCategory = buyer.buyerCategory ? [].concat(buyer.buyerCategory) : [''];
 
     let firstquery = `INSERT INTO buyers 
-    (buyerName,buyerAddress, buyerCategory,coId,createdDate,mspoLicNo,mpobLicNo)
-    VALUES ('${buyer.buyerName}','${buyer.buyerAddress}','${buyer.buyerCategory}'
+    (buyerName,buyerAdd, buyerCategory,coId,createdDate,mspoLicNo,mpobLicNo)
+    VALUES ('${buyer.buyerName}','${buyer.buyerAdd}','${buyer.buyerCategory}'
     ,'${coId}',CURRENT_TIMESTAMP,'${buyer.mspoLicNo}','${buyer.mpobLicNo}')`;
 
     con.query(firstquery, function (err, result, fields) {
