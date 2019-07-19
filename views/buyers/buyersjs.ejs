@@ -10,6 +10,8 @@ $(document).ready(function () {
                     buyer_s[i].buyerName,
                     buyer_s[i].buyerAddress, 
                     buyer_s[i].categoryname, 
+                    buyer_s[i].mpobLicNo, 
+                    buyer_s[i].mspoLicNo, 
                     buyer_s[i].buyerId, 
                     ] );
             }       
@@ -27,7 +29,7 @@ $(document).ready(function () {
 
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 3) 
+                            if (col.columnIndex == 5) 
                             {
                                 return;
                             }
@@ -130,6 +132,8 @@ $(document).ready(function () {
                     buyer_s_disabled[i].buyerName,
                     buyer_s_disabled[i].buyerAddress, 
                     buyer_s_disabled[i].categoryname, 
+                    buyer_s_disabled[i].mpobLicNo, 
+                    buyer_s_disabled[i].mspoLicNo, 
                     buyer_s_disabled[i].buyerId, 
                     ] );
             }          
@@ -146,7 +150,7 @@ $(document).ready(function () {
                     "renderer": function ( api, rowIdx, columns ) {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 3) 
+                            if (col.columnIndex == 5) 
                             {
                                 return;
                             }

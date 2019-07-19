@@ -73,6 +73,8 @@ exports.editBuyer = function (req, cb) {
   var buyer = req.body;
   process.nextTick(function () {
 
+    buyer.mspoLicNo = buyer.mspoLicNo ? [].concat(buyer.mspoLicNo) : [''];
+    buyer.mpobLicNo = buyer.mpobLicNo ? [].concat(buyer.mpobLicNo) : [''];
     buyer.buyerName = buyer.buyerName ? [].concat(buyer.buyerName) : [''];
     buyer.buyerAddress = buyer.buyerAddress ? [].concat(buyer.buyerAddress) : [''];
     buyer.buyerCategory = buyer.buyerCategory ? [].concat(buyer.buyerCategory) : [''];
@@ -81,7 +83,9 @@ exports.editBuyer = function (req, cb) {
     let firstquery = `UPDATE buyers SET 
     buyerName = "${buyer.buyerName[0]}",
     buyerAddress = "${buyer.buyerAddress[0]}",
-    buyerCategory = "${buyer.buyerCategory[0]}"
+    buyerCategory = "${buyer.buyerCategory[0]}",
+    mspoLicNo = "${buyer.mspoLicNo[0]}",
+    mpobLicNo = "${buyer.mpobLicNo[0]}"
     where buyerId= "${buyer.buyerId[0]}"`
 
     con.query(firstquery, function (err, result, fields) {
@@ -103,14 +107,17 @@ exports.createBuyer = function (req, cb) {
 
   process.nextTick(function () {
 
+    buyer.mspoLicNo = buyer.mspoLicNo ? [].concat(buyer.mspoLicNo) : [''];
+    buyer.mpobLicNo = buyer.mpobLicNo ? [].concat(buyer.mpobLicNo) : [''];
     buyer.buyerName = buyer.buyerName ? [].concat(buyer.buyerName) : [''];
     buyer.buyerAddress = buyer.buyerAddress ? [].concat(buyer.buyerAddress) : [''];
     buyer.buyerCategory = buyer.buyerCategory ? [].concat(buyer.buyerCategory) : [''];
 
     let firstquery = `INSERT INTO buyers 
-    (buyerName,buyerAddress, buyerCategory,coId,createdDate)
-    VALUES ('${buyer.buyerName}','${buyer.buyerAddress}','${buyer.buyerCategory}','${coId}',CURRENT_TIMESTAMP)`;
-console.log(firstquery);
+    (buyerName,buyerAddress, buyerCategory,coId,createdDate,mspoLicNo,mpobLicNo)
+    VALUES ('${buyer.buyerName}','${buyer.buyerAddress}','${buyer.buyerCategory}'
+    ,'${coId}',CURRENT_TIMESTAMP,'${buyer.mspoLicNo}','${buyer.mpobLicNo}')`;
+
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.insertId) {

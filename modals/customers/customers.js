@@ -68,7 +68,7 @@ exports.createCustomer = function(req, cb) {
             "'" + "0" + "'," +
             "" + "CURRENT_TIMESTAMP" +
             ")";
-        console.log(firstquery);
+
         con.query(firstquery, function(err, result, fields) {
             if (result) result = JSON.parse(JSON.stringify(result));
             if (result && result.insertId) {
@@ -125,7 +125,6 @@ exports.editCustomer = function(cust, cb) {
             "`custAdd3` = '" + cust.custAdd3[0] + "'" +
             " where custId=" + cust.custId[0];
 
-console.log(firstquery);
             
         con.query(firstquery, function(err, result, fields) {
             if (result) result = JSON.parse(JSON.stringify(result));

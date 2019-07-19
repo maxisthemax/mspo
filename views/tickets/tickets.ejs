@@ -14,6 +14,8 @@
                 <table id="ticket_s_view" class="display" cellspacing="0" width="100%">
                     <thead>
                         <tr>
+                            <th>Customer Name</th>
+                            <th>Customer IC</th>                        
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
                             <th>Vehicle No</th>
@@ -30,6 +32,8 @@
                     </thead>
                     <tfoot>
                         <tr>
+                            <th>Customer Name</th>
+                            <th>Customer IC</th>                        
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
                             <th>Vehicle No</th>
@@ -61,6 +65,8 @@
                 <table id="ticket_s_disabled_view" class="display" cellspacing="0" width="100%">
                      <thead>
                         <tr>
+                            <th>Customer Name</th>
+                            <th>Customer IC</th>
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
                             <th>Vehicle No</th>
@@ -77,6 +83,8 @@
                     </thead>
                     <tfoot>
                         <tr>
+                            <th>Customer Name</th>
+                            <th>Customer IC</th>
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
                             <th>Vehicle No</th>
@@ -103,6 +111,17 @@
                 <p class="h4 mb-4">Create New ticket</p>
                 <div class="row">
                     <div class="col-sm-6">
+                    <label for="custId">Customer Name</label>
+                        <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%">
+                            <option></option>
+                            <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>
+                            <option value=<%= cust_s[i].custId %>><%= cust_s[i].custName  %> - <%= cust_s[i].custIC  %>
+                            </option>
+                            <% }} %>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-3">
                         <label for="textInput">Ticket Date</label>
                         <div class="input-group date" id="ticketDatePicker" data-target-input="nearest">
                             <input type="text" id="ticketDate" name="ticketDate" required class="form-control datetimepicker-input" data-target="#datetimepicker1" />
@@ -112,7 +131,7 @@
                         </div>    
                     </div>
              
-                    <div class="col-sm-6">
+                    <div class="col-sm-3">
                         <label for="textInput">Ticket No</label>
                         <input type="text" id="ticketNo" name="ticketNo" class="form-control mb-4" required>
                     </div>
@@ -124,7 +143,13 @@
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Buyer Name</label>
-                        <input type="text" id="buyerId" name="buyerId" class="form-control mb-4" required>
+                        <select class="form-control mb-4" id="buyerId" name="buyerId" required style="width: 100%">
+                            <option></option>
+                            <% if(buyer_s){ for(var i = 0; i < buyer_s.length; i++) {%>
+                            <option value=<%= buyer_s[i].buyerId %>><%= buyer_s[i].buyerName %>
+                            </option>
+                            <% }} %>
+                        </select>                        
                     </div>
                 </div>
 
@@ -234,7 +259,10 @@
         placeholder: "Select a Customer",
         width: 'resolve',
     });
-
+    $("#buyerId").select2({
+        placeholder: "Select a Buyer",
+        width: 'resolve',
+    });
 function calculateNettWeight(){
     var firstWeight = $('#firstWeight').val();
     var secondWeight =  $('#secondWeight').val();

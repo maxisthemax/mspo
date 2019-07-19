@@ -8,10 +8,12 @@ $(document).ready(function () {
         console.log();
         for ( var i=0 ; i<ticket_s.length ; i++ ) {
                 data.push( [  
+                    ticket_s[i].custName,
+                    ticket_s[i].custIC,                     
                     changeToDateFormat(ticket_s[i].ticketDate), 
                     ticket_s[i].ticketNo,
                     ticket_s[i].vehicleNo, 
-                    ticket_s[i].buyerId, 
+                    ticket_s[i].buyerName, 
                     ticket_s[i].firstWeight, 
                     ticket_s[i].secondWeight,
                     ticket_s[i].deduction,
@@ -37,7 +39,7 @@ $(document).ready(function () {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
                             console.log(col.columnIndex);
-                            if (col.columnIndex == 11) 
+                            if (col.columnIndex == 13) 
                             {
                                 return;
                             }
@@ -137,10 +139,12 @@ $(document).ready(function () {
         var data = [];
         for ( var i=0 ; i<ticket_s_disabled.length ; i++ ) {
                 data.push( [  
+                    ticket_s[i].custName,
+                    ticket_s[i].custIC,                     
                     changeToDateFormat(ticket_s_disabled[i].ticketDate), 
                     ticket_s_disabled[i].ticketNo,
                     ticket_s_disabled[i].vehicleNo, 
-                    ticket_s_disabled[i].buyerId, 
+                    ticket_s_disabled[i].buyerName, 
                     ticket_s_disabled[i].firstWeight, 
                     ticket_s_disabled[i].secondWeight,
                     ticket_s_disabled[i].deduction,
@@ -164,7 +168,7 @@ $(document).ready(function () {
                     "renderer": function ( api, rowIdx, columns ) {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 11) 
+                            if (col.columnIndex == 13) 
                             {
                                 return;
                             }

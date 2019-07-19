@@ -16,6 +16,8 @@
                             <th>Buyer Name</th>
                             <th>Buyer Address</th>
                             <th>Buyer Category</th>
+                            <th>MPOB License No</th>
+                            <th>MSPO License No</th>
                              <th class="none"></th>
                         </tr>
                     </thead>
@@ -24,7 +26,9 @@
                             <th>Buyer Name</th>
                             <th>Buyer Address</th>
                             <th>Buyer Category</th>
-                             <th class="none"></th>
+                            <th>MPOB License No</th>
+                            <th>MSPO License No</th>
+                            <th class="none"></th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -69,24 +73,32 @@
             <form class="p-5" name="user" method="POST" action="/buyers/createbuyer" enctype="multipart/form-data">
                 <p class="h4 mb-4">Create New buyer</p>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="textInput">Buyer Name</label>
                         <input type="text" id="buyerName" name="buyerName" class="form-control mb-4" required>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="textInput">Buyer Address</label>
                         <input type="text" id="buyerAddress" name="buyerAddress" class="form-control mb-4" required>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="textInput">Buyer Category</label>
                         <select class="form-control mb-4" id="buyerCategory"name="buyerCategory" required style="width: 100%">
                             <option></option>                   
                             <option value=1>Oil Mil</option>
                             <option value=2>Dealer</option>
                         </select>        
+                    </div>                    
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="textInput">MPOB License No</label>
+                        <input type="text" id="mpobLicNo" name="mpobLicNo" class="form-control mb-4" required>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="textInput">MSPO License No</label>
+                        <input type="text" id="mspoLicNo" name="mspoLicNo" class="form-control mb-4" required>
                     </div>
                 </div>
                  <br>
