@@ -2,29 +2,23 @@
 
 <script> 
 $(document).ready(function () {
-        var edittickethtml = <%- JSON.stringify(edittickethtml)%>;
-        var ticket_s = <%- JSON.stringify(ticket_s)%>;
+        var edittransporterhtml = <%- JSON.stringify(edittransporterhtml)%>;
+        var transporter_s = <%- JSON.stringify(transporter_s)%>;
         var data = [];
-        for ( var i=0 ; i<ticket_s.length ; i++ ) {
+        console.log(transporter_s);
+        for ( var i=0 ; i<transporter_s.length ; i++ ) {
                 data.push( [  
-                    ticket_s[i].custName,
-                    ticket_s[i].custIC,                     
-                    changeToDateFormat(ticket_s[i].ticketDate), 
-                    ticket_s[i].ticketNo,
-                    ticket_s[i].vehicleNo, 
-                    ticket_s[i].buyerName, 
-                    ticket_s[i].firstWeight, 
-                    ticket_s[i].secondWeight,
-                    ticket_s[i].deduction,
-                    ticket_s[i].nettWeight,
-                    ticket_s[i].totalPrice,
-                    ticket_s[i].oer,
-                    ticket_s[i].priceMt,
-                    ticket_s[i].ticketId,
+                    transporter_s[i].transporterName,
+                    transporter_s[i].transporterAdd, 
+                    transporter_s[i].transporterVehNo, 
+                    transporter_s[i].priceMt, 
+                    transporter_s[i].totalTransporterCost, 
+                    transporter_s[i].transporterId, 
+                    transporter_s[i].ticketId, 
                     ] );
             }       
  
-        var table = $('#ticket_s_view').DataTable({
+        var table = $('#transporter_s_view').DataTable({
             aaSorting: [],
             dom: 'Blfrtip',
             data: data,
@@ -37,8 +31,7 @@ $(document).ready(function () {
 
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            //console.log(col.columnIndex);
-                            if (col.columnIndex == 13) 
+                            if (col.columnIndex == 5) 
                             {
                                 return;
                             }
@@ -49,7 +42,7 @@ $(document).ready(function () {
                                 : '';
                             }
                         } ).join('');
-                            var htm = ejs.render(edittickethtml,{ticket_s: columns});
+                            var htm = ejs.render(edittransporterhtml,{transporter_s: columns});
                             data = $('<table width="100%"/>').append( data ).prop('outerHTML');
                             
                             // Extra: Show custom content
@@ -133,29 +126,22 @@ $(document).ready(function () {
 
 
 
-        var edittickethtml2 = <%- JSON.stringify(edittickethtml2)%>;
-        var ticket_s_disabled = <%- JSON.stringify(ticket_s_disabled)%>;
+        var edittransporterhtml2 = <%- JSON.stringify(edittransporterhtml2)%>;
+        var transporter_s_disabled = <%- JSON.stringify(transporter_s_disabled)%>;
         var data = [];
-        for ( var i=0 ; i<ticket_s_disabled.length ; i++ ) {
+        for ( var i=0 ; i<transporter_s_disabled.length ; i++ ) {
                 data.push( [  
-                    ticket_s_disabled[i].custName,
-                    ticket_s_disabled[i].custIC,                     
-                    changeToDateFormat(ticket_s_disabled[i].ticketDate), 
-                    ticket_s_disabled[i].ticketNo,
-                    ticket_s_disabled[i].vehicleNo, 
-                    ticket_s_disabled[i].buyerName, 
-                    ticket_s_disabled[i].firstWeight, 
-                    ticket_s_disabled[i].secondWeight,
-                    ticket_s_disabled[i].deduction,
-                    ticket_s_disabled[i].nettWeight,
-                    ticket_s_disabled[i].totalPrice,
-                    ticket_s_disabled[i].oer,
-                    ticket_s_disabled[i].priceMt,
-                    ticket_s_disabled[i].ticketId,
+                    transporter_s_disabled[i].transporterName,
+                    transporter_s_disabled[i].transporterAdd, 
+                    transporter_s_disabled[i].transporterVehNo, 
+                    transporter_s_disabled[i].priceMt, 
+                    transporter_s_disabled[i].totalTransporterCost, 
+                    transporter_s_disabled[i].transporterId, 
+                    transporter_s_disabled[i].ticketId, 
                     ] );
             }          
         //console.log(customers);
-        var table = $('#ticket_s_disabled_view').DataTable({
+        var table = $('#transporter_s_disabled_view').DataTable({
             aaSorting: [],
             dom: 'Blfrtip',
             data: data,
@@ -167,7 +153,7 @@ $(document).ready(function () {
                     "renderer": function ( api, rowIdx, columns ) {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 13) 
+                            if (col.columnIndex == 5) 
                             {
                                 return;
                             }
@@ -178,7 +164,7 @@ $(document).ready(function () {
                                 : '';
                             }
                         } ).join('');
-                            var htm2 = ejs.render(edittickethtml2,{ticket_s_disabled: columns});
+                            var htm2 = ejs.render(edittransporterhtml2,{transporter_s_disabled: columns});
                             data = $('<table width="100%"/>').append( data ).prop('outerHTML');                       
                             // Extra: Show custom content
                             data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  

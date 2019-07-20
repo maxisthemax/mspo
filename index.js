@@ -25,9 +25,10 @@ const { getsuperadminPage, getEditsuperadminPage, getsuperadminDocPage, createsu
     editsuperadmin, deactivateCompany } = require('./routes/superadmin');
 const { getTicketsPage, getEditTicketsPage, getTicketsDocPage, 
     uploadTicketDocuments, createTicket, editTicket, disabledDeleteTicket } = require('./routes/tickets');
-    const { getBuyersPage, getEditBuyersPage, getBuyersDocPage, 
+const { getBuyersPage, getEditBuyersPage, getBuyersDocPage, 
         uploadBuyerDocuments, createBuyer, editBuyer, disabledDeleteBuyer } = require('./routes/buyers');    
-
+const { getTransportersPage, getEditTransportersPage, getTransportersDocPage, 
+        uploadTransporterDocuments, createTransporter, editTransporter, disabledDeleteTransporter } = require('./routes/transporters'); 
 
  
     
@@ -242,6 +243,33 @@ var checkticketcompany = function(req) {
     ]
 };
 
+var checktransportercompany = function(req) {
+    return [
+        function(req, res, next) {
+
+            var transporterId = req.params.transporterId;
+            process.nextTick(function() {
+                var firstquery = `SELECT coId FROM transporters 
+    WHERE transporterId=${transporterId} LIMIT 1`;
+                //console.log(firstquery);
+
+                con.query(firstquery, function(err, result, fields) {
+                    //console.log(result);
+                    if (result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+                });
+            });
+        }
+    ]
+};
+
 var checkbuyercompany = function(req) {
     return [
         function(req, res, next) {
@@ -385,6 +413,16 @@ app.post('/buyers/createbuyer', createBuyer);
 app.post('/buyers/editbuyer', editBuyer);
 /* buyers */
 
+/* transporter */
+app.all('/transporter*', ensureLoggedIn('/login'));
+app.get('/transporter/', getTransportersPage);
+app.get('/transporter/:transporterId', checktransportercompany(), getEditTransportersPage);
+app.get('/transporter/doc/:transporterId', checktransportercompany(), getTransportersDocPage);
+app.get('/transporter/:disabledordelete/:transporterId/', checktransportercompany(), disabledDeleteTransporter);
+app.post('/transporter/doc/', uploadTransporterDocuments);
+app.post('/transporter/createtransporter', createTransporter);
+app.post('/transporter/edittransporter', editTransporter);
+/* transporter */
 
 /* mpobs */
 app.all('/mpobs*', ensureLoggedIn('/login'));
