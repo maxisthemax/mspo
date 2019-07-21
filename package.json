@@ -7,8 +7,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "node test.js"
+    "build" : "npm install",
+    "start": "node index.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
