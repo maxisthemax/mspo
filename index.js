@@ -331,9 +331,9 @@ var checksuperadmin = function(req) {
 
             var custId = req.params.custId;
             process.nextTick(function() {
-                var firstquery = `SELECT coId FROM customers 
+                var firstquery = `SELECT coId FROM company 
     WHERE ${req.user.coId}=1 LIMIT 1`;
-
+console.log(firstquery);
                 con.query(firstquery, function(err, result, fields) {
                     //console.log(result);
                     if (result && result.length == 0) {
