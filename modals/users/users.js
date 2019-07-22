@@ -5,7 +5,7 @@ var recordsadmin = JSON.parse(fs.readFileSync('./modals/users/users.json', 'utf8
 exports.findById = function(id, cb) {
     process.nextTick(function() {
 
-        let firstquery = `select * FROM USERS a LEFT JOIN company b ON a.coId = b.coId 
+        let firstquery = `select * FROM users a LEFT JOIN company b ON a.coId = b.coId 
         where IFNULL(a.deactivated,0) != 1 and IFNULL(b.deactivated,0) != 1 and userId='${id}' LIMIT 1`;
         con.query(firstquery, function(err, result, fields) {
             if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
@@ -30,7 +30,7 @@ exports.findById = function(id, cb) {
 
 exports.findByUsername = function(username, cb) {
     process.nextTick(function() {
-        let firstquery = `select * FROM USERS a LEFT JOIN company b ON a.coId = b.coId 
+        let firstquery = `select * FROM users a LEFT JOIN company b ON a.coId = b.coId 
         where IFNULL(a.deactivated,0) != 1 and IFNULL(b.deactivated,0) != 1 and userName='${username}' LIMIT 1`;
 
         con.query(firstquery, function(err, result, fields) {
@@ -57,7 +57,7 @@ exports.findByUsername = function(username, cb) {
 
 exports.findAllUsers = function(coId, cb) {
     process.nextTick(function() {
-        let firstquery = `select a.*,b.*,a.deactivated as userdeactivated,b.deactivated as companydeactivated FROM USERS a LEFT JOIN company b on a.coId = b.coId where b.coId =${coId}`
+        let firstquery = `select a.*,b.*,a.deactivated as userdeactivated,b.deactivated as companydeactivated FROM users a LEFT JOIN company b on a.coId = b.coId where b.coId =${coId}`
 
         con.query(firstquery, function(err, result, fields) {
             //console.log(result);
@@ -80,7 +80,7 @@ exports.createUser = function(req, cb) {
         user.displayname = user.displayname ? [].concat(user.displayname) : [''];
         user.email = user.email ? [].concat(user.email) : [''];
 
-        let firstquery = "INSERT INTO USERS (username,userpassword,displayname,email,deactivated,administrator,coId,createdDate) VALUES (" +
+        let firstquery = "INSERT INTO users (username,userpassword,displayname,email,deactivated,administrator,coId,createdDate) VALUES (" +
             "'" + user.username[0] + "'," +
             "'" + user.password[0] + "'," +
             "'" + user.displayname[0] + "'," +
@@ -117,7 +117,7 @@ exports.saveAllUsers = function(users, cb) {
 
         var firstquery = '';
         for (var i = 0, len = users.userId.length; i < len; i++) {
-            firstquery += "UPDATE USERS set" +
+            firstquery += "UPDATE users set" +
                 " displayname='" +
                 addescape(users.displayname[i]) + "'," +
                 " email='" +

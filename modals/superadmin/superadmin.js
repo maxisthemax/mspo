@@ -49,7 +49,7 @@ exports.createsuperadmin = function (req, cb) {
       if (result && result.insertId) {
         var compres = result;
         var thisId = result.insertId;
-        let secondquery = `INSERT INTO USERS (username,userpassword,displayname,deactivated,administrator,coId) VALUES (
+        let secondquery = `INSERT INTO users (username,userpassword,displayname,deactivated,administrator,coId) VALUES (
                       '${comp.username}','${comp.password}','${comp.compname}','0','1',${thisId})`;
   
         con.query(secondquery, function (err, result, fields) {
