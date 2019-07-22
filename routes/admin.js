@@ -7,7 +7,6 @@ module.exports = {
                     user: req.user,
                     successFlash: req.flash('success'),
                     errorFlash: req.flash('error'),
-                    config: JSON.parse(config),
                     allusers: (users) ? users : []
                 });
         });
