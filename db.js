@@ -11,34 +11,7 @@ config = {"host":"localhost","port":"3306","user":"max","password":"0J9_g7gb","d
 
 //  connect to database
 
-var con = mysql.createConnection(config);
+var con = mysql.createPool(config);
 
-con.connect(function (err) {
-    if (err) {
-        console.error('error connecting: ' + err.stack);
-        return;
-    }
-
-    console.log('connected as id ' + con.threadId);
-});
-handleDisconnect(con);
-
-function handleDisconnect(con) {
-    con.on('error', function (err) {
-        if (!err.fatal) {
-            return;
-        }
-
-        if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
-            throw err;
-        }
-        console.log('Re-connecting lost connection: ' + err.stack);
-        con = mysql.createConnection(config);
-        handleDisconnect(con);
-        con.connect();
-    });
-}
-handleDisconnect(con);
 
 module.exports = con;
-

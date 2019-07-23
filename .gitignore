@@ -12,3 +12,4 @@ public/customers
 Dockerfile
 docker-compose.yml
 .config
+db.js
