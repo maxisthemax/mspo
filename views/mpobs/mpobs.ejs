@@ -19,6 +19,7 @@
                                 <th>Customer Name</th>
                                 <th>Customer IC</th>
                                 <th class="none"></th>
+                                <th>Lot No</th>                                
                                 <!-- <th class="none">Address 3</th>
                                 <th class="none">Cust Id</th> -->
                             </tr>
@@ -30,6 +31,7 @@
                                 <th>Customer Name</th>
                                 <th>Customer IC</th>
                                 <th class="none"></th>
+                                <th>Lot No</th>                                
                                 <!-- <th class="none">Address 3</th>
                                 <th class="none">Cust Id</th> -->
                             </tr>
@@ -57,6 +59,7 @@
                                     <th>Customer Name</th>
                                     <th>Customer IC</th>
                                     <th class="none"></th>
+                                    <th>Lot No</th>
                                     <!-- <th class="none">Address 1</th>
                                     <th class="none">Address 2</th>
                                     <th class="none">Address 3</th>
@@ -70,6 +73,7 @@
                                     <th>Customer Name</th>
                                     <th>Customer IC</th>
                                     <th class="none"></th>
+                                    <th>Lot No</th>                                    
                                     <!-- <th class="none">Address 1</th>
                                     <th class="none">Address 2</th>
                                     <th class="none">Address 3</th>
@@ -86,7 +90,7 @@
             </div>
 
             <div id="mpob_create" class="tabcontent">
-                <form class="p-5" name="mpob_form" method="POST" action="/mpobs/creatempob" enctype="multipart/form-data">
+                <form class="p-5" name="mpob_form" id="mpob_form" method="POST" action="/mpobs/creatempob" enctype="multipart/form-data">
                     <p class="h4 mb-4">Create New MPOB</p>
                     <div class="row">
                         <div class="col-sm-6">
@@ -116,11 +120,12 @@
                         </div>
                         <div class="col-sm-6">
                             <label for="landId">Lands</label>
-                            <select class="form-control mb-4" id="landId" name="landId" required style="width: 100%">
+                            <select  multiple="multiple" class="form-control mb-4" id="landId" name="landId[]" required style="width: 100%">
                                     <option></option>
                                     
                                 </select>
-                        </div>                        
+                        </div>    
+                        <input type="hidden" name="landIds" id="landIds" value="">                    
                     </div>
                     <br>
                     <p class="h4 mb-4">Upload Document Here</p>
@@ -133,7 +138,7 @@
                     <p class="h4 mb-4"></p>
                     <div class="row">
                         <div class="col-sm-6">
-                            <button class="btn btn-primary btn-block" type="submit">Create New MPOB</button>
+                            <button class="btn btn-primary btn-block" id=submitMpob type="submit">Create New MPOB</button>
                         </div>
                     </div>
                 </form>
@@ -151,6 +156,10 @@
 
         </html>
         <script>
+        $("#mpob_form").submit(function() {
+            var selectval = $('#landId').val();
+            $('#landIds').val(`${selectval}`);
+        })
             function openTabs(evt, tabname) {
                 var i, tabcontent, tablinks;
                 tabcontent = document.getElementsByClassName("tabcontent");
@@ -198,7 +207,7 @@
                 width: 'resolve',
             });
             $("#landId").select2({
-                placeholder: "Select a Land",
+                placeholder: "Select Lands",
                 width: 'resolve',
             }); 
 

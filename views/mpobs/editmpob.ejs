@@ -35,12 +35,12 @@
 
                 <div class="col-sm-6">
                     <label for="landId">Lands</label>
-                    <select class="form-control mb-4" id="landId" name="landId" required style="width: 100%">
+                    <select  multiple="multiple" class="form-control mb-4" id="landId" name="landId[]" required style="width: 100%">
                             <option></option>
                             
                         </select>
                 </div>  
-
+<input type="hidden" name="landIds" id="landIds" value="">   
 
             </div>
             <br>
@@ -71,6 +71,10 @@
 
 
 <script>
+        $("#mpob_edit").submit(function() {
+            var selectval = $('#landId').val();
+            $('#landIds').val(`${selectval}`);
+        })
     $(function() {
         var chartformat = "YYYY-MM-DD";
         $('#expiredDatePicker').datetimepicker({

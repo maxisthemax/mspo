@@ -1,7 +1,7 @@
 exports.queryAllMpobs = function(coId, cb) {
     process.nextTick(function() {
-        var firstquery = `SELECT a.*,b.custName,b.custIC FROM mpobs a LEFT JOIN customers b on a.custId = b.custId
-    WHERE a.coId = ${coId} and a.disabled = 0 ORDER BY custId ASC,mpobId ASC`;
+        var firstquery = `SELECT a.*,b.custName,b.custIC,(SELECT GROUP_CONCAT(lotNo) FROM lands WHERE FIND_IN_SET(landId,a.landId) > 0)as lotNos FROM mpobs a LEFT JOIN customers b on a.custId = 
+        b.custId WHERE a.coId =${coId} and a.disabled = 0 ORDER BY custId ASC,mpobId ASC`;
         //console.log(firstquery);
         con.query(firstquery, function(err, result, fields) {
             if (result) result = JSON.parse(JSON.stringify(result));
@@ -50,16 +50,15 @@ exports.createMpob = function(req, cb) {
         var mpob = req.body;
         //console.log(mpob);
         process.nextTick(function() {
-
+            console.log(mpob);
             mpob.mpobLicNo = mpob.mpobLicNo ? [].concat(mpob.mpobLicNo) : [''];
             mpob.expiredDate = mpob.expiredDate ? [].concat(mpob.expiredDate) : [''];
             mpob.custId = mpob.custId ? [].concat(mpob.custId) : [''];
-            mpob.landId = mpob.landId ? [].concat(mpob.landId) : [''];
-
+            mpob.landIds = mpob.landIds ? [].concat(mpob.landIds) : [''];
 
             let firstquery = `INSERT INTO mpobs 
     (mpobLicNo,expiredDate, custId, createdDate, disabled, coId, landId)
-    VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}',CURRENT_TIMESTAMP,'0','${coId}','${mpob.landId}')`;
+    VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}',CURRENT_TIMESTAMP,'0','${coId}','${mpob.landIds}')`;
 
             //console.log(firstquery);
 
@@ -104,13 +103,13 @@ exports.editMpob = function (req, cb) {
     mpob.mpobLicNo = mpob.mpobLicNo ? [].concat(mpob.mpobLicNo) : [''];
     mpob.expiredDate = mpob.expiredDate ? [].concat(mpob.expiredDate) : [''];
     mpob.custId = mpob.custId ? [].concat(mpob.custId) : [''];
-    mpob.landId = mpob.landId ? [].concat(mpob.landId) : [''];
+    mpob.landIds = mpob.landIds ? [].concat(mpob.landIds) : [''];
  
     let firstquery = `UPDATE mpobs SET 
     mpobLicNo = "${mpob.mpobLicNo[0]}",
     expiredDate = "${mpob.expiredDate[0]}",
     custId = "${mpob.custId[0]}",
-    landId = "${mpob.landId[0]}"
+    landId = "${mpob.landIds[0]}"
     where mpobId= "${mpob.mpobId[0]}"`
 
     con.query(firstquery, function (err, result, fields) {
