@@ -115,6 +115,7 @@
             } else {
                 $("#landId").find('option').not(':first').remove();
             }
+        $('#landId').val([<%= mspo[0].landId %>]).trigger('change');    
         }
 
     function createOption(ddl, text, value,selected) {
