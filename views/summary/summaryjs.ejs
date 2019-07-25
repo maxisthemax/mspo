@@ -67,6 +67,78 @@
     });
 
     $(document).ready(function() {
+        var summarybutton_ticket = <%- JSON.stringify(summarybutton_ticket)%>;
+        var tickets = <%- JSON.stringify(tickets)%>;
+        var data = [];
+        for (var i = 0; i < tickets.length; i++) {
+            data.push([
+                    tickets[i].custName,
+                    tickets[i].custIC,                     
+                    changeToDateFormat(tickets[i].ticketDate), 
+                    tickets[i].ticketNo,
+                    tickets[i].vehicleNo, 
+                    tickets[i].buyerName, 
+                    tickets[i].firstWeight, 
+                    tickets[i].secondWeight,
+                    tickets[i].deduction,
+                    tickets[i].nettWeight,
+                    tickets[i].totalPrice,
+                    tickets[i].oer,
+                    tickets[i].priceMt,
+                    tickets[i].ticketId,
+                    ] );
+        }
+        var table = $('#tickets_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [],
+            "responsive": {
+                "details": {
+                    "renderer": function(api, rowIdx, columns) {
+                        // Show hidden columns in row details
+                        var data = $.map(columns, function(col, i) {
+                            if (col.columnIndex == 13) {
+                                return;
+                            } else {
+                                return col.hidden ?
+                                    '<tr><td>' + col.title + ':</td> ' +
+                                    '<td>' + col.data + '</td></tr>' :
+                                    '';
+                            }
+                        }).join('');
+
+                        var htm2 = ejs.render(summarybutton_ticket, {
+                            tickets: columns
+                        });
+                        data = $('<table width="100%"/>').append(data).prop('outerHTML');
+                        // Extra: Show custom content
+                        data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';
+                        data += htm2;
+                        //console.log(html);
+                        data += '';
+                        data += '</div><br><br>';
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function() {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function() {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+    });
+
+    $(document).ready(function() {
         var summarybutton_mpob = <%- JSON.stringify(summarybutton_mpob)%>;
         var mpobs = <%- JSON.stringify(mpobs)%>;
         var data = [];

@@ -5,7 +5,8 @@ exports.querySummary = function(req, cb) {
         select * FROM customers where custId = ${queryCustId};
         select * FROM lands a LEFT JOIN customers b on a.custId = b.custId where a.custId = ${queryCustId};
         select * FROM mpobs a LEFT JOIN customers b on a.custId = b.custId where a.custId = ${queryCustId};
-        select * FROM mspos a LEFT JOIN customers b on a.custId = b.custId where a.custId = ${queryCustId};`
+        select * FROM mspos a LEFT JOIN customers b on a.custId = b.custId where a.custId = ${queryCustId};
+        select * FROM tickets a LEFT JOIN buyers c on a.buyerId = c.buyerId LEFT JOIN customers b on a.custId = b.custId where a.custId = ${queryCustId};`
         con.query(firstquery, function(err, result, fields) {
             if (result) result = JSON.parse(JSON.stringify(result));
             if (result && result.length) {

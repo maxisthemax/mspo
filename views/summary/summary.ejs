@@ -19,7 +19,7 @@
                         <% }} %>
                     </select>
                 </div>
-                  <br><br>
+                <br><br>
                 <button type=submit class="btn btn-primary">Search</button>
             </form>
 
@@ -60,11 +60,11 @@
                         <% } %>
                     </table>
                     <br><br>
-                    <% if(cust.length > 0) {%>            
-                        <button type="button" class="btn btn-primary btnpadding" 
+                    <% if(cust.length > 0) {%>
+                    <button type="button" class="btn btn-primary btnpadding"
                         onclick="location.href = '/customers/<%= cust[0].custId %>';">Go To This Page</button>
-                    <% } %>                       
-                </div>           
+                    <% } %>
+                </div>
                 <div class="panel-heading">
                     <h3>Documents</h3>
                 </div>
@@ -85,8 +85,78 @@
                     </ul>
                 </div>
             </div>
+
+
+            <!-- /#page-content-wrapper -->
+
+
+
+
+
+
+
+            <br><br>
+            <div style="border: 4px solid black; padding: 20px">
+                <div class="panel-heading">
+                    <h1>Tickets</h1>
+                </div>
+                <div class="panel-body">
+                    <table id="tickets_view" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Customer IC</th>
+                                <th>Ticket Date</th>
+                                <th>Ticket No</th>
+                                <th>Vehicle No</th>
+                                <th>Buyer Name</th>
+                                <th class="none">First Weight</th>
+                                <th class="none">Second Weight</th>
+                                <th class="none">Deduction</th>
+                                <th class="none">Nett Weight</th>
+                                <th class="none">Price 1mt</th>
+                                <th class="none">Total Price</th>
+                                <th class="none">OER (%)</th>
+                                <th class="none"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div class="panel-heading">
+                    <h3>Documents</h3>
+                </div>
+                <div class="panel-body">
+                    <% if(sumticketdir){ for(var i = 0; i < sumticketdir.length; i++) {%>
+                    <ul class="list-group list-group-custom">
+
+                        <% if(sumticketdir[i].folderpath){ for(var j = 0; j < sumticketdir[i].folderpath.length; j++) {%>
+                        <h4>MSPO No : <%= sumticketdir[i].mspoCertNo %></h4>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <a href="<%= sumticketdir[i].folderpath[j].folderitem %>" target="_blank"
+                                        class="list-group-item"><%= i+1 %>.
+                                        <%= sumticketdir[i].folderpath[j].filename %>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                        <% }} %>
+                    </ul>
+                    <% }} %>
+                </div>
+
+            </div>
             <br>
             <br>
+
             <div style="border: 4px solid black; padding: 20px">
                 <div class="panel-heading">
                     <h1>Land</h1>
@@ -120,9 +190,9 @@
                 <div class="panel-body">
                     <% if(sumlanddir){ for(var i = 0; i < sumlanddir.length; i++) {%>
                     <ul class="list-group list-group-custom">
-                       
+
                         <% if(sumlanddir[i].folderpath){ for(var j = 0; j < sumlanddir[i].folderpath.length; j++) {%>
-                        <h5>Lot No : <%= sumlanddir[i].lotNo %></h5> 
+                        <h5>Lot No : <%= sumlanddir[i].lotNo %></h5>
                         <h5>Title No : <%= sumlanddir[i].titleNo %></h5>
                         <li class="list-group-item">
                             <div class="row">
@@ -165,16 +235,16 @@
 
 
                 </div>
-                
+
                 <div class="panel-heading">
                     <h3>Documents</h3>
                 </div>
                 <div class="panel-body">
                     <% if(summpobdir){ for(var i = 0; i < summpobdir.length; i++) {%>
                     <ul class="list-group list-group-custom">
-                        
+
                         <% if(summpobdir[i].folderpath){ for(var j = 0; j < summpobdir[i].folderpath.length; j++) {%>
-<h4>MPOB License No : <%= summpobdir[i].mpobLicNo %></h4>
+                        <h4>MPOB License No : <%= summpobdir[i].mpobLicNo %></h4>
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-sm-10">
@@ -224,9 +294,9 @@
                 <div class="panel-body">
                     <% if(summspodir){ for(var i = 0; i < summspodir.length; i++) {%>
                     <ul class="list-group list-group-custom">
-                        
+
                         <% if(summspodir[i].folderpath){ for(var j = 0; j < summspodir[i].folderpath.length; j++) {%>
-<h4>MSPO No : <%= summspodir[i].mspoCertNo %></h4>
+                        <h4>MSPO No : <%= summspodir[i].mspoCertNo %></h4>
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-sm-10">
@@ -242,25 +312,14 @@
                     </ul>
                     <% }} %>
                 </div>
-            </div>    
 
+            </div>
 
-
-            <!-- /#page-content-wrapper -->
         </div>
-
-
-
-
 
     </div>
 
-
 </div>
-
-
-
-
 
 
 
@@ -325,10 +384,10 @@
             defaultDate: moment(),
         });
 
-            $("#custId").select2({
-                placeholder: "Select a Customer",
-                width: 'resolve',
-            });
+        $("#custId").select2({
+            placeholder: "Select a Customer",
+            width: 'resolve',
+        });
     });
 
 </script>
