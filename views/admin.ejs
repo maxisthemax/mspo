@@ -66,13 +66,15 @@
                     </table>
                     <button id=saveuserbutton class="btn btn-primary btn-block" type="submit" style="display:none;">Save</button>
                 </form>
+                <% if (allusers.length < allusers[0].maxUsers ){%>
                 <form class="p-5" name="user" method="POST" action="/admin/user/createUser">
                     <p class="h4 mb-4">Create New User</p>
                     <label for="textInput">Username</label>
                     <input type="text" id="username" name="username" class="form-control mb-4" required placeholder="Enter Your Username Here">
 
                     <label for="textInput">Password</label>
-                    <input type="password" id="password" name="password" class="form-control mb-4" required placeholder="Enter Your Password Here">
+                    <input type="password" id="password" name="password" minlength="8" pattern="[0-9a-ZA-Z]{8}" title="Enter passowrd consisting of 4-8 digits"
+                    autocomplete="new-password" class="form-control mb-4" required placeholder="Enter Your Password Here">
 
                     <label for="textInput">Display Name</label>
                     <input type="text" id="displayname" name="displayname" class="form-control mb-4" required placeholder="Enter Your Display Name Here">
@@ -81,6 +83,7 @@
                     <input type="text" id="email" name="email" class="form-control mb-4" placeholder="Enter Your Email Here">
 
                     <button class="btn btn-primary btn-block" type="submit">Create New User</button>
+                    <%}%>
                 </form>
 
                 <!-- Default form contact -->
@@ -115,10 +118,11 @@
             }
 
             function changetoedit(obj, userId) {
-                var html_displayname = $(obj).parents('tr').find('td.editDisplayName').html();
-                var html_email = $(obj).parents('tr').find('td.editEmail').html();
-                var html_admin = $(obj).parents('tr').find('td.editAdmin').html();
-                var html_deactivated = $(obj).parents('tr').find('td.editDeactivated').html();
+                console.log(obj);
+                var html_displayname = $(obj).parents('tr').find('td.editDisplayName').html().trim();
+                var html_email = $(obj).parents('tr').find('td.editEmail').html().trim();
+                var html_admin = $(obj).parents('tr').find('td.editAdmin').html().trim();
+                var html_deactivated = $(obj).parents('tr').find('td.editDeactivated').html().trim();
 
                 var input_displayname = $('<input type="text" name="displayname"/>');
                 var input_email = $('<input type="text" name="email"/>');

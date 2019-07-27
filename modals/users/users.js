@@ -2,12 +2,12 @@ const fs = require('fs')
 
 var recordsadmin = JSON.parse(fs.readFileSync('./modals/users/users.json', 'utf8'));
 
-exports.findById = function(id, cb) {
-    process.nextTick(function() {
+exports.findById = function (id, cb) {
+    process.nextTick(function () {
 
         let firstquery = `select a.* FROM users a LEFT JOIN company b ON a.coId = b.coId 
         where IFNULL(a.deactivated,0) != 1 and IFNULL(b.deactivated,0) != 1 and userId='${id}' LIMIT 1`;
-        con.query(firstquery, function(err, result, fields) {
+        con.query(firstquery, function (err, result, fields) {
             if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
             var records = [];
             for (var i = 0, len = recordsadmin.length; i < len; ++i) {
@@ -28,12 +28,12 @@ exports.findById = function(id, cb) {
     });
 }
 
-exports.findByUsername = function(username, cb) {
-    process.nextTick(function() {
+exports.findByUsername = function (username, cb) {
+    process.nextTick(function () {
         let firstquery = `select a.* FROM users a LEFT JOIN company b ON a.coId = b.coId 
         where IFNULL(a.deactivated,0) != 1 and IFNULL(b.deactivated,0) != 1 and userName='${username}' LIMIT 1`;
 
-        con.query(firstquery, function(err, result, fields) {
+        con.query(firstquery, function (err, result, fields) {
             if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
             var records = [];
             for (var i = 0, len = recordsadmin.length; i < len; ++i) {
@@ -55,11 +55,11 @@ exports.findByUsername = function(username, cb) {
     });
 }
 
-exports.findAllUsers = function(coId, cb) {
-    process.nextTick(function() {
+exports.findAllUsers = function (coId, cb) {
+    process.nextTick(function () {
         let firstquery = `select a.*,b.*,a.deactivated as userdeactivated,b.deactivated as companydeactivated FROM users a LEFT JOIN company b on a.coId = b.coId where b.coId =${coId}`
 
-        con.query(firstquery, function(err, result, fields) {
+        con.query(firstquery, function (err, result, fields) {
             //console.log(result);
             if (!err) result = (JSON.parse(JSON.stringify(result))); // Hacky solution
             if (result && result.length) {
@@ -71,39 +71,51 @@ exports.findAllUsers = function(coId, cb) {
     });
 }
 
-exports.createUser = function(req, cb) {
+exports.createUser = function (req, cb) {
     var coId = req.user.coId;
     var user = req.body;
-    process.nextTick(function() {
-        user.username = user.username ? [].concat(user.username) : [''];
-        user.password = user.password ? [].concat(user.password) : [''];
-        user.displayname = user.displayname ? [].concat(user.displayname) : [''];
-        user.email = user.email ? [].concat(user.email) : [''];
+    process.nextTick(function () {
+        let query = `select maxUsers,COUNT(b.userId) AS countUsers FROM company a 
+        LEFT JOIN users b on a.coId = b.coId
+        where a.coId=${coId}
+        GROUP BY b.coId`;
 
-        let firstquery = "INSERT INTO users (username,userpassword,displayname,email,deactivated,administrator,coId,createdDate) VALUES (" +
-            "'" + user.username[0] + "'," +
-            "'" + user.password[0] + "'," +
-            "'" + user.displayname[0] + "'," +
-            "'" + user.email[0] + "'," +
-            "'" + "0" + "'," +
-            "'" + "0" + "'," +
-            "" + coId + "," +
-            "" + "CURRENT_TIMESTAMP" + "" +
-            ")";
+        con.query(query, function (err, result) {
+            if (result[0].countUsers < result[0].maxUsers) {
+                user.username = user.username ? [].concat(user.username) : [''];
+                user.password = user.password ? [].concat(user.password) : [''];
+                user.displayname = user.displayname ? [].concat(user.displayname) : [''];
+                user.email = user.email ? [].concat(user.email) : [''];
 
-        con.query(firstquery, function(err, result) {
-            console.log(err);
-            if (err) {
-                return cb(err.code, null);
-            } else if (result && result.insertId) {
-                return cb(null, result.insertId);
+                let firstquery = "INSERT INTO users (username,userpassword,displayname,email,deactivated,administrator,coId,createdDate) VALUES (" +
+                    "'" + user.username[0] + "'," +
+                    "'" + user.password[0] + "'," +
+                    "'" + user.displayname[0] + "'," +
+                    "'" + user.email[0] + "'," +
+                    "'" + "0" + "'," +
+                    "'" + "0" + "'," +
+                    "" + coId + "," +
+                    "" + "CURRENT_TIMESTAMP" + "" +
+                    ")";
+
+                con.query(firstquery, function (err, result) {
+                    console.log(err);
+                    if (err) {
+                        return cb(err.code, null);
+                    } else if (result && result.insertId) {
+                        return cb(null, result.insertId);
+                    }
+                });
+            } else {
+                return cb("Unable Create Account Anymore, Please Contact SafeRack", null);
             }
+
         });
     });
 }
 
-exports.saveAllUsers = function(users, cb) {
-    process.nextTick(function() {
+exports.saveAllUsers = function (users, cb) {
+    process.nextTick(function () {
         if (!users) {
             return cb(null, null);
         }
@@ -129,7 +141,7 @@ exports.saveAllUsers = function(users, cb) {
                 " where userId=" + users.userId[i] + ";";
         }
 
-        con.query(firstquery, function(err, result) {
+        con.query(firstquery, function (err, result) {
             //console.log(result);
             if (result && result.length) {
                 return cb(null, result);

@@ -38,10 +38,11 @@ exports.createsuperadmin = function (req, cb) {
     comp.comptel = comp.comptel ? [].concat(comp.comptel) : [''];
     comp.username = comp.username ? [].concat(comp.username) : [''];
     comp.password = comp.password ? [].concat(comp.password) : [''];
+    comp.maxUsers = comp.maxUsers ? [].concat(comp.maxUsers) : [''];
 
     let firstquery = `INSERT INTO company 
-  (coName,coAdd,coTel, deactivated, createdDate)
-  VALUES ('${comp.compname}','${comp.compadd}','${comp.comptel}','0',CURRENT_TIMESTAMP)`;
+  (coName,coAdd,coTel, deactivated, createdDate,maxUsers)
+  VALUES ('${comp.compname}','${comp.compadd}','${comp.comptel}','0',CURRENT_TIMESTAMP,'${comp.maxUsers}')`;
 
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
@@ -95,11 +96,13 @@ exports.editsuperadmin = function (req, cb) {
     company.compname = company.compname ? [].concat(company.compname) : [''];
     company.compadd = company.compadd ? [].concat(company.compadd) : [''];
     company.comptel = company.comptel ? [].concat(company.comptel) : [''];
+    company.maxUsers = company.maxUsers ? [].concat(company.maxUsers) : [''];
 
     let firstquery = `UPDATE company SET 
     coName = "${company.compname[0]}",
     coAdd = "${company.compadd[0]}",
-    coTel = "${company.comptel[0]}"
+    coTel = "${company.comptel[0]}",
+    maxUsers = "${company.maxUsers[0]}"
     where coId= "${company.coId[0]}"`
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
