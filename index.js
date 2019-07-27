@@ -9,7 +9,7 @@ var busboyBodyParser = require('busboy-body-parser');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var db = require('./modals/users');
-
+var jwt = require('jsonwebtoken');
 
 
 const { getHomePage } = require('./routes/index');
@@ -19,19 +19,19 @@ const { getCustomersPage, createCustomer, editCustomer, getEditCustomersPage, ge
 const { getLandsPage, getEditLandsPage, getLandsDocPage, uploadLandDocuments, createLand, editLand, disabledDeleteLand } = require('./routes/lands');
 const { getMpobsPage, getEditMpobsPage, getMpobsDocPage, uploadMpobDocuments, createMpob, editMpob, disabledDeleteMpob } = require('./routes/mpobs');
 const { getMsposPage, getEditMsposPage, getMsposDocPage, uploadMspoDocuments, createMspo, editMspo, disabledDeleteMspo } = require('./routes/mspos');
-const { getSummaryPage,postSummaryPage } = require('./routes/summary');
+const { getSummaryPage, postSummaryPage } = require('./routes/summary');
 const { getCompanyPage, saveCompany } = require('./routes/company');
-const { getsuperadminPage, getEditsuperadminPage, getsuperadminDocPage, createsuperadmin, 
+const { getsuperadminPage, getEditsuperadminPage, getsuperadminDocPage, createsuperadmin,
     editsuperadmin, deactivateCompany } = require('./routes/superadmin');
-const { getTicketsPage, getEditTicketsPage, getTicketsDocPage, 
+const { getTicketsPage, getEditTicketsPage, getTicketsDocPage,
     uploadTicketDocuments, createTicket, editTicket, disabledDeleteTicket } = require('./routes/tickets');
-const { getBuyersPage, getEditBuyersPage, getBuyersDocPage, 
-        uploadBuyerDocuments, createBuyer, editBuyer, disabledDeleteBuyer } = require('./routes/buyers');    
-const { getTransportersPage, getEditTransportersPage, getTransportersDocPage, 
-        uploadTransporterDocuments, createTransporter, editTransporter, disabledDeleteTransporter } = require('./routes/transporters'); 
+const { getBuyersPage, getEditBuyersPage, getBuyersDocPage,
+    uploadBuyerDocuments, createBuyer, editBuyer, disabledDeleteBuyer } = require('./routes/buyers');
+const { getTransportersPage, getEditTransportersPage, getTransportersDocPage,
+    uploadTransporterDocuments, createTransporter, editTransporter, disabledDeleteTransporter } = require('./routes/transporters');
 
- 
-    
+
+
 // Create a new Express application.
 var app = express();
 app.use(busboyBodyParser({ multi: true }));
@@ -40,11 +40,16 @@ app.use(busboyBodyParser({ multi: true }));
 // var port = process.env.PORT || 7000;
 // app.set('port', port);
 
-
+function generateToken(req, res, next) {
+    req.session.token = jwt.sign({
+        id: req.user.userId,
+    }, 'server secret');
+    next();
+}
 
 passport.use(new Strategy(
-    function(username, password, cb) {
-        db.users.findByUsername(username, function(err, user) {
+    function (username, password, cb) {
+        db.users.findByUsername(username, function (err, user) {
             if (err) { return cb(err); }
             if (!user) { return cb(null, false); }
             if (user.userpassword != password) { return cb(null, false); } else
@@ -58,11 +63,11 @@ passport.use(new Strategy(
 // typical implementation of this is as simple as supplying the user ID when
 // serializing, and querying the user record by ID from the database when
 // deserializing.
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function (user, cb) {
     cb(null, user.userId);
 });
-passport.deserializeUser(function(id, cb) {
-    db.users.findById(id, function(err, user) {
+passport.deserializeUser(function (id, cb) {
+    db.users.findById(id, function (err, user) {
         if (err) { return cb(err); }
         cb(null, user);
     });
@@ -83,16 +88,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 // Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     // if there's a flash message in the session request, make it available in the response, then delete it
     res.locals.sessionFlash = req.session.sessionFlash;
     delete req.session.sessionFlash;
     next();
 });
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
-var requiresAdmin = function() {
+var requiresAdmin = function () {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
             if (req.user && req.user.administrator === 1)
                 next();
             else {
@@ -104,17 +109,17 @@ var requiresAdmin = function() {
         }
     ]
 };
-var checkmpobcompany = function(req) {
+var checkmpobcompany = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
 
             var mpobId = req.params.mpobId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM mpobs 
     WHERE mpobId=${mpobId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
                     if (result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
@@ -131,17 +136,17 @@ var checkmpobcompany = function(req) {
     ]
 };
 
-var checksummarycustid = function(req) {
+var checksummarycustid = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
 
             var queryCustId = req.params.queryCustId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM customers 
                 WHERE custId=${queryCustId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
 
                     if (result && result.length == 0) {
@@ -160,17 +165,17 @@ var checksummarycustid = function(req) {
     ]
 };
 
-var checkmspocompany = function(req) {
+var checkmspocompany = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
 
             var mspoId = req.params.mspoId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM mspos 
                 WHERE mspoId=${mspoId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
 
                     if (result && result.length == 0) {
@@ -189,17 +194,17 @@ var checkmspocompany = function(req) {
     ]
 };
 
-var checklandcompany = function(req) {
+var checklandcompany = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
 
             var landId = req.params.landId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM lands 
     WHERE landId=${landId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
                     if (result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
@@ -216,17 +221,17 @@ var checklandcompany = function(req) {
     ]
 };
 
-var checkticketcompany = function(req) {
+var checkticketcompany = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
 
             var ticketId = req.params.ticketId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM tickets 
     WHERE ticketId=${ticketId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
                     if (result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
@@ -243,17 +248,17 @@ var checkticketcompany = function(req) {
     ]
 };
 
-var checktransportercompany = function(req) {
+var checktransportercompany = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
 
             var transporterId = req.params.transporterId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM transporters 
     WHERE transporterId=${transporterId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
                     if (result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
@@ -270,17 +275,17 @@ var checktransportercompany = function(req) {
     ]
 };
 
-var checkbuyercompany = function(req) {
+var checkbuyercompany = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
 
             var buyerId = req.params.buyerId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM buyers 
     WHERE buyerId=${buyerId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
                     if (result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
@@ -297,17 +302,16 @@ var checkbuyercompany = function(req) {
     ]
 };
 
-var checkcustomercompany = function(req) {
+var checkcustomercompany = function (req) {
     return [
-        function(req, res, next) {
-
+        function (req, res, next) {
             var custId = req.params.custId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM customers 
     WHERE custId=${custId} LIMIT 1`;
                 //console.log(firstquery);
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
                     if (result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
@@ -325,16 +329,16 @@ var checkcustomercompany = function(req) {
 };
 
 
-var checksuperadmin = function(req) {
+var checksuperadmin = function (req) {
     return [
-        function(req, res, next) {
+        function (req, res, next) {
 
             var custId = req.params.custId;
-            process.nextTick(function() {
+            process.nextTick(function () {
                 var firstquery = `SELECT coId FROM company 
     WHERE ${req.user.coId}=1 LIMIT 1`;
 
-                con.query(firstquery, function(err, result, fields) {
+                con.query(firstquery, function (err, result, fields) {
                     //console.log(result);
                     if (result && result.length == 0) {
                         errorFlash = req.flash('error', 'Error Reading');
@@ -346,6 +350,23 @@ var checksuperadmin = function(req) {
                         } else { next(); }
                     }
                 });
+            });
+        }
+    ]
+};
+
+var checkToken = function (req) {
+    return [
+        function (req, res, next) {
+            process.nextTick(function () {
+                if (req.user.token != '') {
+                    var usertoken = req.user.token;
+                    var sessiontoken = req.session.token;
+                    if (usertoken.toString().trim() != sessiontoken.toString().trim()) {
+                        req.logout();
+                        res.redirect('/login');
+                    } else { next(); }
+                } else { next(); }
             });
         }
     ]
@@ -357,20 +378,20 @@ app.get('/', ensureLoggedIn('/login'), getHomePage);
 /* login & logout */
 app.get('/login/', getLoginPage);
 app.post('/login',
-    passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Invalid Username Or Password' }),
+    passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Invalid Username Or Password' }), generateToken,
     postLoginPage);
 app.get('/logout', getLogout);
 /* login & logout */
 
 /* admin */
-app.all('/admin/*', requiresAdmin());
+app.all('/admin/*', requiresAdmin(), checkToken());
 app.get('/admin/', requiresAdmin(), getAdminPage);
 app.post('/admin/user/createUser', ensureLoggedIn('/login'), createUser);
 app.post('/admin/user/saveUsers', ensureLoggedIn('/login'), saveUsers);
 /* admin */
 
 /* customers */
-app.all('/customers*', ensureLoggedIn('/login'));
+app.all('/customers*', ensureLoggedIn('/login'), checkToken());
 app.get('/customers/', getCustomersPage);
 app.get('/customers/:custId', checkcustomercompany(), getEditCustomersPage);
 app.get('/customers/doc/:custId', checkcustomercompany(), getCustomerDocPage);
@@ -381,7 +402,7 @@ app.post('/customers/editcustomer', editCustomer);
 /* customers */
 
 /* lands */
-app.all('/lands*', ensureLoggedIn('/login'));
+app.all('/lands*', ensureLoggedIn('/login'),checkToken());
 app.get('/lands/', getLandsPage);
 app.get('/lands/:landId', checklandcompany(), getEditLandsPage);
 app.get('/lands/doc/:landId', checklandcompany(), getLandsDocPage);
@@ -392,7 +413,7 @@ app.post('/lands/editland', editLand);
 /* lands */
 
 /* tickets */
-app.all('/tickets*', ensureLoggedIn('/login'));
+app.all('/tickets*', ensureLoggedIn('/login'),checkToken());
 app.get('/tickets/', getTicketsPage);
 app.get('/tickets/:ticketId', checkticketcompany(), getEditTicketsPage);
 app.get('/tickets/doc/:ticketId', checkticketcompany(), getTicketsDocPage);
@@ -403,7 +424,7 @@ app.post('/tickets/editticket', editTicket);
 /* tickets */
 
 /* buyers */
-app.all('/buyers*', ensureLoggedIn('/login'));
+app.all('/buyers*', ensureLoggedIn('/login'),checkToken());
 app.get('/buyers/', getBuyersPage);
 app.get('/buyers/:buyerId', checkbuyercompany(), getEditBuyersPage);
 app.get('/buyers/doc/:buyerId', checkbuyercompany(), getBuyersDocPage);
@@ -414,7 +435,7 @@ app.post('/buyers/editbuyer', editBuyer);
 /* buyers */
 
 /* transporter */
-app.all('/transporter*', ensureLoggedIn('/login'));
+app.all('/transporter*', ensureLoggedIn('/login'),checkToken());
 app.get('/transporter/', getTransportersPage);
 app.get('/transporter/:transporterId', checktransportercompany(), getEditTransportersPage);
 app.get('/transporter/doc/:transporterId', checktransportercompany(), getTransportersDocPage);
@@ -425,7 +446,7 @@ app.post('/transporter/edittransporter', editTransporter);
 /* transporter */
 
 /* mpobs */
-app.all('/mpobs*', ensureLoggedIn('/login'));
+app.all('/mpobs*', ensureLoggedIn('/login'),checkToken());
 app.get('/mpobs/', getMpobsPage);
 app.get('/mpobs/:mpobId', checkmpobcompany(), getEditMpobsPage);
 app.get('/mpobs/doc/:mpobId', checkmpobcompany(), getMpobsDocPage);
@@ -436,7 +457,7 @@ app.post('/mpobs/editmpob', editMpob);
 /* mpobs */
 
 /* mspos */
-app.all('/mspos*', ensureLoggedIn('/login'));
+app.all('/mspos*', ensureLoggedIn('/login'),checkToken());
 app.get('/mspos/', getMsposPage);
 app.get('/mspos/:mspoId', checkmspocompany(), getEditMsposPage);
 app.get('/mspos/doc/:mspoId', checkmspocompany(), getMsposDocPage);
@@ -447,7 +468,7 @@ app.post('/mspos/editmspo', editMspo);
 /* mspos */
 
 /* superadmin */
-app.all('/superadmin*',ensureLoggedIn('/login'), checksuperadmin());
+app.all('/superadmin*', ensureLoggedIn('/login'), checksuperadmin(),checkToken());
 app.get('/superadmin/', getsuperadminPage);
 app.get('/superadmin/:coId', getEditsuperadminPage);
 app.get('/superadmin/doc/:coId', getsuperadminDocPage);
@@ -457,13 +478,13 @@ app.post('/superadmin/edit', editsuperadmin);
 /* superadmin */
 
 /* summary */
-app.all('/summary*', ensureLoggedIn('/login'));
+app.all('/summary*', ensureLoggedIn('/login'),checkToken());
 app.get('/summary/', getSummaryPage);
 app.post('/summary/', postSummaryPage);
 /* summary */
 
 /* company */
-app.all('/company*', ensureLoggedIn('/login'));
+app.all('/company*', ensureLoggedIn('/login'),checkToken());
 app.get('/company/', getCompanyPage);
 app.post('/company/edit', saveCompany);
 /* company */

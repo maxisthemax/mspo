@@ -1,3 +1,4 @@
+var db = require('../modals/users');
 module.exports = {
     getLoginPage: (req, res) => {
         res.render('login.ejs', {
@@ -7,8 +8,10 @@ module.exports = {
         });
     },
     postLoginPage: (req, res) => {
-        req.flash('success', 'Login Sucessful, Hi '+req.user.displayname);
-        res.redirect('/');
+        db.users.saveUserToken(req, function(err, result) {
+            req.flash('success', 'Login Sucessful, Hi '+req.user.displayname);
+            res.redirect('/');
+        });
     },
     getLogout: (req, res) => {
         req.logout();

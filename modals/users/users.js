@@ -114,6 +114,23 @@ exports.createUser = function (req, cb) {
     });
 }
 
+exports.saveUserToken = function (req, cb) {
+    process.nextTick(function () {
+
+        var firstquery = '';
+        firstquery = `UPDATE users SET token = '${req.session.token}' where userId = ${req.user.userId}`;
+        console.log(firstquery);
+        con.query(firstquery, function (err, result) {
+            //console.log(result);
+            if (result && result.length) {
+                return cb(null, result);
+            } else {
+                return cb(err, null);
+            }
+        });
+    });
+}
+
 exports.saveAllUsers = function (users, cb) {
     process.nextTick(function () {
         if (!users) {
