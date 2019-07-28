@@ -364,6 +364,7 @@ var checkToken = function (req) {
                     var sessiontoken = req.session.token;
                     if (usertoken.toString().trim() != sessiontoken.toString().trim()) {
                         req.logout();
+                        errorFlash = req.flash('error', 'Multple Login Detected');
                         res.redirect('/login');
                     } else { next(); }
                 } else { next(); }
