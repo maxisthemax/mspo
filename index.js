@@ -359,13 +359,15 @@ var checkToken = function (req) {
     return [
         function (req, res, next) {
             process.nextTick(function () {
-                if (req.user.token != '') {
-                    var usertoken = req.user.token;
-                    var sessiontoken = req.session.token;
-                    if (usertoken.toString().trim() != sessiontoken.toString().trim()) {
-                        req.logout();
-                        errorFlash = req.flash('error', 'Multple Login Detected');
-                        res.redirect('/login');
+                if (req.user.coId != 1) {
+                    if (req.user.token != '') {
+                        var usertoken = req.user.token;
+                        var sessiontoken = req.session.token;
+                        if (usertoken.toString().trim() != sessiontoken.toString().trim()) {
+                            req.logout();
+                            errorFlash = req.flash('error', 'Multple Login Detected');
+                            res.redirect('/login');
+                        } else { next(); }
                     } else { next(); }
                 } else { next(); }
             });
@@ -403,7 +405,7 @@ app.post('/customers/editcustomer', editCustomer);
 /* customers */
 
 /* lands */
-app.all('/lands*', ensureLoggedIn('/login'),checkToken());
+app.all('/lands*', ensureLoggedIn('/login'), checkToken());
 app.get('/lands/', getLandsPage);
 app.get('/lands/:landId', checklandcompany(), getEditLandsPage);
 app.get('/lands/doc/:landId', checklandcompany(), getLandsDocPage);
@@ -414,7 +416,7 @@ app.post('/lands/editland', editLand);
 /* lands */
 
 /* tickets */
-app.all('/tickets*', ensureLoggedIn('/login'),checkToken());
+app.all('/tickets*', ensureLoggedIn('/login'), checkToken());
 app.get('/tickets/', getTicketsPage);
 app.get('/tickets/:ticketId', checkticketcompany(), getEditTicketsPage);
 app.get('/tickets/doc/:ticketId', checkticketcompany(), getTicketsDocPage);
@@ -425,7 +427,7 @@ app.post('/tickets/editticket', editTicket);
 /* tickets */
 
 /* buyers */
-app.all('/buyers*', ensureLoggedIn('/login'),checkToken());
+app.all('/buyers*', ensureLoggedIn('/login'), checkToken());
 app.get('/buyers/', getBuyersPage);
 app.get('/buyers/:buyerId', checkbuyercompany(), getEditBuyersPage);
 app.get('/buyers/doc/:buyerId', checkbuyercompany(), getBuyersDocPage);
@@ -436,7 +438,7 @@ app.post('/buyers/editbuyer', editBuyer);
 /* buyers */
 
 /* transporter */
-app.all('/transporter*', ensureLoggedIn('/login'),checkToken());
+app.all('/transporter*', ensureLoggedIn('/login'), checkToken());
 app.get('/transporter/', getTransportersPage);
 app.get('/transporter/:transporterId', checktransportercompany(), getEditTransportersPage);
 app.get('/transporter/doc/:transporterId', checktransportercompany(), getTransportersDocPage);
@@ -447,7 +449,7 @@ app.post('/transporter/edittransporter', editTransporter);
 /* transporter */
 
 /* mpobs */
-app.all('/mpobs*', ensureLoggedIn('/login'),checkToken());
+app.all('/mpobs*', ensureLoggedIn('/login'), checkToken());
 app.get('/mpobs/', getMpobsPage);
 app.get('/mpobs/:mpobId', checkmpobcompany(), getEditMpobsPage);
 app.get('/mpobs/doc/:mpobId', checkmpobcompany(), getMpobsDocPage);
@@ -458,7 +460,7 @@ app.post('/mpobs/editmpob', editMpob);
 /* mpobs */
 
 /* mspos */
-app.all('/mspos*', ensureLoggedIn('/login'),checkToken());
+app.all('/mspos*', ensureLoggedIn('/login'), checkToken());
 app.get('/mspos/', getMsposPage);
 app.get('/mspos/:mspoId', checkmspocompany(), getEditMsposPage);
 app.get('/mspos/doc/:mspoId', checkmspocompany(), getMsposDocPage);
@@ -469,7 +471,7 @@ app.post('/mspos/editmspo', editMspo);
 /* mspos */
 
 /* superadmin */
-app.all('/superadmin*', ensureLoggedIn('/login'), checksuperadmin(),checkToken());
+app.all('/superadmin*', ensureLoggedIn('/login'), checksuperadmin(), checkToken());
 app.get('/superadmin/', getsuperadminPage);
 app.get('/superadmin/:coId', getEditsuperadminPage);
 app.get('/superadmin/doc/:coId', getsuperadminDocPage);
@@ -479,13 +481,13 @@ app.post('/superadmin/edit', editsuperadmin);
 /* superadmin */
 
 /* summary */
-app.all('/summary*', ensureLoggedIn('/login'),checkToken());
+app.all('/summary*', ensureLoggedIn('/login'), checkToken());
 app.get('/summary/', getSummaryPage);
 app.post('/summary/', postSummaryPage);
 /* summary */
 
 /* company */
-app.all('/company*', ensureLoggedIn('/login'),checkToken());
+app.all('/company*', ensureLoggedIn('/login'), checkToken());
 app.get('/company/', getCompanyPage);
 app.post('/company/edit', saveCompany);
 /* company */
