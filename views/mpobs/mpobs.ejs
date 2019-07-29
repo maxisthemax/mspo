@@ -132,6 +132,20 @@
                         <input type="hidden" name="landIds" id="landIds" value="">                    
                     </div>
                     <br>
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <label for="custId">MSPO</label>
+                                <select class="form-control mb-4" id="mspoId"name="mspoId" required style="width: 100%">
+                                <option></option>
+                                <% if(mspo_s){ for(var i = 0; i < mspo_s.length; i++) {%>                        
+                                <option value=<%= mspo_s[i].mspoId %>><%= mspo_s[i].mspoCertNo %></option>
+                                <% }} %> 
+                            </select>  
+            
+                        </div>
+                    </div>
+                    <br>
                     <p class="h4 mb-4">Upload Document Here</p>
                     <div class="row">
                         <div class="col-sm-6">
@@ -214,7 +228,10 @@
                 placeholder: "Select Lands",
                 width: 'resolve',
             }); 
-
+            $("#mspoId").select2({
+                placeholder: "Select MSPO",
+                width: 'resolve',
+            }); 
         function configureDropDownLists(ddl1, ddl2) {
             var land_s = <%- JSON.stringify(land_s)%>;
             const arr1 = land_s.filter(d => d.custId == ddl1.value);

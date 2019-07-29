@@ -54,17 +54,17 @@ exports.createMpob = function(req, cb) {
         var mpob = req.body;
         //console.log(mpob);
         process.nextTick(function() {
-            console.log(mpob);
             mpob.mpobLicNo = mpob.mpobLicNo ? [].concat(mpob.mpobLicNo) : [''];
             mpob.expiredDate = mpob.expiredDate ? [].concat(mpob.expiredDate) : [''];
             mpob.custId = mpob.custId ? [].concat(mpob.custId) : [''];
             mpob.landIds = mpob.landIds ? [].concat(mpob.landIds) : [''];
+            mpob.mspoId = mpob.mspoId ? [].concat(mpob.mspoId) : [''];
 
             let firstquery = `INSERT INTO mpobs 
-    (mpobLicNo,expiredDate, custId, createdDate, disabled, coId, landId)
-    VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}',CURRENT_TIMESTAMP,'0','${coId}','${mpob.landIds}')`;
+    (mpobLicNo,expiredDate, custId, createdDate, disabled, coId, landId,mspoId)
+    VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}',CURRENT_TIMESTAMP,'0','${coId}','${mpob.landIds}','${mpob.mspoId}')`;
 
-            //console.log(firstquery);
+            console.log(firstquery);
 
             con.query(firstquery, function(err, result, fields) {
                 if (result) result = JSON.parse(JSON.stringify(result));
