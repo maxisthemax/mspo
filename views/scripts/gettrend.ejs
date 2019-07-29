@@ -300,7 +300,7 @@ function generatePDF() {
     });
       pdfMake.createPdf(doc).getBase64((data) => {
           $('#base64pdf').val(data);
-          console.log(data);
+          //console.log(data);
           $('#generatePDF').submit();
       });
       //pdfMake.createPdf(doc).download("report.pdf");

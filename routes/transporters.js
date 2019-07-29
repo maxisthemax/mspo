@@ -53,7 +53,8 @@ module.exports = {
                     mkdirp(filefolder, function (err) {
                         if (err) console.error(err)
                         else {
-                            console.log('dir created'); if (req.files.docupload) {
+                            //console.log('dir created'); 
+                            if (req.files.docupload) {
                                 fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
                                     if (err) {
                                         res.redirect('/transporter/');
@@ -159,7 +160,7 @@ module.exports = {
                 mkdirp(filefolder, function (err) {
                     if (err) console.error(err)
                     else {
-                        console.log('dir created');
+                        //console.log('dir created');
                         if (req.files.docupload && req.files.docupload.length > 0) {
                             for (i = 0; i < req.files.docupload.length; i++) {
                                 var filetype = req.files.docupload[i].name.split('.').pop();

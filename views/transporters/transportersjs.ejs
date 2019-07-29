@@ -5,7 +5,7 @@ $(document).ready(function () {
         var edittransporterhtml = <%- JSON.stringify(edittransporterhtml)%>;
         var transporter_s = <%- JSON.stringify(transporter_s)%>;
         var data = [];
-        console.log(transporter_s);
+        //console.log(transporter_s);
         for ( var i=0 ; i<transporter_s.length ; i++ ) {
                 data.push( [  
                     transporter_s[i].transporterName,

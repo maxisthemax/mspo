@@ -92,10 +92,10 @@ $(function(){
     valueAxis.renderer.ticks.template.disabled = true;
 
     for (var i = 0; i < tagkeys.length; i++) {  
-      console.log(tagkeys[i]);
+      //console.log(tagkeys[i]);
       createAxisAndSeries(tagkeys[i], tagkeys[i], false, "circle",i);
     }
-    console.log(series);
+    //console.log(series);
     // createAxisAndSeries("visits", "Visits", false, "circle");
     // createAxisAndSeries("views", "Views", true, "triangle");
     // createAxisAndSeries("hits", "Hits", true, "rectangle");
@@ -135,7 +135,7 @@ function generateChartData(results) {
       
       for (var j = 0; j < tagkeys.length; j++) {
 
-        console.log(results[i][tagkeys[0]]);
+        //console.log(results[i][tagkeys[0]]);
         if (results[i][tagkeys[0]] > results[i][tagkeys[1]])
           results[i]['alertcolor']=chart.colors.getIndex(5);
         else if (results[i][tagkeys[0]] < results[i][tagkeys[2]])
@@ -146,7 +146,7 @@ function generateChartData(results) {
       results[i].DateAndTime = newDate;
 
   }
-  console.log(results);
+  //console.log(results);
   return results;
 }
 

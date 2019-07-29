@@ -147,6 +147,10 @@
                 mpobs[i].mpobLicNo,
                 changeToDateFormat(mpobs[i].expiredDate),
                 mpobs[i].mpobId,
+                mpobs[i].lotNos,
+                mpobs[i].mspoCertNo,
+                changeToDateFormat(mpobs[i].MSPOExpiredDate),
+                mpobs[i].standard,
             ]);
         }
         var table = $('#mpobs_view').DataTable({
