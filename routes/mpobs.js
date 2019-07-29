@@ -1,6 +1,7 @@
 var mpobs = require("../modals/mpobs");
 var cust = require("../modals/customers");
 var lands = require("../modals/lands");
+var mspos = require("../modals/mspos");
 var fs = require("fs");
 var ejs = require("ejs");
 var formidable = require('formidable');
@@ -17,17 +18,20 @@ module.exports = {
             mpobs.mpobs.queryAllMpobs(req.user.coId, function (err, mpob_s) {
                 mpobs.mpobs.queryAllMpobsDisabled(req.user.coId, function (err, mpob_s_disabled) {
                     lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
-                        res.render('mpobs/mpobs.ejs', {
-                            successFlash: req.flash('success'),
-                            errorFlash: req.flash('error'),
-                            cust_s: (cust_s) ? cust_s : [],
-                            mpob_s_disabled: (mpob_s_disabled) ? mpob_s_disabled : [],
-                            mpob_s: (mpob_s) ? mpob_s : [],
-                            editmpobhtml: htmlContent,
-                            editmpobhtml2: htmlContent2,
-                            land_s : land_s
+                        mspos.mspos.queryAllMspos(req.user.coId, function (err, mspo_s) {
+                            res.render('mpobs/mpobs.ejs', {
+                                successFlash: req.flash('success'),
+                                errorFlash: req.flash('error'),
+                                cust_s: (cust_s) ? cust_s : [],
+                                mpob_s_disabled: (mpob_s_disabled) ? mpob_s_disabled : [],
+                                mpob_s: (mpob_s) ? mpob_s : [],
+                                editmpobhtml: htmlContent,
+                                editmpobhtml2: htmlContent2,
+                                land_s: land_s,
+                                mspo_s: mspo_s
+                            });
                         });
-                    });   
+                    });
                 });
             });
         });
@@ -36,14 +40,17 @@ module.exports = {
         cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
             mpobs.mpobs.queryMpob(req.params.mpobId, function (err, mpob) {
                 lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
-                    res.render('mpobs/editmpob.ejs', {
-                        successFlash: req.flash('success'),
-                        errorFlash: req.flash('error'),
-                        mpob: mpob,
-                        cust_s: cust_s,
-                        land_s : land_s 
+                    mspos.mspos.queryAllMspos(req.user.coId, function (err, mspo_s) {
+                        res.render('mpobs/editmpob.ejs', {
+                            successFlash: req.flash('success'),
+                            errorFlash: req.flash('error'),
+                            mpob: mpob,
+                            cust_s: cust_s,
+                            land_s: land_s,
+                            mspo_s: mspo_s
+                        });
                     });
-                });    
+                });
             });
         });
     },
@@ -78,7 +85,7 @@ module.exports = {
                         }
                     });
                 } else {
-                    
+
                     if (req.files.docupload) {
                         fs.writeFileSync(filefolder + '/' + req.files.docupload[0].name, req.files.docupload[0].data, function (err) {
                             if (err) {

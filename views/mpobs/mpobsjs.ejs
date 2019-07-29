@@ -15,6 +15,9 @@
                 mpob_s[i].custIC,
                 mpob_s[i].mpobId,
                 mpob_s[i].lotNos,
+                mpob_s[i].mspoCertNo,
+                changeToDateFormat(mpob_s[i].MSPOExpiredDate),
+                mpob_s[i].standard ,                
             ]);
         }
         var table = $('#mpob_s_view').DataTable({
@@ -135,6 +138,9 @@
                 mpob_s_disabled[i].custIC,
                 mpob_s_disabled[i].mpobId,
                 mpob_s_disabled[i].lotNos,
+                mpob_s_disabled[i].mspoCertNo,
+                changeToDateFormat(mpob_s_disabled[i].MSPOExpiredDate),
+                mpob_s_disabled[i].standard ,                     
             ]);
         }
 
@@ -189,9 +195,13 @@
     });
 
     function changeToDateFormat(date) {
+        if(date==null)
+        {return '';}
+        else{
         var datenew = new Date(date);
         datenew = moment(datenew).format('YYYY/MM/DD');
         return datenew;
+        }
     }
     
 

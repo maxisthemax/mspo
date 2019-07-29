@@ -12,11 +12,8 @@
             data.push([
                 mspo_s[i].mspoCertNo,
                 changeToDateFormat(mspo_s[i].expiredDate),
-                mspo_s[i].custName,
-                mspo_s[i].custIC,
-                mspo_s[i].mspoId,
                 mspo_s[i].standard,
-                mspo_s[i].lotNos,
+                mspo_s[i].mspoId,
             ]);
         }
         var table = $('#mspo_s_view').DataTable({
@@ -31,7 +28,7 @@
                     "renderer": function(api, rowIdx, columns) {
                         // Show hidden columns in row details
                         var data = $.map(columns, function(col, i) {
-                            if (col.columnIndex == 4) {
+                            if (col.columnIndex == 3) {
                                 return;
                             } else {
                                 return col.hidden ?
@@ -129,11 +126,8 @@
             data.push([
                 mspo_s_disabled[i].mspoCertNo,
                 changeToDateFormat(mspo_s_disabled[i].expiredDate),
-                mspo_s_disabled[i].custName,
-                mspo_s_disabled[i].custIC,
-                mspo_s_disabled[i].mspoId,
                 mspo_s_disabled[i].standard,
-                mspo_s_disabled[i].lotNos,
+                mspo_s_disabled[i].mspoId,
             ]);
         }
 
@@ -149,7 +143,7 @@
                     "renderer": function(api, rowIdx, columns) {
                         // Show hidden columns in row details
                         var data = $.map(columns, function(col, i) {
-                            if (col.columnIndex == 4) {
+                            if (col.columnIndex == 3) {
                                 return;
                             } else {
                                 return col.hidden ?

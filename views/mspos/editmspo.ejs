@@ -20,27 +20,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                    <div class="col-sm-6">
-                        <label for="custId">Customer Name</label>
-                            <select class="form-control mb-4" id="custId"name="custId" required style="width: 100%" onchange="configureDropDownLists(this,document.getElementById('landId'),'')">
-                            <option></option>
-                            <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>                        
-                            <option value=<%= cust_s[i].custId %> <%if (cust_s[i].custId==mspo[0].custId){ %>selected<%}%> ><%= cust_s[i].custName %></option>
-                            <% }} %> 
-                        </select>   
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="landId">Lands</label>
-                        <select  multiple="multiple" class="form-control mb-4" id="landId" name="landId[]" required style="width: 100%">
-                                <option></option>
-                                
-                            </select>
-                    </div>   
-                    <input type="hidden" name="landIds" id="landIds" value="">                    
-            </div>
-            <br>
-
+        
             <div class="row">
                     <div class="col-sm-6">
                         <label for="textInput">Standard</label>
@@ -78,10 +58,7 @@
 <script>
 
     $(function() {
-        $("#mspo_edit_form").submit(function() {
-            var selectval = $('#landId').val();
-            $('#landIds').val(`${selectval}`);
-        })        
+      
         var chartformat = "YYYY-MM-DD";
         $('#expiredDatePicker').datetimepicker({
             format: chartformat,

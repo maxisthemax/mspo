@@ -119,7 +119,6 @@ exports.saveUserToken = function (req, cb) {
 
         var firstquery = '';
         firstquery = `UPDATE users SET token = '${req.session.token}' where userId = ${req.user.userId}`;
-        console.log(firstquery);
         con.query(firstquery, function (err, result) {
             //console.log(result);
             if (result && result.length) {

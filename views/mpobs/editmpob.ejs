@@ -35,17 +35,30 @@
 
                 <div class="col-sm-6">
                     <label for="landId">Lands</label>
-                    <select  multiple="multiple" class="form-control mb-4" id="landId" name="landId[]" required style="width: 100%">
+                    <select  multiple="multiple" class="form-control mb-4" id="landId" name="landId" required style="width: 100%">
                             <option></option>
                             
                         </select>
                 </div>  
-<input type="hidden" name="landIds" id="landIds" value="">   
+            <input type="hidden" name="landIds" id="landIds" value="">   
+            <input type="hidden" id="mpobId" name="mpobId" value="<%= mpob[0].mpobId%>">
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
 
+                    <label for="custId">MSPO</label>
+                        <select class="form-control mb-4" id="mspoId"name="mspoId" required style="width: 100%">
+                        <option></option>
+                        <% if(mspo_s){ for(var i = 0; i < mspo_s.length; i++) {%>                        
+                        <option value=<%= mspo_s[i].mspoId %> <%if (mspo_s[i].mspoId==mpob[0].mspoId){ %>selected<%}%> ><%= mspo_s[i].mspoCertNo %></option>
+                        <% }} %> 
+                    </select>  
+     
+                </div>
             </div>
             <br>
 
-            <input type="hidden" id="mpobId" name="mpobId" value="<%= mpob[0].mpobId%>">
             <div class="row">
                 <div class="col-sm-3">
                     <a href="/mpobs/">
@@ -73,7 +86,7 @@
 <script>
         $("#mpob_edit").submit(function() {
             var selectval = $('#landId').val();
-            $('#landIds').val(`${selectval}`);
+            $('#landIds').val(`${selectval}`);          
         })
     $(function() {
         var chartformat = "YYYY-MM-DD";
@@ -90,7 +103,11 @@
             placeholder: "Select Lands",
             width: 'resolve',
         });   
-        
+
+        $("#mspoId").select2({
+            placeholder: "Select MPOB",
+            width: 'resolve',
+        });           
         configureDropDownLists(document.getElementById('custId'),document.getElementById('landId'),<%= mpob[0].landId %>);
     }); 
 

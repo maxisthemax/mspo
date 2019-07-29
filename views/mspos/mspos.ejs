@@ -16,11 +16,8 @@
                             <tr>
                                 <th>MSPO Certificate No</th>
                                 <th>Expired Date</th>
-                                <th>Customer Name</th>
-                                <th>Customer IC</th>
-                                <th class="none"></th>
-                                <th class="none">Standard</th>
-                                <th>Lot No</th>
+                                <th>Standard</th>
+                                <th class="none"></th>                                
                                 <!-- <th class="none">Address 3</th>
                                 <th class="none">Cust Id</th> -->
                             </tr>
@@ -29,11 +26,8 @@
                             <tr>
                                 <th>MSPO Certificate No</th>
                                 <th>Expired Date</th>
-                                <th>Customer Name</th>
-                                <th>Customer IC</th>
-                                <th class="none"></th>
-                                <th class="none">Standard</th>
-                                <th>Lot No</th>
+                                <th>Standard</th>
+                                <th class="none"></th>      
                                 <!-- <th class="none">Address 3</th>
                                 <th class="none">Cust Id</th> -->
                             </tr>
@@ -58,11 +52,8 @@
                                 <tr>
                                     <th>MSPO Certificate No</th>
                                     <th>Expired Date</th>
-                                    <th>Customer Name</th>
-                                    <th>Customer IC</th>
-                                    <th class="none"></th>
-                                    <th class="none">Standard</th>
-                                    <th>Lot No</th>
+                                    <th>Standard</th>
+                                    <th class="none"></th>      
                                     <!-- <th class="none">Address 1</th>
                                     <th class="none">Address 2</th>
                                     <th class="none">Address 3</th>
@@ -73,11 +64,8 @@
                                 <tr>
                                     <th>MSPO Certificate No</th>
                                     <th>Expired Date</th>
-                                    <th>Customer Name</th>
-                                    <th>Customer IC</th>
-                                    <th class="none"></th>
-                                    <th class="none">Standard</th>
-                                    <th>Lot No</th>
+                                    <th>Standard</th>
+                                    <th class="none"></th>      
                                     <!-- <th class="none">Address 1</th>
                                     <th class="none">Address 2</th>
                                     <th class="none">Address 3</th>
@@ -111,27 +99,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="custId">Customer Name</label>
-                            <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%" onchange="configureDropDownLists(this,document.getElementById('landId'))">
-                                    <option></option>
-                                    <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>
-                                    <option value=<%= cust_s[i].custId %>><%= cust_s[i].custName  %> - <%= cust_s[i].custIC  %>
-                                    </option>
-                                    <% }} %>
-                                </select>
-                        </div>                 
-                        <div class="col-sm-6">
-                            <label for="landId">Lands</label>
-                            <select multiple="multiple"  class="form-control mb-4" id="landId" name="landId[]" required style="width: 100%">
-                                    <option></option>
-                                    
-                                </select>
-                        </div>
-                    </div>
-                            <input type="hidden" name="landIds" id="landIds" value="">  
-                    <br>
                     <div class="row">                  
                         <div class="col-sm-6">
                             <label for="textInput">Standard</label>
