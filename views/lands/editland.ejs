@@ -30,14 +30,14 @@
                 </div>
                 <div class="col-sm-6">
                     <label for="textInput">Area (hektar)</label>
-                    <input type="number" step="any" id="area" name="area" class="form-control mb-4" required
+                    <input type="number" step="any" id="area" name="area" class="form-control mb-4"
                         value="<%= land[0].area%>">
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
                     <label for="textInput">Usage Of Land</label>
-                    <select class="form-control mb-4" id="usageOfLand" name="usageOfLand" required style="width: 100%">
+                    <select class="form-control mb-4" id="usageOfLand" name="usageOfLand" style="width: 100%">
                         <option></option>
                         <option value="AGRICULTURE"<%if ("AGRICULTURE"==land[0].usageOfLand){ %>selected<%}%>>AGRICULTURE</option>
                     </select>  
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-sm-6">
                     <label for="textInput">Type Of Condition</label>
-                    <select class="form-control mb-4" id="typeOfCondition" name="typeOfCondition" required style="width: 100%">
+                    <select class="form-control mb-4" id="typeOfCondition" name="typeOfCondition" style="width: 100%">
                         <option></option>
                         <option value="SAWIT"<%if ("SAWIT"==land[0].typeOfCondition){ %>selected<%}%>>SAWIT</option>
                         <option value="GETAH"<%if ("GETAH"==land[0].typeOfCondition){ %>selected<%}%>>GETAH</option>
@@ -59,27 +59,27 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="textInput">Mukim</label>
-                        <input type="text" id="mukim" name="mukim" class="form-control mb-4" required value="<%= land[0].mukim%>">                    
+                        <input type="text" id="mukim" name="mukim" class="form-control mb-4" value="<%= land[0].mukim%>">                    
                     </div>                
                     <div class="col-sm-3">
                         <label for="textInput">Latitude</label>
-                        <input type="number" step="any" pattern="[0-9][.][0-9]"  id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4" required
+                        <input type="number" step="any" pattern="[0-9][.][0-9]"  id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4"
                         value="<%= land[0].gpsLocationLat%>">
                     </div>                   
                     <div class="col-sm-3">
                         <label for="textInput">Longitude</label>
-                        <input type="number" step="any" pattern="[0-9][.][0-9]"  id="gpsLocationLng" name="gpsLocationLng" class="form-control mb-4" required
+                        <input type="number" step="any" pattern="[0-9][.][0-9]"  id="gpsLocationLng" name="gpsLocationLng" class="form-control mb-4"
                         value="<%= land[0].gpsLocationLng%>">
                     </div>                 
                 </div>    
                 <div class="row">
                     <div class="col-sm-3">
                         <label for="textInput">Year Planted</label>
-                        <input type="number" pattern="[0-9]" id="yearPlanted" name="yearPlanted" class="form-control mb-4" value="<%= land[0].yearPlanted%>" required>
+                        <input type="number" pattern="[0-9]" id="yearPlanted" name="yearPlanted" class="form-control mb-4" value="<%= land[0].yearPlanted%>">
                     </div>
                     <div class="col-sm-3">
                         <label for="textInput">Is MSPO certified</label>
-                        <select class="form-control mb-4" id="isMSPO" name="isMSPO" required style="width: 100%">
+                        <select class="form-control mb-4" id="isMSPO" name="isMSPO" style="width: 100%">
                             <option></option>
                             <option value="1"<%if ("1"==land[0].isMSPO){ %>selected<%}%>>YES</option>
                             <option value="0"<%if ("0"==land[0].isMSPO){ %>selected<%}%>>NO</option>
