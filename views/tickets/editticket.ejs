@@ -31,8 +31,14 @@
             </div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="textInput">Vehicle No</label>
-                        <input type="text" id="vehicleNo" name="vehicleNo" class="form-control mb-4" required value="<%=ticket[0].vehicleNo%>">
+                        <label for="textInput">Transporter</label>
+                        <select class="form-control mb-4" id="transporterId" name="transporterId" required style="width: 100%">
+                            <option></option>
+                            <% if(transporters){ for(var i = 0; i < transporters.length; i++) {%>
+                            <option value=<%= transporters[i].transporterId %> <%if (transporters[i].transporterId==ticket[0].transporterId){ %>selected<%}%> ><%= transporters[i].transporterName  %> - <%= transporters[i].transporterVehNo  %>
+                            </option>
+                            <% }} %>
+                        </select>   
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Buyer Name</label>

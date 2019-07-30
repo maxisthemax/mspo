@@ -1,6 +1,7 @@
 var tickets = require("../modals/tickets");
 var cust = require("../modals/customers");
 var buyers = require("../modals/buyers");
+var transporters = require("../modals/transporters");
 var fs = require("fs");
 var ejs = require("ejs");
 var formidable = require('formidable');
@@ -17,15 +18,18 @@ module.exports = {
             buyers.buyers.queryAllBuyers(req.user.coId, function (err, buyer_s) {
                 tickets.tickets.queryAllTickets(req.user.coId, function (err, ticket_s) {
                     tickets.tickets.queryAllTicketsDisabled(req.user.coId, function (err, ticket_s_disabled) {
-                        res.render('tickets/tickets.ejs', {
-                            successFlash: req.flash('success'),
-                            errorFlash: req.flash('error'),
-                            cust_s: (cust_s) ? cust_s : [],
-                            ticket_s_disabled: (ticket_s_disabled) ? ticket_s_disabled : [],
-                            ticket_s: (ticket_s) ? ticket_s : [],
-                            buyer_s: (buyer_s) ? buyer_s : [],
-                            edittickethtml: htmlContent,
-                            edittickethtml2: htmlContent2,
+                        transporters.transporter.queryAllTransporters(req.user.coId, function (err, transporters) {
+                            res.render('tickets/tickets.ejs', {
+                                successFlash: req.flash('success'),
+                                errorFlash: req.flash('error'),
+                                cust_s: (cust_s) ? cust_s : [],
+                                ticket_s_disabled: (ticket_s_disabled) ? ticket_s_disabled : [],
+                                ticket_s: (ticket_s) ? ticket_s : [],
+                                buyer_s: (buyer_s) ? buyer_s : [],
+                                edittickethtml: htmlContent,
+                                edittickethtml2: htmlContent2,
+                                transporters: transporters
+                            });
                         });
                     });
                 });
@@ -82,12 +86,15 @@ module.exports = {
         cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
             tickets.tickets.queryTicket(req.params.ticketId, function (err, ticket) {
                 buyers.buyers.queryAllBuyers(req.user.coId, function (err, buyer_s) {
-                    res.render('tickets/editticket.ejs', {
-                        successFlash: req.flash('success'),
-                        errorFlash: req.flash('error'),
-                        ticket: ticket,
-                        cust_s: cust_s,
-                        buyer_s: buyer_s
+                    transporters.transporter.queryAllTransporters(req.user.coId, function (err, transporters) {
+                        res.render('tickets/editticket.ejs', {
+                            successFlash: req.flash('success'),
+                            errorFlash: req.flash('error'),
+                            ticket: ticket,
+                            cust_s: cust_s,
+                            buyer_s: buyer_s,
+                            transporters: transporters
+                        });
                     });
                 });
             });

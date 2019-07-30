@@ -2,7 +2,9 @@ exports.queryAllTickets = function (coId, cb) {
   process.nextTick(function () {
     var firstquery = `SELECT * FROM tickets a LEFT JOIN company b ON a.coId = b.coId 
     LEFT JOIN customers c ON c.custId = a.custId 
-    LEFT JOIN buyers d ON d.buyerId = a.buyerId where a.coId = ${coId} and a.disabled = 0`;
+    LEFT JOIN buyers d ON d.buyerId = a.buyerId 
+    LEFT JOIN transporters e ON e.transporterId = a.transporterId
+    where a.coId = ${coId} and a.disabled = 0`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
@@ -90,7 +92,7 @@ exports.editTicket = function (req, cb) {
     ticket.oer = ticket.oer ? [].concat(ticket.oer) : [''];
     ticket.custId = ticket.custId ? [].concat(ticket.custId) : [''];
     ticket.ticketId = ticket.ticketId ? [].concat(ticket.ticketId) : [''];
-
+    ticket.transporterId = ticket.transporterId ? [].concat(ticket.transporterId) : [''];
     let firstquery = `UPDATE tickets SET 
     ticketDate = "${ticket.ticketDate[0]}",
     ticketNo = "${ticket.ticketNo[0]}",
@@ -103,8 +105,9 @@ exports.editTicket = function (req, cb) {
     priceMt = "${ticket.priceMt[0]}",
     totalPrice = "${ticket.totalPrice[0]}",
     oer = "${ticket.oer[0]}",
-    custId = "${ticket.custId[0]}"
-    where ticketId= "${ticket.ticketId[0]}"`
+    custId = "${ticket.custId[0]}",
+    transporterId = "${ticket.custId[0]}"
+    where ticketId= "${ticket.transporterId[0]}"`
 
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
@@ -137,12 +140,13 @@ exports.createTicket = function (req, cb) {
     ticket.totalPrice = ticket.totalPrice ? [].concat(ticket.totalPrice) : [''];
     ticket.oer = ticket.oer ? [].concat(ticket.oer) : [''];
     ticket.custId = ticket.custId ? [].concat(ticket.custId) : [''];
+    ticket.transporterId = ticket.transporterId ? [].concat(ticket.transporterId) : [''];
 
     let firstquery = `INSERT INTO tickets 
-    (ticketDate,ticketNo, vehicleNo, buyerId, firstWeight, secondWeight, deduction, nettWeight,priceMt,totalPrice,oer,coId,createdDate,custId)
+    (ticketDate,ticketNo, vehicleNo, buyerId, firstWeight, secondWeight, deduction, nettWeight,priceMt,totalPrice,oer,coId,createdDate,custId,transporterId)
     VALUES ('${ticket.ticketDate}','${ticket.ticketNo}','${ticket.vehicleNo}','${ticket.buyerId}'
     ,'${ticket.firstWeight}','${ticket.secondWeight}','${ticket.deduction}','${ticket.nettWeight}','${ticket.priceMt}'
-    ,'${ticket.totalPrice}','${ticket.oer}','${coId}','CURRENT_TIMESTAMP',${ticket.custId})`;
+    ,'${ticket.totalPrice}','${ticket.oer}','${coId}','CURRENT_TIMESTAMP',${ticket.custId},${ticket.transporterId})`;
 
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));

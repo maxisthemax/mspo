@@ -75,17 +75,14 @@ exports.editTransporter = function (req, cb) {
     transporter.transporterAdd = transporter.transporterAdd ? [].concat(transporter.transporterAdd) : [''];
     transporter.transporterVehNo = transporter.transporterVehNo ? [].concat(transporter.transporterVehNo) : [''];
     transporter.priceMt = transporter.priceMt ? [].concat(transporter.priceMt) : [''];
-    transporter.totalTransport = transporter.totalTransport ? [].concat(transporter.totalTransport) : [''];
-    transporter.nettWeight = transporter.nettWeight ? [].concat(transporter.nettWeight) : [''];
-    transporter.transporterId = transporter.transporterId ? [].concat(transporter.transporterId) : [''];
+    // transporter.totalTransport = transporter.totalTransport ? [].concat(transporter.totalTransport) : [''];
+    // transporter.nettWeight = transporter.nettWeight ? [].concat(transporter.nettWeight) : [''];
+    // transporter.transporterId = transporter.transporterId ? [].concat(transporter.transporterId) : [''];
 
     let firstquery = `UPDATE transporters SET 
     transporterName = "${transporter.transporterName[0]}",
     transporterAdd = "${transporter.transporterAdd[0]}",
-    transporterVehNo = "${transporter.transporterVehNo[0]}",
-    priceMt = "${transporter.priceMt[0]}",
-    totalTransporterCost = "${transporter.totalTransport[0]}",
-    ticketId = "${transporter.nettWeight[0]}"
+    transporterVehNo = "${transporter.transporterVehNo[0]}"
     where transporterId= "${transporter.transporterId[0]}"`
 console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
@@ -110,15 +107,14 @@ exports.createTransporter = function (req, cb) {
     transporter.transporterName = transporter.transporterName ? [].concat(transporter.transporterName) : [''];
     transporter.transporterAdd = transporter.transporterAdd ? [].concat(transporter.transporterAdd) : [''];
     transporter.transporterVehNo = transporter.transporterVehNo ? [].concat(transporter.transporterVehNo) : [''];
-    transporter.priceMt = transporter.priceMt ? [].concat(transporter.priceMt) : [''];
-    transporter.totalTransport = transporter.totalTransport ? [].concat(transporter.totalTransport) : [''];
-    transporter.nettWeight = transporter.nettWeight ? [].concat(transporter.nettWeight) : [''];
+    // transporter.priceMt = transporter.priceMt ? [].concat(transporter.priceMt) : [''];
+    // transporter.totalTransport = transporter.totalTransport ? [].concat(transporter.totalTransport) : [''];
+    // transporter.nettWeight = transporter.nettWeight ? [].concat(transporter.nettWeight) : [''];
 
     let firstquery = `INSERT INTO transporters
-    (transporterName,transporterAdd, transporterVehNo,priceMt,totalTransporterCost,createdDate,coId,ticketId)
+    (transporterName,transporterAdd, transporterVehNo,createdDate,coId)
     VALUES ('${transporter.transporterName}','${transporter.transporterAdd}','${transporter.transporterVehNo}'
-    ,'${transporter.priceMt}','${transporter.totalTransport}'
-    ,CURRENT_TIMESTAMP,'${coId}',${transporter.nettWeight})`;
+    ,CURRENT_TIMESTAMP,'${coId}')`;
     
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));

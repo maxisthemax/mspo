@@ -5,13 +5,15 @@ $(document).ready(function () {
         var edittickethtml = <%- JSON.stringify(edittickethtml)%>;
         var ticket_s = <%- JSON.stringify(ticket_s)%>;
         var data = [];
+
         for ( var i=0 ; i<ticket_s.length ; i++ ) {
-                data.push( [  
+                console.log(ticket_s[i].ticketId);
+                data.push( [                     
                     ticket_s[i].custName,
+                    ticket_s[i].ticketId,                     
                     ticket_s[i].custIC,                     
                     changeToDateFormat(ticket_s[i].ticketDate), 
                     ticket_s[i].ticketNo,
-                    ticket_s[i].vehicleNo, 
                     ticket_s[i].buyerName, 
                     ticket_s[i].firstWeight, 
                     ticket_s[i].secondWeight,
@@ -20,7 +22,9 @@ $(document).ready(function () {
                     ticket_s[i].totalPrice,
                     ticket_s[i].oer,
                     ticket_s[i].priceMt,
-                    ticket_s[i].ticketId,
+                    ticket_s[i].transporterName, 
+                    ticket_s[i].transporterAdd, 
+                    ticket_s[i].transporterVehNo,                     
                     ] );
             }       
  
@@ -38,7 +42,7 @@ $(document).ready(function () {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
                             //console.log(col.columnIndex);
-                            if (col.columnIndex == 13) 
+                            if (col.columnIndex == 1) 
                             {
                                 return;
                             }
@@ -137,8 +141,9 @@ $(document).ready(function () {
         var ticket_s_disabled = <%- JSON.stringify(ticket_s_disabled)%>;
         var data = [];
         for ( var i=0 ; i<ticket_s_disabled.length ; i++ ) {
-                data.push( [  
+                data.push( [                   
                     ticket_s_disabled[i].custName,
+                    ticket_s_disabled[i].ticketId,                       
                     ticket_s_disabled[i].custIC,                     
                     changeToDateFormat(ticket_s_disabled[i].ticketDate), 
                     ticket_s_disabled[i].ticketNo,
@@ -151,7 +156,9 @@ $(document).ready(function () {
                     ticket_s_disabled[i].totalPrice,
                     ticket_s_disabled[i].oer,
                     ticket_s_disabled[i].priceMt,
-                    ticket_s_disabled[i].ticketId,
+                    ticket_s_disabled[i].transporterName, 
+                    ticket_s_disabled[i].transporterAdd, 
+                    ticket_s_disabled[i].transporterVehNo,     
                     ] );
             }          
         //console.log(customers);
@@ -167,7 +174,7 @@ $(document).ready(function () {
                     "renderer": function ( api, rowIdx, columns ) {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 13) 
+                            if (col.columnIndex == 1) 
                             {
                                 return;
                             }

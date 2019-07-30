@@ -1,8 +1,9 @@
 <% include partials/header.ejs %>
 <div class="container-fluid">
     <div class="tab">
-        <button class="tablinks" onclick="openTabs(event, 'ticket_create')" value=ticket_create>Create Ticket</button>
         <button class="tablinks" onclick="openTabs(event, 'ticket_s')" value=ticket_s>Tickets</button>
+        <button class="tablinks" onclick="openTabs(event, 'ticket_create')" value=ticket_create>Create Ticket</button>
+
 
     </div>
     <div class="" style="border:1px solid">
@@ -13,12 +14,12 @@
             <div class="panel-body">
                 <table id="ticket_s_view" class="display" cellspacing="0" width="100%">
                     <thead>
-                        <tr>
+                        <tr>                      
                             <th>Customer Name</th>
+                            <th class="none"></th>                              
                             <th>Customer IC</th>                        
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
-                            <th>Vehicle No</th>
                             <th>Buyer Name</th>
                             <th class="none">First Weight</th>
                             <th class="none">Second Weight</th>
@@ -27,16 +28,19 @@
                             <th class="none">Price 1mt</th>
                             <th class="none">Total Price</th>
                             <th class="none">OER (%)</th>
-                            <th class="none"></th>
+
+                            <th class="none">Transporter Name</th>
+                            <th class="none">Transporter Address</th>
+                            <th class="none">Transporter Vehicle No</th>
                         </tr>
                     </thead>
                     <tfoot>
-                        <tr>
+                        <tr>                      
                             <th>Customer Name</th>
+                            <th class="none"></th>                              
                             <th>Customer IC</th>                        
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
-                            <th>Vehicle No</th>
                             <th>Buyer Name</th>
                             <th class="none">First Weight</th>
                             <th class="none">Second Weight</th>
@@ -45,7 +49,10 @@
                             <th class="none">Price 1mt</th>
                             <th class="none">Total Price</th>
                             <th class="none">OER (%)</th>
-                            <th class="none"></th>
+
+                            <th class="none">Transporter Name</th>
+                            <th class="none">Transporter Address</th>
+                            <th class="none">Transporter Vehicle No</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -64,12 +71,12 @@
             <div id="demo" class="collapse">
                 <table id="ticket_s_disabled_view" class="display" cellspacing="0" width="100%">
                      <thead>
-                        <tr>
+                        <tr>                        
                             <th>Customer Name</th>
+                            <th class="none"></th>                            
                             <th>Customer IC</th>
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
-                            <th>Vehicle No</th>
                             <th>Buyer Name</th>
                             <th class="none">First Weight</th>
                             <th class="none">Second Weight</th>
@@ -78,16 +85,19 @@
                             <th class="none">Price 1mt</th>
                             <th class="none">Total Price</th>
                             <th class="none">OER (%)</th>
-                            <th class="none"></th>
+
+                            <th class="none">Transporter Name</th>
+                            <th class="none">Transporter Address</th>
+                            <th class="none">Transporter Vehicle No</th>
                         </tr>
                     </thead>
                     <tfoot>
-                        <tr>
+                        <tr>                     
                             <th>Customer Name</th>
+                            <th class="none"></th>                               
                             <th>Customer IC</th>
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
-                            <th>Vehicle No</th>
                             <th>Buyer Name</th>
                             <th class="none">First Weight</th>
                             <th class="none">Second Weight</th>
@@ -96,7 +106,10 @@
                             <th class="none">Price 1mt</th>
                             <th class="none">Total Price</th>
                             <th class="none">OER (%)</th>
-                            <th class="none"></th>
+
+                            <th class="none">Transporter Name</th>
+                            <th class="none">Transporter Address</th>
+                            <th class="none">Transporter Vehicle No</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -138,8 +151,14 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="textInput">Vehicle No</label>
-                        <input type="text" id="vehicleNo" name="vehicleNo" class="form-control mb-4" required>
+                        <label for="textInput">Transporter</label>
+                        <select class="form-control mb-4" id="transporterId" name="transporterId" required style="width: 100%">
+                            <option></option>
+                            <% if(transporters){ for(var i = 0; i < transporters.length; i++) {%>
+                            <option value=<%= transporters[i].transporterId %>><%= transporters[i].transporterName  %> - <%= transporters[i].transporterVehNo  %>
+                            </option>
+                            <% }} %>
+                        </select>                        
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Buyer Name</label>

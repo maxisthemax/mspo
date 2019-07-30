@@ -11,9 +11,9 @@ $(document).ready(function () {
                     transporter_s[i].transporterName,
                     transporter_s[i].transporterAdd, 
                     transporter_s[i].transporterVehNo, 
+                    transporter_s[i].transporterId,                    
                     transporter_s[i].priceMt, 
                     transporter_s[i].totalTransporterCost, 
-                    transporter_s[i].transporterId, 
                     transporter_s[i].ticketId, 
                     ] );
             }       
@@ -31,7 +31,7 @@ $(document).ready(function () {
 
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 5) 
+                            if (col.columnIndex == 3) 
                             {
                                 return;
                             }
@@ -134,9 +134,9 @@ $(document).ready(function () {
                     transporter_s_disabled[i].transporterName,
                     transporter_s_disabled[i].transporterAdd, 
                     transporter_s_disabled[i].transporterVehNo, 
+                    transporter_s_disabled[i].transporterId,                     
                     transporter_s_disabled[i].priceMt, 
                     transporter_s_disabled[i].totalTransporterCost, 
-                    transporter_s_disabled[i].transporterId, 
                     transporter_s_disabled[i].ticketId, 
                     ] );
             }          
@@ -153,7 +153,7 @@ $(document).ready(function () {
                     "renderer": function ( api, rowIdx, columns ) {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 5) 
+                            if (col.columnIndex == 3) 
                             {
                                 return;
                             }

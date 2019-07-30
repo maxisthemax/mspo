@@ -6,10 +6,10 @@
 <div id="transporterbuttons" class="p-5">
     <p class="h4 mb-4">Actions</p>
     <div class="row">
-        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/transporter/<%= transporter_s[5].data%>';" >Edit This transporter</button>
-        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/transporter/doc/<%= transporter_s[5].data%>';" >View This Customer's transporter Documents</button>
+        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/transporter/<%= transporter_s[3].data%>';" >Edit This transporter</button>
+        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/transporter/doc/<%= transporter_s[3].data%>';" >View This Customer's transporter Documents</button>
         <button type="button" class="btn btn-danger btnpadding"
-            onclick="var retVal = confirm('Do you want to disabled this transporter ?');if (retVal == true) {location.href = '/transporter/disabled/<%= transporter_s[5].data%>'};">Disabled This transporter</button>    
+            onclick="var retVal = confirm('Do you want to disabled this transporter ?');if (retVal == true) {location.href = '/transporter/disabled/<%= transporter_s[3].data%>'};">Disabled This transporter</button>    
     </div>
 </div>
 
