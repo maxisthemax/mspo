@@ -171,7 +171,7 @@
                         </select>                        
                     </div>
                 </div>
-
+                <br>
                 <div class="row">
                     <div class="col-sm-3">
                         <label for="textInput">First Weight</label>
@@ -273,7 +273,7 @@
                     defaultDate: moment(),
                 });        
     });
-
+$(document).ready(function () {
     $("#custId").select2({
         placeholder: "Select a Customer",
         width: 'resolve',
@@ -282,6 +282,11 @@
         placeholder: "Select a Buyer",
         width: 'resolve',
     });
+    $("#transporterId").select2({
+        placeholder: "Select a Transporter",
+        width: 'resolve',
+    }); 
+});       
 function calculateNettWeight(){
     var firstWeight = $('#firstWeight').val();
     var secondWeight =  $('#secondWeight').val();
