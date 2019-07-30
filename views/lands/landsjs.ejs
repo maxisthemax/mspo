@@ -15,7 +15,10 @@ $(document).ready(function () {
                     land_s[i].usageOfLand, 
                     land_s[i].typeOfCondition,
                     `${land_s[i].gpsLocationLat},${land_s[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${land_s[i].gpsLocationLat},${land_s[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
-                    land_s[i].landId
+                    land_s[i].landId,
+                    land_s[i].mukim, 
+                    land_s[i].yearPlanted, 
+                    (land_s[i].isMSPO == 1)?'YES':'NO'                    
                     ] );
             }       
         var table = $('#land_s_view').DataTable({
@@ -138,7 +141,10 @@ $(document).ready(function () {
                     land_s_disabled[i].usageOfLand, 
                     land_s_disabled[i].typeOfCondition,
                     `${land_s_disabled[i].gpsLocationLat},${land_s_disabled[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${land_s_disabled[i].gpsLocationLat},${land_s_disabled[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
-                    land_s_disabled[i].landId
+                    land_s_disabled[i].landId,
+                    land_s_disabled[i].mukim, 
+                    land_s_disabled[i].yearPlanted, 
+                    (land_s_disabled[i].isMSPO == 1)?'YES':'NO'                     
                     ] );
             }          
         //console.log(customers);

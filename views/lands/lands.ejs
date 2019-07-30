@@ -21,7 +21,11 @@
                             <th class="none">Usage of Land</th>
                             <th class="none">Type of Condition</th>
                             <th class="none">Gps Location (Lat,Long)</th>
-                            <th class="none"></th>
+                            <th class="none"></th>                            
+                            <th class="none">Mukim</th>
+                            <th class="none">Year Planted</th>
+                            <th class="none">MSPO Certified</th>                            
+
                         </tr>
                     </thead>
                     <tfoot>
@@ -35,6 +39,9 @@
                             <th>Type of Condition</th>
                             <th>Gps Location</th>
                             <th class="none"></th>
+                            <th class="none">Mukim</th>
+                            <th class="none">Year Planted</th>
+                            <th class="none">MSPO Certified</th>                               
                         </tr>
                     </tfoot>
                     <tbody>
@@ -63,6 +70,9 @@
                             <th class="none">Type of Condition</th>
                             <th class="none">Gps Location (Lat,Long)</th>
                             <th class="none"></th>
+                            <th class="none">Mukim</th>
+                            <th class="none">Year Planted</th>
+                            <th class="none">MSPO Certified</th>                               
                         </tr>
                     </thead>
                     <tfoot>
@@ -76,6 +86,9 @@
                             <th>Type of Condition</th>
                             <th>Gps Location</th>
                             <th class="none"></th>
+                            <th class="none">Mukim</th>
+                            <th class="none">Year Planted</th>
+                            <th class="none">MSPO Certified</th>                               
                         </tr>
                     </tfoot>
                     <tbody>
@@ -121,15 +134,28 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="textInput">Usage Of Land</label>
-                        <input type="text" id="usageOfLand" name="usageOfLand" class="form-control mb-4" required>
+                        <select class="form-control mb-4" id="usageOfLand" name="usageOfLand" required style="width: 100%">
+                            <option></option>
+                            <option value="AGRICULTURE">AGRICULTURE</option>
+                        </select>       
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Type Of Condition</label>
-                        <input type="text" id="typeOfCondition" name="typeOfCondition" class="form-control mb-4"
-                            required>
+                        <select class="form-control mb-4" id="typeOfCondition" name="typeOfCondition" required style="width: 100%">
+                            <option></option>
+                            <option value="SAWIT">SAWIT</option>
+                            <option value="GETAH">GETAH</option>
+                            <option value="PADI">PADI</option>
+                            <option value="DUSUN">DUSUN</option>
+                            <option value="KELAPA">KELAPA</option>
+                        </select>                              
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Mukim</label>
+                        <input type="text" id="mukim" name="mukim" class="form-control mb-4" required>                    
+                    </div>
                     <div class="col-sm-3">
                         <label for="textInput">Latitude</label>
                         <input type="number" pattern="[0-9][.][0-9]" id="gpsLocationLat" name="gpsLocationLat" class="form-control mb-4" required>
@@ -138,6 +164,20 @@
                         <label for="textInput">Longitude</label>
                         <input type="number" pattern="[0-9][.][0-9]" id="gpsLocationLng" name="gpsLocationLng" class="form-control mb-4" required>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="textInput">Year Planted</label>
+                        <input type="number" pattern="[0-9]" id="yearPlanted" name="yearPlanted" class="form-control mb-4" required>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="textInput">Is MSPO certified</label>
+                        <select class="form-control mb-4" id="isMSPO" name="isMSPO" required style="width: 100%">
+                            <option></option>
+                            <option value="YES">YES</option>
+                            <option value="NO">NO</option>
+                        </select>  
+                    </div>                
                 </div>
                 <p class="h4 mb-4">Upload Document Here</p>
                 <div class="row">

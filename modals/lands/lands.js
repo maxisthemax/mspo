@@ -85,6 +85,9 @@ exports.editLand = function (req, cb) {
     land.gpsLocationLng = land.gpsLocationLng ? [].concat(land.gpsLocationLng) : [''];
     land.gpsLocationLat = land.gpsLocationLat ? [].concat(land.gpsLocationLat) : [''];
 
+    land.mukim = land.mukim ? [].concat(land.mukim) : [''];
+    land.yearPlanted = land.yearPlanted ? [].concat(land.yearPlanted) : [''];
+    land.isMSPO = land.isMSPO ? [].concat(land.isMSPO) : [''];
 
     let firstquery = `UPDATE lands SET 
     lotNo = "${land.lotNo[0]}",
@@ -94,7 +97,10 @@ exports.editLand = function (req, cb) {
     usageOfLand = "${land.usageOfLand[0]}",
     typeOfCondition = "${land.typeOfCondition[0]}",
     gpsLocationLng = "${land.gpsLocationLng[0]}",
-    gpsLocationLat = "${land.gpsLocationLat[0]}"
+    gpsLocationLat = "${land.gpsLocationLat[0]}",
+    mukim = "${land.mukim[0]}", 
+    yearPlanted = "${land.yearPlanted[0]}",
+    isMSPO = "${land.isMSPO[0]}"
     where landId= "${land.landId[0]}"`
 
     con.query(firstquery, function (err, result, fields) {
@@ -125,10 +131,16 @@ exports.createLand = function (req, cb) {
     land.gpsLocationLng = land.gpsLocationLng ? [].concat(land.gpsLocationLng) : [''];
     land.gpsLocationLat = land.gpsLocationLat ? [].concat(land.gpsLocationLat) : [''];
 
+    land.mukim = land.mukim ? [].concat(land.mukim) : [''];
+    land.yearPlanted = land.yearPlanted ? [].concat(land.yearPlanted) : [''];
+    land.isMSPO = land.isMSPO ? [].concat(land.isMSPO) : [''];
+
     let firstquery = `INSERT INTO lands 
-    (lotNo,titleNo, area, custId, usageOfLand, typeOfCondition, gpsLocationLng, gpsLocationLat,coId,createdDate)
+    (lotNo,titleNo, area, custId, usageOfLand, typeOfCondition, gpsLocationLng, gpsLocationLat,coId,createdDate,
+      mukim,yearPlanted,isMSPO)
     VALUES ('${land.lotNo}','${land.titleNo}','${land.area}','${land.custId}'
-    ,'${land.usageOfLand}','${land.typeOfCondition}','${land.gpsLocationLng}','${land.gpsLocationLat}','${coId}','CURRENT_TIMESTAMP')`;
+    ,'${land.usageOfLand}','${land.typeOfCondition}','${land.gpsLocationLng}','${land.gpsLocationLat}','${coId}','CURRENT_TIMESTAMP',
+    '${land.mukim}','${land.yearPlanted}','${land.isMSPO}')`;
 
     //console.log(firstquery);
 
