@@ -108,3 +108,14 @@ COMMIT;
 
 ALTER TABLE `sales` ADD `landId` INT NOT NULL AFTER `disabled`;
 ALTER TABLE `tickets` ADD `landId` INT NOT NULL AFTER `disabled`;
+
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+
