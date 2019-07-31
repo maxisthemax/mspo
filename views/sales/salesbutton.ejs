@@ -1,0 +1,15 @@
+<style>
+.btnpadding {
+    margin: 10px;
+}
+</style>
+<div id="salesbuttons" class="p-5">
+    <p class="h4 mb-4">Actions</p>
+    <div class="row">
+        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/sales/<%= sale_s[1].data%>';" >Edit This Sales</button>
+        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/sales/doc/<%= sale_s[1].data%>';" >View This Customer's Sale Documents</button>
+        <button type="button" class="btn btn-danger btnpadding"
+            onclick="var retVal = confirm('Do you want to disabled this sale ?');if (retVal == true) {location.href = '/sales/disabled/<%= sale_s[1].data%>'};">Disabled This Sale</button>    
+    </div>
+</div>
+

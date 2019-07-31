@@ -1,0 +1,150 @@
+<% include partials/header.ejs %>
+<div id="sale_edit" class="container-fluid">
+    <div class="" style="border:1px solid">
+        <form class="p-5" name="sale_edit_form" method="POST" action="/sales/editsale">
+            <p class="h4 mb-4">Edit sale</p>
+
+            <div class="row">
+                <div class="col-sm-6">
+                <label for="custId">Customer Name</label>
+                    <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%">
+                        <option></option>
+                        <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>
+                        <option value=<%= cust_s[i].custId %> <%if (cust_s[i].custId==sale[0].custId){ %>selected<%}%> ><%= cust_s[i].custName  %> - <%= cust_s[i].custIC  %>
+                        </option>
+                        <% }} %>
+                    </select>
+                </div>            
+                <div class="col-sm-3">
+                    <label for="textInput">Sale Date</label>
+                    <div class="input-group date" id="saleDatePicker" data-target-input="nearest">
+                        <input type="text" id="saleDate" name="saleDate" required class="form-control datetimepicker-input" data-target="#datetimepicker1" value="<%=sale[0].saleDate%>"/>
+                        <div class="input-group-append" data-target="#saleDatePicker" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>    
+                </div>
+                <div class="col-sm-3">
+                    <label for="textInput">Sale No</label>
+                    <input type="text" id="saleNo" name="saleNo" class="form-control mb-4" required value="<%=sale[0].saleNo%>">
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Transporter</label>
+                        <select class="form-control mb-4" id="transporterId" name="transporterId" required style="width: 100%">
+                            <option></option>
+                            <% if(transporters){ for(var i = 0; i < transporters.length; i++) {%>
+                            <option value=<%= transporters[i].transporterId %> <%if (transporters[i].transporterId==sale[0].transporterId){ %>selected<%}%> ><%= transporters[i].transporterName  %> - <%= transporters[i].transporterVehNo  %>
+                            </option>
+                            <% }} %>
+                        </select>   
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="textInput">Buyer Name</label>
+                        <select class="form-control mb-4" id="buyerId" name="buyerId" required style="width: 100%">
+                            <option></option>
+                            <% if(buyer_s){ for(var i = 0; i < buyer_s.length; i++) {%>
+                            <option value=<%= buyer_s[i].buyerId %> <%if (buyer_s[i].buyerId==sale[0].buyerId){ %>selected<%}%> ><%= buyer_s[i].buyerName %>
+                            </option>
+                            <% }} %>
+                        </select>  
+                    </div>
+                </div>
+            <br>    
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="textInput">First Weight</label>
+                    <input type="number" step="0.01" id="firstWeight" name="firstWeight" class="form-control mb-4" required value="<%=sale[0].firstWeight%>" onchange="calculateNettWeight();">
+                </div>
+                <div class="col-sm-3">
+                    <label for="textInput">Second Weight</label>
+                    <input type="number" step="0.01" id="secondWeight" name="secondWeight" class="form-control mb-4" required value="<%=sale[0].secondWeight%>" onchange="calculateNettWeight();">
+                </div>
+                <div class="col-sm-3">
+                    <label for="textInput">Deduction</label>
+                    <input type="number" step="0.01" id="deduction" name="deduction" class="form-control mb-4" required value="<%=sale[0].deduction%>" onchange="calculateNettWeight();">
+                </div>
+                <div class="col-sm-3">
+                    <label for="textInput">Nett Weight</label>
+                    <input readonly=1 type="number" step="0.01" id="nettWeight" name="nettWeight" class="form-control mb-4" value="<%=sale[0].nettWeight%>" required>
+                </div>                    
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="textInput">Price 1mt</label>
+                    <input type="number" step="0.01" id="priceMt" name="priceMt" class="form-control mb-4" required value="<%=sale[0].priceMt%>" onchange="calculateTotalWeight();">
+                </div>
+                <div class="col-sm-3">
+                    <label for="textInput">Total Price</label>
+                    <input readonly=1 type="number" step="0.01" id="totalPrice" name="totalPrice" class="form-control mb-4" value="<%=sale[0].totalPrice%>" required>
+                </div>
+                <div class="col-sm-3">
+                    <label for="textInput">OER</label>
+                    <input type="number" step="0.01" id="oer" name="oer" class="form-control mb-4" value="<%=sale[0].oer%>" required>
+                </div>                  
+            </div>  
+            <input type="hidden" id="saleId" name="saleId" value="<%= sale[0].saleId%>">
+            <div class="row">
+                <div class="col-sm-3">
+                    <a href="/sales/">
+                        <input type=button class="btn btn-secondary btn-block" value="Back" onclick="">
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-block" type="submit">Save sale</button>
+                </div>
+            </div>            
+
+        </form>
+    </div>
+</div>
+
+<% include partials/footer.ejs %>
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>
+
+<script>
+$(document).ready(function () {
+    var chartformat = "YYYY-MM-DD";
+    $('#saleDatePicker').datetimepicker({
+        format: chartformat,
+    });  
+    $("#custId").select2({
+        placeholder: "Select a Customer",
+        width: 'resolve',
+    });
+    $("#buyerId").select2({
+        placeholder: "Select a Buyer",
+        width: 'resolve',
+    });
+    $("#transporterId").select2({
+        placeholder: "Select a Transporter",
+        width: 'resolve',
+    });        
+});  
+function calculateNettWeight(){
+    var firstWeight = $('#firstWeight').val();
+    var secondWeight =  $('#secondWeight').val();
+    var deduction =  $('#deduction').val();
+    var nettWeight = firstWeight-secondWeight-deduction;
+
+    $('#nettWeight').val(nettWeight.toFixed(2));
+
+    var priceMt = $('#priceMt').val();
+    var totalPrice = priceMt * nettWeight;
+    $('#totalPrice').val(totalPrice.toFixed(2));    
+}
+function calculateTotalWeight(){
+    var priceMt = $('#priceMt').val();
+    var nettWeight =  $('#nettWeight').val();
+    var totalPrice = priceMt * nettWeight;
+    $('#totalPrice').val(totalPrice.toFixed(2));
+}
+
+</script>

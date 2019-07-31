@@ -29,7 +29,8 @@ const { getBuyersPage, getEditBuyersPage, getBuyersDocPage,
     uploadBuyerDocuments, createBuyer, editBuyer, disabledDeleteBuyer } = require('./routes/buyers');
 const { getTransportersPage, getEditTransportersPage, getTransportersDocPage,
     uploadTransporterDocuments, createTransporter, editTransporter, disabledDeleteTransporter } = require('./routes/transporters');
-
+const { getSalesPage, getEditSalesPage, getSalesDocPage,
+    uploadSaleDocuments, createSale, editSale, disabledDeleteSale } = require('./routes/sales');
 
 
 // Create a new Express application.
@@ -247,7 +248,32 @@ var checkticketcompany = function (req) {
         }
     ]
 };
+var checksalecompany = function (req) {
+    return [
+        function (req, res, next) {
 
+            var saleId = req.params.saleId;
+            process.nextTick(function () {
+                var firstquery = `SELECT coId FROM sales 
+    WHERE saleId=${saleId} LIMIT 1`;
+                //console.log(firstquery);
+
+                con.query(firstquery, function (err, result, fields) {
+                    //console.log(result);
+                    if (result.length == 0) {
+                        errorFlash = req.flash('error', 'Error Reading');
+                        res.redirect('/');
+                    } else {
+                        if (result[0].coId != req.user.coId) {
+                            errorFlash = req.flash('error', 'Error Reading');
+                            res.redirect('/');
+                        } else { next(); }
+                    }
+                });
+            });
+        }
+    ]
+};
 var checktransportercompany = function (req) {
     return [
         function (req, res, next) {
@@ -425,6 +451,17 @@ app.post('/tickets/doc/', uploadTicketDocuments);
 app.post('/tickets/createticket', createTicket);
 app.post('/tickets/editticket', editTicket);
 /* tickets */
+
+/* sales */
+app.all('/sales*', ensureLoggedIn('/login'), checkToken());
+app.get('/sales/', getSalesPage);
+app.get('/sales/:saleId', checksalecompany(), getEditSalesPage);
+app.get('/sales/doc/:saleId', checksalecompany(), getSalesDocPage);
+app.get('/sales/:disabledordelete/:saleId/', checksalecompany(), disabledDeleteSale);
+app.post('/sales/doc/', uploadSaleDocuments);
+app.post('/sales/createsale', createSale);
+app.post('/sales/editsale', editSale);
+/* sales */
 
 /* buyers */
 app.all('/buyers*', ensureLoggedIn('/login'), checkToken());

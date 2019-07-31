@@ -1,0 +1,221 @@
+<script src="../vendor/ejs/ejs.js"></script>
+
+<script> 
+$(document).ready(function () {
+        var editsalehtml = <%- JSON.stringify(editsalehtml)%>;
+        var sale_s = <%- JSON.stringify(sale_s)%>;
+        var data = [];
+
+        for ( var i=0 ; i<sale_s.length ; i++ ) {
+                console.log(sale_s[i].saleId);
+                data.push( [                     
+                    sale_s[i].custName,
+                    sale_s[i].saleId,                     
+                    sale_s[i].custIC,                     
+                    changeToDateFormat(sale_s[i].saleDate), 
+                    sale_s[i].saleNo,
+                    sale_s[i].buyerName, 
+                    sale_s[i].firstWeight, 
+                    sale_s[i].secondWeight,
+                    sale_s[i].deduction,
+                    sale_s[i].nettWeight,
+                    sale_s[i].totalPrice,
+                    sale_s[i].oer,
+                    sale_s[i].priceMt,
+                    sale_s[i].transporterName, 
+                    sale_s[i].transporterAdd, 
+                    sale_s[i].transporterVehNo,                     
+                    ] );
+            }       
+ 
+        var table = $('#sale_s_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "responsive": {
+                "details": {
+                    "renderer": function ( api, rowIdx, columns ) {
+
+                        // Show hidden columns in row details
+                        var data = $.map( columns, function ( col, i ) {
+                            //console.log(col.columnIndex);
+                            if (col.columnIndex == 1) 
+                            {
+                                return;
+                            }
+                            else {
+                                return col.hidden 
+                                ? '<tr><td>'+col.title+':</td> '+
+                                    '<td>'+col.data+'</td></tr>' 
+                                : '';
+                            }
+                        } ).join('');
+                            var htm = ejs.render(editsalehtml,{sale_s: columns});
+                            data = $('<table width="100%"/>').append( data ).prop('outerHTML');
+                            
+                            // Extra: Show custom content
+                            data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  
+                            data += htm;
+                            //console.log(html);
+                            data += '';
+
+                            data += '</div><br><br>';  
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function () {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function () {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var editsalehtml2 = <%- JSON.stringify(editsalehtml2)%>;
+        var sale_s_disabled = <%- JSON.stringify(sale_s_disabled)%>;
+        var data = [];
+        for ( var i=0 ; i<sale_s_disabled.length ; i++ ) {
+                data.push( [                   
+                    sale_s_disabled[i].custName,
+                    sale_s_disabled[i].saleId,                       
+                    sale_s_disabled[i].custIC,                     
+                    changeToDateFormat(sale_s_disabled[i].saleDate), 
+                    sale_s_disabled[i].saleNo,
+                    sale_s_disabled[i].vehicleNo, 
+                    sale_s_disabled[i].buyerName, 
+                    sale_s_disabled[i].firstWeight, 
+                    sale_s_disabled[i].secondWeight,
+                    sale_s_disabled[i].deduction,
+                    sale_s_disabled[i].nettWeight,
+                    sale_s_disabled[i].totalPrice,
+                    sale_s_disabled[i].oer,
+                    sale_s_disabled[i].priceMt,
+                    sale_s_disabled[i].transporterName, 
+                    sale_s_disabled[i].transporterAdd, 
+                    sale_s_disabled[i].transporterVehNo,     
+                    ] );
+            }          
+        //console.log(customers);
+        var table = $('#sale_s_disabled_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "responsive": {
+                "details": {
+                    "renderer": function ( api, rowIdx, columns ) {
+                        // Show hidden columns in row details
+                        var data = $.map( columns, function ( col, i ) {
+                            if (col.columnIndex == 1) 
+                            {
+                                return;
+                            }
+                            else {
+                                return col.hidden 
+                                ? '<tr><td>'+col.title+':</td> '+
+                                    '<td>'+col.data+'</td></tr>' 
+                                : '';
+                            }
+                        } ).join('');
+                            var htm2 = ejs.render(editsalehtml2,{sale_s_disabled: columns});
+                            data = $('<table width="100%"/>').append( data ).prop('outerHTML');                       
+                            // Extra: Show custom content
+                            data += '<br><br><div class="container-fluid" style="border: thin solid black;width:90%">';  
+                            data += htm2;
+                            //console.log(html);
+                            data += '';
+                            data += '</div><br><br>';  
+                        return data;
+                    }
+                }
+            }
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function () {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function () {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+    });
+
+
+    function changeToDateFormat(date) {
+        var datenew = new Date(date);
+        datenew = moment(datenew).format('YYYY/MM/DD');
+        return datenew;
+    }    
+</script>

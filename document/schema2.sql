@@ -3,33 +3,15 @@ ALTER TABLE `lands` ADD `mukim` VARCHAR(200) NOT NULL AFTER `disabled`, ADD `yea
 ALTER TABLE `tickets` ADD `transporterId` INT NOT NULL AFTER `vehicleNo`;
 ALTER TABLE `transporters` DROP `ticketId`
 
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
---done
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
+--done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
 
 -- phpMyAdmin SQL Dump
 -- version 4.8.5
