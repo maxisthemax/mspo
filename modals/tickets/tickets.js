@@ -22,7 +22,9 @@ exports.queryAllTicketsDisabled = function (coId, cb) {
   process.nextTick(function () {
     var firstquery = `SELECT * FROM tickets a LEFT JOIN company b ON a.coId = b.coId 
     LEFT JOIN customers c ON c.custId = a.custId 
-    LEFT JOIN buyers d ON d.buyerId = a.buyerId where a.coId = ${coId} and a.disabled = 1`;
+    LEFT JOIN buyers d ON d.buyerId = a.buyerId 
+    LEFT JOIN transporters e ON e.transporterId = a.transporterId
+    where a.coId = ${coId} and a.disabled = 1`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
