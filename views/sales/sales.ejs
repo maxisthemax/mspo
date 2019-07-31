@@ -32,6 +32,9 @@
                             <th class="none">Transporter Name</th>
                             <th class="none">Transporter Address</th>
                             <th class="none">Transporter Vehicle No</th>
+                            <th class="none">Lot No</th>
+                            <th class="none">Title No</th>
+                            <th class="none">Mukim</th>                             
                         </tr>
                     </thead>
                     <tfoot>
@@ -53,6 +56,9 @@
                             <th class="none">Transporter Name</th>
                             <th class="none">Transporter Address</th>
                             <th class="none">Transporter Vehicle No</th>
+                            <th class="none">Lot No</th>
+                            <th class="none">Title No</th>
+                            <th class="none">Mukim</th>                             
                         </tr>
                     </tfoot>
                     <tbody>
@@ -125,7 +131,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                     <label for="custId">Customer Name</label>
-                        <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%">
+                        <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%" onchange="configureDropDownLists(this,document.getElementById('landId'))">
                             <option></option>
                             <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>
                             <option value=<%= cust_s[i].custId %>><%= cust_s[i].custName  %> - <%= cust_s[i].custIC  %>
@@ -151,15 +157,11 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="textInput">Transporter</label>
-                        <select class="form-control mb-4" id="transporterId" name="transporterId" required style="width: 100%">
-                            <option></option>
-                            <% if(transporters){ for(var i = 0; i < transporters.length; i++) {%>
-                            <option value=<%= transporters[i].transporterId %>><%= transporters[i].transporterName  %> - <%= transporters[i].transporterVehNo  %>
-                            </option>
-                            <% }} %>
-                        </select>                        
-                    </div>
+                        <label for="landId">Lands</label>
+                        <select class="form-control mb-4" id="landId" name="landId" 
+                        required style="width: 100%">
+                        <option></option></select>
+                    </div>                 
                     <div class="col-sm-6">
                         <label for="textInput">Buyer Name</label>
                         <select class="form-control mb-4" id="buyerId" name="buyerId" required style="width: 100%">
@@ -170,6 +172,19 @@
                             <% }} %>
                         </select>                        
                     </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="textInput">Transporter</label>
+                        <select class="form-control mb-4" id="transporterId" name="transporterId" required style="width: 100%">
+                            <option></option>
+                            <% if(transporters){ for(var i = 0; i < transporters.length; i++) {%>
+                            <option value=<%= transporters[i].transporterId %>><%= transporters[i].transporterName  %> - <%= transporters[i].transporterVehNo  %>
+                            </option>
+                            <% }} %>
+                        </select>                        
+                    </div>                
                 </div>
                 <br>
                 <div class="row">
@@ -286,6 +301,10 @@ $(document).ready(function () {
         placeholder: "Select a Transporter",
         width: 'resolve',
     }); 
+    $("#landId").select2({
+        placeholder: "Select a Land",
+        width: 'resolve',
+    });     
 });       
 function calculateNettWeight(){
     var firstWeight = $('#firstWeight').val();
@@ -305,5 +324,24 @@ function calculateTotalWeight(){
     var totalPrice = priceMt * nettWeight;
     $('#totalPrice').val(totalPrice.toFixed(2));
 }
+function configureDropDownLists(ddl1, ddl2) {
+    var land_s = <%- JSON.stringify(land_s)%>;
+    const arr1 = land_s.filter(d => d.custId == ddl1.value);
+    $("#landId").find('option').not(':first').remove();
+    if(arr1 && arr1.length>0) {
+        for (i = 0; i < arr1.length; i++) {
+                createOption(ddl2, arr1[i].lotNo, arr1[i].landId);
+            }
+        } else {
+            $("#landId").find('option').not(':first').remove();
+        }
+    }
+
+function createOption(ddl, text, value) {
+    var opt = document.createElement('option');
+    opt.value = value;
+    opt.text = text;
+    ddl.options.add(opt);
+}  
 </script>
 <% include sales/salesjs.ejs %>

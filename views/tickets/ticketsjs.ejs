@@ -7,7 +7,7 @@ $(document).ready(function () {
         var data = [];
 
         for ( var i=0 ; i<ticket_s.length ; i++ ) {
-                console.log(ticket_s[i].ticketId);
+                //console.log(ticket_s[i].ticketId);
                 data.push( [                     
                     ticket_s[i].custName,
                     ticket_s[i].ticketId,                     
@@ -24,7 +24,11 @@ $(document).ready(function () {
                     ticket_s[i].priceMt,
                     ticket_s[i].transporterName, 
                     ticket_s[i].transporterAdd, 
-                    ticket_s[i].transporterVehNo,                     
+                    ticket_s[i].transporterVehNo, 
+
+                    ticket_s[i].lotNo, 
+                    ticket_s[i].titleNo, 
+                    ticket_s[i].mukim,                                         
                     ] );
             }       
  
@@ -158,7 +162,10 @@ $(document).ready(function () {
                     ticket_s_disabled[i].priceMt,
                     ticket_s_disabled[i].transporterName, 
                     ticket_s_disabled[i].transporterAdd, 
-                    ticket_s_disabled[i].transporterVehNo,     
+                    ticket_s_disabled[i].transporterVehNo,  
+                    ticket_s_disabled[i].lotNo, 
+                    ticket_s_disabled[i].titleNo, 
+                    ticket_s_disabled[i].mukim,                           
                     ] );
             }          
         //console.log(customers);

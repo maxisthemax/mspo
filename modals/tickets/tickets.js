@@ -4,6 +4,7 @@ exports.queryAllTickets = function (coId, cb) {
     LEFT JOIN customers c ON c.custId = a.custId 
     LEFT JOIN buyers d ON d.buyerId = a.buyerId 
     LEFT JOIN transporters e ON e.transporterId = a.transporterId
+    LEFT JOIN lands f ON f.landId = a.landId
     where a.coId = ${coId} and a.disabled = 0`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
@@ -24,6 +25,7 @@ exports.queryAllTicketsDisabled = function (coId, cb) {
     LEFT JOIN customers c ON c.custId = a.custId 
     LEFT JOIN buyers d ON d.buyerId = a.buyerId 
     LEFT JOIN transporters e ON e.transporterId = a.transporterId
+    LEFT JOIN lands f ON f.landId = a.landId
     where a.coId = ${coId} and a.disabled = 1`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
@@ -95,6 +97,7 @@ exports.editTicket = function (req, cb) {
     ticket.custId = ticket.custId ? [].concat(ticket.custId) : [''];
     ticket.ticketId = ticket.ticketId ? [].concat(ticket.ticketId) : [''];
     ticket.transporterId = ticket.transporterId ? [].concat(ticket.transporterId) : [''];
+    ticket.landId = ticket.landId ? [].concat(ticket.landId) : [''];
     let firstquery = `UPDATE tickets SET 
     ticketDate = "${ticket.ticketDate[0]}",
     ticketNo = "${ticket.ticketNo[0]}",
@@ -108,7 +111,8 @@ exports.editTicket = function (req, cb) {
     totalPrice = "${ticket.totalPrice[0]}",
     oer = "${ticket.oer[0]}",
     custId = "${ticket.custId[0]}",
-    transporterId = "${ticket.custId[0]}"
+    transporterId = "${ticket.custId[0]}",
+    landId = "${ticket.landId[0]}"
     where ticketId= "${ticket.transporterId[0]}"`
 
     con.query(firstquery, function (err, result, fields) {
@@ -143,12 +147,12 @@ exports.createTicket = function (req, cb) {
     ticket.oer = ticket.oer ? [].concat(ticket.oer) : [''];
     ticket.custId = ticket.custId ? [].concat(ticket.custId) : [''];
     ticket.transporterId = ticket.transporterId ? [].concat(ticket.transporterId) : [''];
-
+    ticket.landId = ticket.landId ? [].concat(ticket.landId) : [''];
     let firstquery = `INSERT INTO tickets 
-    (ticketDate,ticketNo, vehicleNo, buyerId, firstWeight, secondWeight, deduction, nettWeight,priceMt,totalPrice,oer,coId,createdDate,custId,transporterId)
+    (ticketDate,ticketNo, vehicleNo, buyerId, firstWeight, secondWeight, deduction, nettWeight,priceMt,totalPrice,oer,coId,createdDate,custId,transporterId,landId)
     VALUES ('${ticket.ticketDate}','${ticket.ticketNo}','${ticket.vehicleNo}','${ticket.buyerId}'
     ,'${ticket.firstWeight}','${ticket.secondWeight}','${ticket.deduction}','${ticket.nettWeight}','${ticket.priceMt}'
-    ,'${ticket.totalPrice}','${ticket.oer}','${coId}','CURRENT_TIMESTAMP',${ticket.custId},${ticket.transporterId})`;
+    ,'${ticket.totalPrice}','${ticket.oer}','${coId}','CURRENT_TIMESTAMP',${ticket.custId},${ticket.transporterId},${ticket.landId})`;
 
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));

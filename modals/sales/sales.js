@@ -4,6 +4,7 @@ exports.queryAllSales = function (coId, cb) {
     LEFT JOIN customers c ON c.custId = a.custId 
     LEFT JOIN buyers d ON d.buyerId = a.buyerId 
     LEFT JOIN transporters e ON e.transporterId = a.transporterId
+    LEFT JOIN lands f ON f.landId = a.landId
     where a.coId = ${coId} and a.disabled = 0`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
@@ -24,6 +25,7 @@ exports.queryAllSalesDisabled = function (coId, cb) {
     LEFT JOIN customers c ON c.custId = a.custId 
     LEFT JOIN buyers d ON d.buyerId = a.buyerId 
     LEFT JOIN transporters e ON e.transporterId = a.transporterId
+    LEFT JOIN lands f ON f.landId = a.landId
     where a.coId = ${coId} and a.disabled = 1`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
@@ -95,6 +97,7 @@ exports.editSale = function (req, cb) {
     sale.custId = sale.custId ? [].concat(sale.custId) : [''];
     sale.saleId = sale.saleId ? [].concat(sale.saleId) : [''];
     sale.transporterId = sale.transporterId ? [].concat(sale.transporterId) : [''];
+    sale.landId = sale.landId ? [].concat(sale.landId) : [''];
     let firstquery = `UPDATE sales SET 
     saleDate = "${sale.saleDate[0]}",
     saleNo = "${sale.saleNo[0]}",
@@ -108,7 +111,8 @@ exports.editSale = function (req, cb) {
     totalPrice = "${sale.totalPrice[0]}",
     oer = "${sale.oer[0]}",
     custId = "${sale.custId[0]}",
-    transporterId = "${sale.custId[0]}"
+    transporterId = "${sale.custId[0]}",
+    landId = "${sale.landId[0]}"
     where saleId= "${sale.transporterId[0]}"`
 
     con.query(firstquery, function (err, result, fields) {
@@ -143,12 +147,12 @@ exports.createSale = function (req, cb) {
     sale.oer = sale.oer ? [].concat(sale.oer) : [''];
     sale.custId = sale.custId ? [].concat(sale.custId) : [''];
     sale.transporterId = sale.transporterId ? [].concat(sale.transporterId) : [''];
-
+    sale.landId = sale.landId ? [].concat(sale.landId) : [''];
     let firstquery = `INSERT INTO sales 
-    (saleDate,saleNo, vehicleNo, buyerId, firstWeight, secondWeight, deduction, nettWeight,priceMt,totalPrice,oer,coId,createdDate,custId,transporterId)
+    (saleDate,saleNo, vehicleNo, buyerId, firstWeight, secondWeight, deduction, nettWeight,priceMt,totalPrice,oer,coId,createdDate,custId,transporterId,landId)
     VALUES ('${sale.saleDate}','${sale.saleNo}','${sale.vehicleNo}','${sale.buyerId}'
     ,'${sale.firstWeight}','${sale.secondWeight}','${sale.deduction}','${sale.nettWeight}','${sale.priceMt}'
-    ,'${sale.totalPrice}','${sale.oer}','${coId}','CURRENT_TIMESTAMP',${sale.custId},${sale.transporterId})`;
+    ,'${sale.totalPrice}','${sale.oer}','${coId}','CURRENT_TIMESTAMP',${sale.custId},${sale.transporterId},${sale.landId})`;
 
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));

@@ -2,6 +2,7 @@ var sales = require("../modals/sales");
 var cust = require("../modals/customers");
 var buyers = require("../modals/buyers");
 var transporters = require("../modals/transporters");
+var lands = require("../modals/lands");
 var fs = require("fs");
 var ejs = require("ejs");
 var formidable = require('formidable');
@@ -19,16 +20,19 @@ module.exports = {
                 sales.sales.queryAllSales(req.user.coId, function (err, sale_s) {
                     sales.sales.queryAllSalesDisabled(req.user.coId, function (err, sale_s_disabled) {
                         transporters.transporter.queryAllTransporters(req.user.coId, function (err, transporters) {
-                            res.render('sales/sales.ejs', {
-                                successFlash: req.flash('success'),
-                                errorFlash: req.flash('error'),
-                                cust_s: (cust_s) ? cust_s : [],
-                                sale_s_disabled: (sale_s_disabled) ? sale_s_disabled : [],
-                                sale_s: (sale_s) ? sale_s : [],
-                                buyer_s: (buyer_s) ? buyer_s : [],
-                                editsalehtml: htmlContent,
-                                editsalehtml2: htmlContent2,
-                                transporters: transporters
+                            lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
+                                res.render('sales/sales.ejs', {
+                                    successFlash: req.flash('success'),
+                                    errorFlash: req.flash('error'),
+                                    cust_s: (cust_s) ? cust_s : [],
+                                    sale_s_disabled: (sale_s_disabled) ? sale_s_disabled : [],
+                                    sale_s: (sale_s) ? sale_s : [],
+                                    buyer_s: (buyer_s) ? buyer_s : [],
+                                    editsalehtml: htmlContent,
+                                    editsalehtml2: htmlContent2,
+                                    transporters: transporters,
+                                    land_s: land_s
+                                });
                             });
                         });
                     });
@@ -87,13 +91,16 @@ module.exports = {
             sales.sales.querySale(req.params.saleId, function (err, sale) {
                 buyers.buyers.queryAllBuyers(req.user.coId, function (err, buyer_s) {
                     transporters.transporter.queryAllTransporters(req.user.coId, function (err, transporters) {
-                        res.render('sales/editsale.ejs', {
-                            successFlash: req.flash('success'),
-                            errorFlash: req.flash('error'),
-                            sale: sale,
-                            cust_s: cust_s,
-                            buyer_s: buyer_s,
-                            transporters: transporters
+                        lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
+                            res.render('sales/editsale.ejs', {
+                                successFlash: req.flash('success'),
+                                errorFlash: req.flash('error'),
+                                sale: sale,
+                                cust_s: cust_s,
+                                buyer_s: buyer_s,
+                                transporters: transporters,
+                                land_s: land_s
+                            });
                         });
                     });
                 });
