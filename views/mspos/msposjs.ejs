@@ -11,6 +11,7 @@
           // outputs to "Thu May 28 2015"
             data.push([
                 mspo_s[i].mspoCertNo,
+                mspo_s[i].mspoRegNo,
                 changeToDateFormat(mspo_s[i].expiredDate),
                 mspo_s[i].standard,
                 mspo_s[i].mspoId,
@@ -28,7 +29,7 @@
                     "renderer": function(api, rowIdx, columns) {
                         // Show hidden columns in row details
                         var data = $.map(columns, function(col, i) {
-                            if (col.columnIndex == 3) {
+                            if (col.columnIndex == 4) {
                                 return;
                             } else {
                                 return col.hidden ?
@@ -125,6 +126,7 @@
         for (var i = 0; i < mspo_s_disabled.length; i++) {
             data.push([
                 mspo_s_disabled[i].mspoCertNo,
+                mspo_s_disabled[i].mspoRegNo,
                 changeToDateFormat(mspo_s_disabled[i].expiredDate),
                 mspo_s_disabled[i].standard,
                 mspo_s_disabled[i].mspoId,
@@ -143,7 +145,7 @@
                     "renderer": function(api, rowIdx, columns) {
                         // Show hidden columns in row details
                         var data = $.map(columns, function(col, i) {
-                            if (col.columnIndex == 3) {
+                            if (col.columnIndex == 4) {
                                 return;
                             } else {
                                 return col.hidden ?

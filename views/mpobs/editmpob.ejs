@@ -51,7 +51,7 @@
                         <select class="form-control mb-4" id="mspoId"name="mspoId" required style="width: 100%">
                         <option></option>
                         <% if(mspo_s){ for(var i = 0; i < mspo_s.length; i++) {%>                        
-                        <option value=<%= mspo_s[i].mspoId %> <%if (mspo_s[i].mspoId==mpob[0].mspoId){ %>selected<%}%> ><%= mspo_s[i].mspoCertNo %></option>
+                        <option value=<%= mspo_s[i].mspoId %> <%if (mspo_s[i].mspoId==mpob[0].mspoId){ %>selected<%}%> >MSPO Reg No: <%= mspo_s[i].mspoRegNo %></option>
                         <% }} %> 
                     </select>  
      

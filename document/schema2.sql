@@ -119,3 +119,6 @@ ALTER TABLE `tickets` ADD `landId` INT NOT NULL AFTER `disabled`;
 --done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
 --done --done --done --done --done --done --done --done --done --done --done --done --done --done --done 
 
+ALTER TABLE `sales` DROP `custId`
+ALTER TABLE `sales` DROP `landId`
+ALTER TABLE `mspos` ADD `regNo` VARCHAR(200) NOT NULL AFTER `createdDate`

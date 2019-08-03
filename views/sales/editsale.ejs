@@ -4,17 +4,7 @@
         <form class="p-5" name="sale_edit_form" method="POST" action="/sales/editsale">
             <p class="h4 mb-4">Edit sale</p>
 
-            <div class="row">
-                <div class="col-sm-6">
-                <label for="custId">Customer Name</label>
-                    <select class="form-control mb-4" id="custId" name="custId" required style="width: 100%">
-                        <option></option>
-                        <% if(cust_s){ for(var i = 0; i < cust_s.length; i++) {%>
-                        <option value=<%= cust_s[i].custId %> <%if (cust_s[i].custId==sale[0].custId){ %>selected<%}%> ><%= cust_s[i].custName  %> - <%= cust_s[i].custIC  %>
-                        </option>
-                        <% }} %>
-                    </select>
-                </div>            
+            <div class="row">          
                 <div class="col-sm-3">
                     <label for="textInput">Sale Date</label>
                     <div class="input-group date" id="saleDatePicker" data-target-input="nearest">
@@ -25,18 +15,9 @@
                     </div>    
                 </div>
                 <div class="col-sm-3">
-                    <label for="textInput">Sale No</label>
+                    <label for="textInput">Sale Ticket No</label>
                     <input type="text" id="saleNo" name="saleNo" class="form-control mb-4" required value="<%=sale[0].saleNo%>">
                 </div>
-            </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <label for="landId">Lands</label>
-                        <select class="form-control mb-4" id="landId" name="landId" 
-                        style="width: 100%">
-                        <option></option></select>
-                    </div>                  
-
                     <div class="col-sm-6">
                         <label for="textInput">Buyer Name</label>
                         <select class="form-control mb-4" id="buyerId" name="buyerId" style="width: 100%">
@@ -46,9 +27,9 @@
                             </option>
                             <% }} %>
                         </select>  
-                    </div>
-                </div>
-                <br>
+                    </div>                
+            </div>
+
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="textInput">Transporter</label>
@@ -81,14 +62,14 @@
                 </div>                    
             </div>
             <div class="row">
-                <div class="col-sm-3">
+                <!--div class="col-sm-3">
                     <label for="textInput">Price 1mt</label>
                     <input type="number" step="0.01" id="priceMt" name="priceMt" class="form-control mb-4" required value="<%=sale[0].priceMt%>" onchange="calculateTotalWeight();">
                 </div>
                 <div class="col-sm-3">
                     <label for="textInput">Total Price</label>
                     <input readonly=1 type="number" step="0.01" id="totalPrice" name="totalPrice" class="form-control mb-4" value="<%=sale[0].totalPrice%>" required>
-                </div>
+                </div--->
                 <div class="col-sm-3">
                     <label for="textInput">OER</label>
                     <input type="number" step="0.01" id="oer" name="oer" class="form-control mb-4" value="<%=sale[0].oer%>" required>
@@ -125,10 +106,6 @@ $(document).ready(function () {
     $('#saleDatePicker').datetimepicker({
         format: chartformat,
     });  
-    $("#custId").select2({
-        placeholder: "Select a Customer",
-        width: 'resolve',
-    });
     $("#buyerId").select2({
         placeholder: "Select a Buyer",
         width: 'resolve',
@@ -162,24 +139,4 @@ function calculateTotalWeight(){
     var totalPrice = priceMt * nettWeight;
     $('#totalPrice').val(totalPrice.toFixed(2));
 }
-function configureDropDownLists(ddl1, ddl2) {
-    var land_s = <%- JSON.stringify(land_s)%>;
-    const arr1 = land_s.filter(d => d.custId == ddl1.value);
-    $("#landId").find('option').not(':first').remove();
-    if(arr1 && arr1.length>0) {
-        for (i = 0; i < arr1.length; i++) {
-                createOption(ddl2, arr1[i].lotNo, arr1[i].landId);
-            }
-        } else {
-            $("#landId").find('option').not(':first').remove();
-        }
-        $('#landId').val([<%= sale[0].landId %>]).trigger('change'); 
-    }
-
-function createOption(ddl, text, value) {
-    var opt = document.createElement('option');
-    opt.value = value;
-    opt.text = text;
-    ddl.options.add(opt);
-}  
 </script>

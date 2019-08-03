@@ -1,7 +1,7 @@
 exports.queryAllMpobs = function(coId, cb) {
     process.nextTick(function() {
         var firstquery = `SELECT a.*,b.custName,b.custIC,(SELECT GROUP_CONCAT(lotNo) FROM lands 
-        WHERE FIND_IN_SET(landId,a.landId) > 0)as lotNos,c.mspoId,c.mspoCertNo,c.expiredDate as MSPOExpiredDate,c.standard 
+        WHERE FIND_IN_SET(landId,a.landId) > 0)as lotNos,c.mspoId,c.mspoRegNo,c.mspoCertNo,c.expiredDate as MSPOExpiredDate,c.standard 
         FROM mpobs a LEFT JOIN customers b on a.custId = b.custId LEFT JOIN mspos c on a.mspoId = c.mspoId WHERE a.coId =${coId} 
         and a.disabled = 0 ORDER BY a.mpobLicNo ASC`;
         //console.log(firstquery);
@@ -19,7 +19,7 @@ exports.queryAllMpobs = function(coId, cb) {
 exports.queryAllMpobsDisabled = function(coId, cb) {
     process.nextTick(function() {
         var firstquery = `SELECT a.*,b.custName,b.custIC,(SELECT GROUP_CONCAT(lotNo) FROM lands 
-        WHERE FIND_IN_SET(landId,a.landId) > 0)as lotNos,c.mspoId,c.mspoCertNo,c.expiredDate as MSPOExpiredDate,c.standard 
+        WHERE FIND_IN_SET(landId,a.landId) > 0)as lotNos,c.mspoId,c.mspoRegNo,c.mspoCertNo,c.expiredDate as MSPOExpiredDate,c.standard 
         FROM mpobs a LEFT JOIN customers b on a.custId = b.custId LEFT JOIN mspos c on a.mspoId = c.mspoId WHERE a.coId =${coId} 
         and a.disabled = 1 ORDER BY a.mpobLicNo ASC`;
         //console.log(firstquery);

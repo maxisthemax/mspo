@@ -15,25 +15,19 @@ module.exports = {
 
         var htmlContent = fs.readFileSync('./views/sales/salesbutton.ejs', 'utf8');
         var htmlContent2 = fs.readFileSync('./views/sales/salesbutton2.ejs', 'utf8');
-        cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
-            buyers.buyers.queryAllBuyers(req.user.coId, function (err, buyer_s) {
-                sales.sales.queryAllSales(req.user.coId, function (err, sale_s) {
-                    sales.sales.queryAllSalesDisabled(req.user.coId, function (err, sale_s_disabled) {
-                        transporters.transporter.queryAllTransporters(req.user.coId, function (err, transporters) {
-                            lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
-                                res.render('sales/sales.ejs', {
-                                    successFlash: req.flash('success'),
-                                    errorFlash: req.flash('error'),
-                                    cust_s: (cust_s) ? cust_s : [],
-                                    sale_s_disabled: (sale_s_disabled) ? sale_s_disabled : [],
-                                    sale_s: (sale_s) ? sale_s : [],
-                                    buyer_s: (buyer_s) ? buyer_s : [],
-                                    editsalehtml: htmlContent,
-                                    editsalehtml2: htmlContent2,
-                                    transporters: transporters,
-                                    land_s: land_s
-                                });
-                            });
+        buyers.buyers.queryAllBuyers(req.user.coId, function (err, buyer_s) {
+            sales.sales.queryAllSales(req.user.coId, function (err, sale_s) {
+                sales.sales.queryAllSalesDisabled(req.user.coId, function (err, sale_s_disabled) {
+                    transporters.transporter.queryAllTransporters(req.user.coId, function (err, transporters) {
+                        res.render('sales/sales.ejs', {
+                            successFlash: req.flash('success'),
+                            errorFlash: req.flash('error'),
+                            sale_s_disabled: (sale_s_disabled) ? sale_s_disabled : [],
+                            sale_s: (sale_s) ? sale_s : [],
+                            buyer_s: (buyer_s) ? buyer_s : [],
+                            editsalehtml: htmlContent,
+                            editsalehtml2: htmlContent2,
+                            transporters: transporters,
                         });
                     });
                 });
@@ -87,21 +81,15 @@ module.exports = {
 
 
     getEditSalesPage: (req, res) => {
-        cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
-            sales.sales.querySale(req.params.saleId, function (err, sale) {
-                buyers.buyers.queryAllBuyers(req.user.coId, function (err, buyer_s) {
-                    transporters.transporter.queryAllTransporters(req.user.coId, function (err, transporters) {
-                        lands.lands.queryAllLands(req.user.coId, function (err, land_s) {
-                            res.render('sales/editsale.ejs', {
-                                successFlash: req.flash('success'),
-                                errorFlash: req.flash('error'),
-                                sale: sale,
-                                cust_s: cust_s,
-                                buyer_s: buyer_s,
-                                transporters: transporters,
-                                land_s: land_s
-                            });
-                        });
+        sales.sales.querySale(req.params.saleId, function (err, sale) {
+            buyers.buyers.queryAllBuyers(req.user.coId, function (err, buyer_s) {
+                transporters.transporter.queryAllTransporters(req.user.coId, function (err, transporters) {
+                    res.render('sales/editsale.ejs', {
+                        successFlash: req.flash('success'),
+                        errorFlash: req.flash('error'),
+                        sale: sale,
+                        buyer_s: buyer_s,
+                        transporters: transporters,
                     });
                 });
             });

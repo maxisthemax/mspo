@@ -8,27 +8,19 @@ $(document).ready(function () {
 
         for ( var i=0 ; i<sale_s.length ; i++ ) {
                 console.log(sale_s[i].saleId);
-                data.push( [                     
-                    sale_s[i].custName,
-                    sale_s[i].saleId,                     
-                    sale_s[i].custIC,                     
+                data.push( [                                         
                     changeToDateFormat(sale_s[i].saleDate), 
+                    sale_s[i].saleId, 
                     sale_s[i].saleNo,
                     sale_s[i].buyerName, 
                     sale_s[i].firstWeight, 
                     sale_s[i].secondWeight,
                     sale_s[i].deduction,
                     sale_s[i].nettWeight,
-                    sale_s[i].totalPrice,
                     sale_s[i].oer,
-                    sale_s[i].priceMt,
                     sale_s[i].transporterName, 
                     sale_s[i].transporterAdd, 
-                    sale_s[i].transporterVehNo, 
-
-                    sale_s[i].lotNo, 
-                    sale_s[i].titleNo, 
-                    sale_s[i].mukim,                                         
+                    sale_s[i].transporterVehNo                                     
                     ] );
             }       
  
@@ -145,11 +137,9 @@ $(document).ready(function () {
         var sale_s_disabled = <%- JSON.stringify(sale_s_disabled)%>;
         var data = [];
         for ( var i=0 ; i<sale_s_disabled.length ; i++ ) {
-                data.push( [                   
-                    sale_s_disabled[i].custName,
-                    sale_s_disabled[i].saleId,                       
-                    sale_s_disabled[i].custIC,                     
+                data.push( [                                    
                     changeToDateFormat(sale_s_disabled[i].saleDate), 
+                    sale_s_disabled[i].saleId,
                     sale_s_disabled[i].saleNo,
                     sale_s_disabled[i].vehicleNo, 
                     sale_s_disabled[i].buyerName, 
@@ -157,15 +147,10 @@ $(document).ready(function () {
                     sale_s_disabled[i].secondWeight,
                     sale_s_disabled[i].deduction,
                     sale_s_disabled[i].nettWeight,
-                    sale_s_disabled[i].totalPrice,
                     sale_s_disabled[i].oer,
-                    sale_s_disabled[i].priceMt,
                     sale_s_disabled[i].transporterName, 
                     sale_s_disabled[i].transporterAdd, 
-                    sale_s_disabled[i].transporterVehNo,   
-                    sale_s_disabled[i].lotNo, 
-                    sale_s_disabled[i].titleNo, 
-                    sale_s_disabled[i].mukim,                        
+                    sale_s_disabled[i].transporterVehNo,                     
                     ] );
             }          
         //console.log(customers);
