@@ -22,7 +22,7 @@ exports.queryAllTickets = function (coId, cb) {
 
 exports.queryAllTicketsDisabled = function (coId, cb) {
   process.nextTick(function () {
-    var firstquery = `SELECT * FROM tickets a LEFT JOIN company b ON a.coId = b.coId 
+    var firstquery = `SELECT *,a.priceMt AS ticketPriceMt FROM tickets a LEFT JOIN company b ON a.coId = b.coId 
     LEFT JOIN customers c ON c.custId = a.custId 
     LEFT JOIN buyers d ON d.buyerId = a.buyerId 
     LEFT JOIN transporters e ON e.transporterId = a.transporterId

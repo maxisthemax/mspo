@@ -60,7 +60,8 @@ exports.disableDeleteSale = function (disableDelete, saleId, cb) {
 
 exports.querySale = function (saleId, cb) {
   process.nextTick(function () {
-    var firstquery = `SELECT * FROM sales 
+    var firstquery = `SELECT * FROM sales a
+    LEFT JOIN transporters e ON e.transporterId = a.transporterId
     WHERE saleId=${saleId}`;
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {

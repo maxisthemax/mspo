@@ -133,16 +133,15 @@
                     </div>                    
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
-                        <label for="textInput">Transporter</label>
-                        <select class="form-control mb-4" id="transporterId" name="transporterId" style="width: 100%">
-                            <option></option>
-                            <% if(transporters){ for(var i = 0; i < transporters.length; i++) {%>
-                            <option value=<%= transporters[i].transporterId %>><%= transporters[i].transporterName  %> - <%= transporters[i].transporterVehNo  %>
-                            </option>
-                            <% }} %>
-                        </select>                        
+                    <div class="col-sm-3">
+                        <label for="textInput">Transporter Vehicle No.</label>
+                        <input style="text-transform:uppercase" type="text" id="transporterVehNo" name="transporterVehNo" onchange="findTransporterName(this.value)" class="form-control mb-4">                    
                     </div>                
+                    <div class="col-sm-3">
+                        <label for="textInput">Transporter Name</label>
+                        <input type="text" required readonly  id="transporterName" name="transporterName" class="form-control mb-4">                    
+                    </div> 
+                     <input type="hidden" id="transporterId" name="transporterId" >              
                 </div>
                 <br>
                 <div class="row">
@@ -197,6 +196,22 @@
 
 </html>
 <script>
+    function findTransporterName(vehNo) {
+        var transporterName;
+        var transporter = <%- JSON.stringify(transporters)%>;
+        
+        transporterName = transporter.find((val)=>{
+            return (val.transporterVehNo.replace(/\s/g, '').toUpperCase() === vehNo.replace(/\s/g, '').toUpperCase());
+        });
+        if (transporterName != null){
+        $('#transporterName').val(transporterName.transporterName);
+        $('#transporterId').val(transporterName.transporterId);
+        //console.log(transporterName.transporterId);
+        }
+        else{
+        $('#transporterName').val('Vehicle Not Found, Please Add In Transpoters Page');
+        $('#transporterId').val('');}
+    }
     function openTabs(evt, tabname) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
