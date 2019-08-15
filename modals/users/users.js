@@ -99,7 +99,7 @@ exports.createUser = function (req, cb) {
                     ")";
 
                 con.query(firstquery, function (err, result) {
-                    console.log(err);
+                    //console.log(err);
                     if (err) {
                         return cb(err.code, null);
                     } else if (result && result.insertId) {

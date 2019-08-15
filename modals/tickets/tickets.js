@@ -6,9 +6,9 @@ exports.queryAllTickets = function (coId, cb) {
     LEFT JOIN transporters e ON e.transporterId = a.transporterId
     LEFT JOIN lands f ON f.landId = a.landId
     where a.coId = ${coId} and a.disabled = 0`;
-    console.log(firstquery);
+    //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
-      console.log(result);
+      //console.log(result);
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.length) {
         return cb(null, result);
@@ -116,7 +116,7 @@ exports.editTicket = function (req, cb) {
     transporterId = "${ticket.transporterId[0]}",
     landId = "${ticket.landId[0]}"
     where ticketId= "${ticket.ticketId[0]}"`
-    console.log(firstquery);
+    //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       //console.log(result);
@@ -156,7 +156,7 @@ exports.createTicket = function (req, cb) {
     VALUES ('${ticket.ticketDate}','${ticket.ticketNo}','${ticket.vehicleNo}','${ticket.buyerId}'
     ,'${ticket.firstWeight}','${ticket.secondWeight}','${ticket.deduction}','${ticket.nettWeight}','${ticket.priceMt}'
     ,'${ticket.totalPrice}','${ticket.oer}','${coId}','CURRENT_TIMESTAMP',${ticket.custId},'${ticket.transporterId[0]}','${ticket.landId[0]}')`;
-    console.log(firstquery);
+    //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
       if (result && result.insertId) {

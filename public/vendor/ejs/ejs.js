@@ -594,7 +594,7 @@ Template.prototype = {
       src = '"use strict";\n' + src;
     }
     if (opts.debug) {
-      console.log(src);
+      //console.log(src);
     }
 
     try {

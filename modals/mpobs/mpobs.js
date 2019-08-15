@@ -64,7 +64,7 @@ exports.createMpob = function(req, cb) {
     (mpobLicNo,expiredDate, custId, createdDate, disabled, coId, landId,mspoId)
     VALUES ('${mpob.mpobLicNo}','${mpob.expiredDate}','${mpob.custId}',CURRENT_TIMESTAMP,'0','${coId}','${mpob.landIds}','${mpob.mspoId}')`;
 
-            console.log(firstquery);
+            //console.log(firstquery);
 
             con.query(firstquery, function(err, result, fields) {
                 if (result) result = JSON.parse(JSON.stringify(result));

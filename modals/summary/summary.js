@@ -10,7 +10,7 @@ exports.querySummary = function(req, cb) {
         ORDER BY a.mpobLicNo ASC;
         select a.* FROM mspos a LEFT JOIN mpobs b on b.mspoId = b.mspoId where b.custId = ${queryCustId} GROUP BY a.mspoId;
         select * FROM tickets a LEFT JOIN buyers c on a.buyerId = c.buyerId LEFT JOIN customers b on a.custId = b.custId where a.custId = ${queryCustId};`
-        console.log(firstquery);
+        //console.log(firstquery);
         con.query(firstquery, function(err, result, fields) {
             if (result) result = JSON.parse(JSON.stringify(result));
             if (result && result.length) {
