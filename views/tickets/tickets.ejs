@@ -20,7 +20,6 @@
                             <th>Customer IC</th>                        
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
-                            <th>Buyer Name</th>
                             <th class="none">First Weight</th>
                             <th class="none">Second Weight</th>
                             <th class="none">Deduction</th>
@@ -44,7 +43,6 @@
                             <th>Customer IC</th>                        
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
-                            <th>Buyer Name</th>
                             <th class="none">First Weight</th>
                             <th class="none">Second Weight</th>
                             <th class="none">Deduction</th>
@@ -83,7 +81,6 @@
                             <th>Customer IC</th>
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
-                            <th>Buyer Name</th>
                             <th class="none">First Weight</th>
                             <th class="none">Second Weight</th>
                             <th class="none">Deduction</th>
@@ -95,6 +92,9 @@
                             <th class="none">Transporter Name</th>
                             <th class="none">Transporter Address</th>
                             <th class="none">Transporter Vehicle No</th>
+                            <th class="none">Lot No</th>
+                            <th class="none">Title No</th>
+                            <th class="none">Mukim</th>                              
                         </tr>
                     </thead>
                     <tfoot>
@@ -104,7 +104,6 @@
                             <th>Customer IC</th>
                             <th>Ticket Date</th>
                             <th>Ticket No</th>
-                            <th>Buyer Name</th>
                             <th class="none">First Weight</th>
                             <th class="none">Second Weight</th>
                             <th class="none">Deduction</th>
@@ -116,6 +115,9 @@
                             <th class="none">Transporter Name</th>
                             <th class="none">Transporter Address</th>
                             <th class="none">Transporter Vehicle No</th>
+                            <th class="none">Lot No</th>
+                            <th class="none">Title No</th>
+                            <th class="none">Mukim</th>                              
                         </tr>
                     </tfoot>
                     <tbody>
@@ -156,36 +158,22 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row">                   
+                    <div class="col-sm-3">
+                        <label for="textInput">Transporter Vehicle No.</label>
+                        <input style="text-transform:uppercase" type="text" id="transporterVehNo" name="transporterVehNo" onchange="findTransporterName(this.value)" class="form-control mb-4">                    
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="textInput">Transporter Name</label>
+                        <input type="text" readonly id="transporterName" name="transporterName" class="form-control mb-4">                    
+                    </div>     
+                    <input type="hidden" id="transporterId" name="transporterId">                 
                     <div class="col-sm-6">
                         <label for="landId">Lands</label>
                         <select class="form-control mb-4" id="landId" name="landId" 
                         style="width: 100%">
                         <option></option></select>
-                    </div> 
-                    <div class="col-sm-6">
-                        <label for="textInput">Buyer Name</label>
-                        <select class="form-control mb-4" id="buyerId" name="buyerId" style="width: 100%">
-                            <option></option>
-                            <% if(buyer_s){ for(var i = 0; i < buyer_s.length; i++) {%>
-                            <option value=<%= buyer_s[i].buyerId %>><%= buyer_s[i].buyerName %>
-                            </option>
-                            <% }} %>
-                        </select>                        
-                    </div>                     
-                </div>     
-                <br>     
-                <div class="row">
-                    <div class="col-sm-6">
-                        <label for="textInput">Transporter</label>
-                        <select class="form-control mb-4" id="transporterId" name="transporterId" style="width: 100%">
-                            <option></option>
-                            <% if(transporters){ for(var i = 0; i < transporters.length; i++) {%>
-                            <option value=<%= transporters[i].transporterId %>><%= transporters[i].transporterName  %> - <%= transporters[i].transporterVehNo  %>
-                            </option>
-                            <% }} %>
-                        </select>                        
-                    </div>
+                    </div>                      
                 </div>
                 <br>
                 <div class="row">
@@ -248,6 +236,22 @@
 
 </html>
 <script>
+    function findTransporterName(vehNo) {
+        var transporterName;
+        var transporter = <%- JSON.stringify(transporters)%>;
+        
+        transporterName = transporter.find((val)=>{
+            return (val.transporterVehNo.replace(/\s/g, '').toUpperCase() === vehNo.replace(/\s/g, '').toUpperCase());
+        });
+        if (transporterName != null){
+        $('#transporterName').val(transporterName.transporterName);
+        $('#transporterId').val(transporterName.transporterId);
+        }
+        else{
+        $('#transporterName').val('Vehicle Not Found, Please Add In Transpoters Page');
+        $('#transporterId').val('');}
+    }
+
     function openTabs(evt, tabname) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
@@ -294,14 +298,7 @@ $(document).ready(function () {
         placeholder: "Select a Customer",
         width: 'resolve',
     });
-    $("#buyerId").select2({
-        placeholder: "Select a Buyer",
-        width: 'resolve',
-    });
-    $("#transporterId").select2({
-        placeholder: "Select a Transporter",
-        width: 'resolve',
-    }); 
+
     $("#landId").select2({
         placeholder: "Select a Land",
         width: 'resolve',

@@ -29,36 +29,22 @@
                     <input type="text" id="ticketNo" name="ticketNo" class="form-control mb-4" required value="<%=ticket[0].ticketNo%>">
                 </div>
             </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <label for="landId">Lands</label>
-                        <select class="form-control mb-4" id="landId" name="landId" 
-                        style="width: 100%">
-                        <option></option></select>
-                    </div>                 
-                    <div class="col-sm-6">
-                        <label for="textInput">Buyer Name</label>
-                        <select class="form-control mb-4" id="buyerId" name="buyerId" style="width: 100%">
-                            <option></option>
-                            <% if(buyer_s){ for(var i = 0; i < buyer_s.length; i++) {%>
-                            <option value=<%= buyer_s[i].buyerId %> <%if (buyer_s[i].buyerId==ticket[0].buyerId){ %>selected<%}%> ><%= buyer_s[i].buyerName %>
-                            </option>
-                            <% }} %>
-                        </select>  
-                    </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="textInput">Transporter Vehicle No.</label>
+                    <input style="text-transform:uppercase" type="text" id="transporterVehNo" value="<%=ticket[0].transporterVehNo%>" name="transporterVehNo" onchange="findTransporterName(this.value)" class="form-control mb-4">                    
                 </div>
-            <br>    
-            <div class="row">   
+                <div class="col-sm-3">
+                    <label for="textInput">Transporter Name</label>
+                    <input type="text" required readonly value="<%=ticket[0].transporterName%>" id="transporterName" name="transporterName" class="form-control mb-4">                    
+                </div>  
+                <input type="hidden" id="transporterId" name="transporterId" value="<%= ticket[0].transporterId%>">               
                 <div class="col-sm-6">
-                    <label for="textInput">Transporter</label>
-                    <select class="form-control mb-4" id="transporterId" name="transporterId" style="width: 100%">
-                        <option></option>
-                        <% if(transporters){ for(var i = 0; i < transporters.length; i++) {%>
-                        <option value=<%= transporters[i].transporterId %> <%if (transporters[i].transporterId==ticket[0].transporterId){ %>selected<%}%> ><%= transporters[i].transporterName  %> - <%= transporters[i].transporterVehNo  %>
-                        </option>
-                        <% }} %>
-                    </select>   
-                </div>            
+                    <label for="landId">Lands</label>
+                    <select class="form-control mb-4" id="landId" name="landId" 
+                    style="width: 100%">
+                    <option></option></select>
+                </div>                  
             </div>     
             <br>    
             <div class="row">
@@ -82,7 +68,7 @@
             <div class="row">
                 <div class="col-sm-3">
                     <label for="textInput">Price 1mt</label>
-                    <input type="number" step="0.01" id="priceMt" name="priceMt" class="form-control mb-4" required value="<%=ticket[0].priceMt%>" onchange="calculateTotalWeight();">
+                    <input type="number" step="0.01" id="priceMt" name="priceMt" class="form-control mb-4" required value="<%=ticket[0].ticketPriceMt%>" onchange="calculateTotalWeight();">
                 </div>
                 <div class="col-sm-3">
                     <label for="textInput">Total Price</label>
@@ -119,6 +105,23 @@
 </html>
 
 <script>
+    function findTransporterName(vehNo) {
+        var transporterName;
+        var transporter = <%- JSON.stringify(transporters)%>;
+        
+        transporterName = transporter.find((val)=>{
+            return (val.transporterVehNo.replace(/\s/g, '').toUpperCase() === vehNo.replace(/\s/g, '').toUpperCase());
+        });
+        if (transporterName != null){
+        $('#transporterName').val(transporterName.transporterName);
+        $('#transporterId').val(transporterName.transporterId);
+        //console.log(transporterName.transporterId);
+        }
+        else{
+        $('#transporterName').val('Vehicle Not Found, Please Add In Transpoters Page');
+        $('#transporterId').val('');}
+    }
+
 $(document).ready(function () {
     var chartformat = "YYYY-MM-DD";
     $('#ticketDatePicker').datetimepicker({
@@ -132,10 +135,6 @@ $(document).ready(function () {
         placeholder: "Select a Buyer",
         width: 'resolve',
     });
-    $("#transporterId").select2({
-        placeholder: "Select a Transporter",
-        width: 'resolve',
-    });      
     $("#landId").select2({
         placeholder: "Select a Land",
         width: 'resolve',
