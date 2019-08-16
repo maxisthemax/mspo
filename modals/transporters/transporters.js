@@ -101,24 +101,29 @@ console.log(firstquery);
 exports.createTransporter = function (req, cb) {
   var coId = req.user.coId;
   var transporter = req.body;
-
   process.nextTick(function () {
 
     transporter.transporterName = transporter.transporterName ? [].concat(transporter.transporterName) : [''];
     transporter.transporterAdd = transporter.transporterAdd ? [].concat(transporter.transporterAdd) : [''];
-    transporter.transporterVehNo = transporter.transporterVehNo ? [].concat(transporter.transporterVehNo) : [''];
-    // transporter.priceMt = transporter.priceMt ? [].concat(transporter.priceMt) : [''];
-    // transporter.totalTransport = transporter.totalTransport ? [].concat(transporter.totalTransport) : [''];
-    // transporter.nettWeight = transporter.nettWeight ? [].concat(transporter.nettWeight) : [''];
+    //transporter.transporterVehNo = transporter.transporterVehNo ? [].concat(transporter.transporterVehNo) : [''];
+    transporter.totalVehno = transporter.totalVehno ? [].concat(transporter.totalVehno) : [''];
+    var transporterVehNo = [];
+    for(var i = 1; i <= transporter.totalVehno; i++) {
+      transporterVehNo.push(transporter[`transporterVehNo[${i}]`]);
+    }
+  
+    let firstquery = '';
+    for(var i = 0; i < transporterVehNo.length; i++) {
+      let query = `INSERT INTO transporters
+      (transporterName,transporterAdd, transporterVehNo,createdDate,coId)
+      VALUES ('${transporter.transporterName}','${transporter.transporterAdd}','${transporterVehNo[i]}'
+      ,CURRENT_TIMESTAMP,'${coId}');`;
+      firstquery =`${firstquery + query}`;
+    }
 
-    let firstquery = `INSERT INTO transporters
-    (transporterName,transporterAdd, transporterVehNo,createdDate,coId)
-    VALUES ('${transporter.transporterName}','${transporter.transporterAdd}','${transporter.transporterVehNo}'
-    ,CURRENT_TIMESTAMP,'${coId}')`;
-    
     con.query(firstquery, function (err, result, fields) {
       if (result) result = JSON.parse(JSON.stringify(result));
-      if (result && result.insertId) {
+      if (result.length>0) {
         return cb(null, result);
       }
       else {

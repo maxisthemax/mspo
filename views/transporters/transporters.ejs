@@ -88,10 +88,31 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-4">
-                        <label for="textInput">Transporter Vehicle No</label>
-                        <input type="text" id="transporterVehNo" name="transporterVehNo" class="form-control mb-4" required>
-                    </div>                 
+                    <div class="col-sm-4" id="transporterWrapper">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="textInput">Transporter Vehicle No</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type=button class="btn btn-primary btn-block" id="addMoreTransporter" value="Add More Vehicle No.">
+                            </div>
+                        </div>
+                        <br>
+                        <input type="text" id="transporterVehNo[1]" name="transporterVehNo[1]" class="form-control mb-4" required>   
+                        <input type="hidden" id=totalVehno name=totalVehno value=1>             
+                    </div>
+                    <script>
+                        var number = parseInt($('#totalVehno').val());
+                        //Once add button is clicked
+                        var wrapper = $('#transporterWrapper');
+                        $("#addMoreTransporter").click(function(){
+                            number +=1;
+                            var fieldHTML = `<input type="text" id="transporterVehNo[${number}]" name="transporterVehNo[${number}]" class="form-control mb-4" required>`; //New input field html 
+                            //Check maximum number of input fields
+                                $(wrapper).append(fieldHTML); //Add field html
+                                $('#totalVehno').val(number);
+                        });
+                    </script>
                     <!--- div class="col-sm-4">
                         <label for="textInput">Price 1mt</label>
                         <input type="number" step="0.01" id="priceMt" name="priceMt" class="form-control mb-4" required onchange="calculateTotalTransport()">
