@@ -8,17 +8,17 @@ $(document).ready(function () {
         for ( var i=0 ; i<land_s.length ; i++ ) {
                 data.push( [ 
                     land_s[i].lotNo, 
+                    land_s[i].landId,                    
                     land_s[i].titleNo, 
                     land_s[i].custName,
                     land_s[i].custIC, 
                     land_s[i].area, 
+                    (land_s[i].isMSPO == 1)?'YES':'NO', 
                     land_s[i].usageOfLand, 
                     land_s[i].typeOfCondition,
                     `${land_s[i].gpsLocationLat},${land_s[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${land_s[i].gpsLocationLat},${land_s[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
-                    land_s[i].landId,
                     land_s[i].mukim, 
-                    land_s[i].yearPlanted, 
-                    (land_s[i].isMSPO == 1)?'YES':'NO'                    
+                    land_s[i].yearPlanted                   
                     ] );
             }       
         var table = $('#land_s_view').DataTable({
@@ -33,7 +33,7 @@ $(document).ready(function () {
                     "renderer": function ( api, rowIdx, columns ) {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 8) 
+                            if (col.columnIndex == 1) 
                             {
                                 return;
                             }
@@ -133,18 +133,18 @@ $(document).ready(function () {
         var data = [];
         for ( var i=0 ; i<land_s_disabled.length ; i++ ) {
                 data.push( [ 
-                    land_s_disabled[i].lotNo, 
+                    land_s_disabled[i].lotNo,
+                    land_s_disabled[i].landId,                     
                     land_s_disabled[i].titleNo, 
                     land_s_disabled[i].custName,
                     land_s_disabled[i].custIC, 
                     land_s_disabled[i].area, 
+                    (land_s_disabled[i].isMSPO == 1)?'YES':'NO',    
                     land_s_disabled[i].usageOfLand, 
                     land_s_disabled[i].typeOfCondition,
                     `${land_s_disabled[i].gpsLocationLat},${land_s_disabled[i].gpsLocationLng}`+` <a target="_blank" href='https://www.google.com/maps/search/${land_s_disabled[i].gpsLocationLat},${land_s_disabled[i].gpsLocationLng}'><u>Google Map Link</u></a>`,
-                    land_s_disabled[i].landId,
                     land_s_disabled[i].mukim, 
-                    land_s_disabled[i].yearPlanted, 
-                    (land_s_disabled[i].isMSPO == 1)?'YES':'NO'                     
+                    land_s_disabled[i].yearPlanted                 
                     ] );
             }          
         //console.log(customers);
@@ -160,7 +160,7 @@ $(document).ready(function () {
                     "renderer": function ( api, rowIdx, columns ) {
                         // Show hidden columns in row details
                         var data = $.map( columns, function ( col, i ) {
-                            if (col.columnIndex == 8) 
+                            if (col.columnIndex == 1) 
                             {
                                 return;
                             }

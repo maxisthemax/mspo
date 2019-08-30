@@ -6,10 +6,10 @@
 <div id="landsbuttons" class="p-5">
     <p class="h4 mb-4">Actions</p>
     <div class="row">
-        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/lands/<%= land_s[8].data%>';" >Edit This Lands</button>
-        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/lands/doc/<%= land_s[8].data%>';" >View This Customer's Land Documents</button>
+        <button type="button" class="btn btn-primary btnpadding" onclick="location.href = '/lands/<%= land_s[1].data%>';" >Edit This Lands</button>
+        <button type="button" class="btn btn-secondary btnpadding" onclick="location.href = '/lands/doc/<%= land_s[1].data%>';" >View This Customer's Land Documents</button>
         <button type="button" class="btn btn-danger btnpadding"
-            onclick="var retVal = confirm('Do you want to disabled this land ?');if (retVal == true) {location.href = '/lands/disabled/<%= land_s[8].data%>'};">Disabled This Land</button>    
+            onclick="var retVal = confirm('Do you want to disabled this land ?');if (retVal == true) {location.href = '/lands/disabled/<%= land_s[1].data%>'};">Disabled This Land</button>    
     </div>
 </div>
 

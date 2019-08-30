@@ -9,24 +9,26 @@ $(document).ready(function () {
         for ( var i=0 ; i<ticket_s.length ; i++ ) {
                 //console.log(ticket_s[i]);
                 data.push( [                     
-                    ticket_s[i].custName,
-                    ticket_s[i].ticketId,                     
+                    ticket_s[i].custNo,
+                    ticket_s[i].ticketId,
+                    ticket_s[i].lotNo,
+                    ticket_s[i].transporterVehNo, 
+                    ticket_s[i].custName,                     
                     ticket_s[i].custIC,                     
                     changeToDateFormat(ticket_s[i].ticketDate), 
                     ticket_s[i].ticketNo,
+                    ticket_s[i].nettWeight,
                     ticket_s[i].firstWeight, 
                     ticket_s[i].secondWeight,
                     ticket_s[i].deduction,
-                    ticket_s[i].nettWeight,
                     ticket_s[i].ticketPriceMt,
                     ticket_s[i].totalPrice,
                     ticket_s[i].oer,
 
                     ticket_s[i].transporterName, 
                     ticket_s[i].transporterAdd, 
-                    ticket_s[i].transporterVehNo, 
 
-                    ticket_s[i].lotNo, 
+ 
                     ticket_s[i].titleNo, 
                     ticket_s[i].mukim,                                         
                     ] );
@@ -146,22 +148,24 @@ $(document).ready(function () {
         var data = [];
         for ( var i=0 ; i<ticket_s_disabled.length ; i++ ) {
                 data.push( [                   
-                    ticket_s_disabled[i].custName,
-                    ticket_s_disabled[i].ticketId,                       
+                    ticket_s_disabled[i].custNo,
+                    ticket_s_disabled[i].ticketId,
+                    ticket_s_disabled[i].lotNo,    
+                    ticket_s_disabled[i].transporterVehNo,                    
+                    ticket_s_disabled[i].custName,                       
                     ticket_s_disabled[i].custIC,                     
                     changeToDateFormat(ticket_s_disabled[i].ticketDate), 
                     ticket_s_disabled[i].ticketNo,  
+                    ticket_s_disabled[i].nettWeight,
                     ticket_s_disabled[i].firstWeight, 
                     ticket_s_disabled[i].secondWeight,
                     ticket_s_disabled[i].deduction,
                     ticket_s_disabled[i].ticketPriceMt,
-                    ticket_s_disabled[i].nettWeight,
                     ticket_s_disabled[i].totalPrice,
                     ticket_s_disabled[i].oer,
                     ticket_s_disabled[i].transporterName, 
-                    ticket_s_disabled[i].transporterAdd, 
-                    ticket_s_disabled[i].transporterVehNo,  
-                    ticket_s_disabled[i].lotNo, 
+                    ticket_s_disabled[i].transporterAdd,
+
                     ticket_s_disabled[i].titleNo, 
                     ticket_s_disabled[i].mukim,                           
                     ] );
