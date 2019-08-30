@@ -57,7 +57,7 @@ exports.createMspo = function (req, cb) {
 
     let firstquery = `INSERT INTO mspos 
     (mspoCertNo,expiredDate,standard, createdDate, disabled, coId,mspoRegNo)
-    VALUES ('${mspo.mspoCertNo}','${mspo.expiredDate}','${mspo.mspoStandard}',CURRENT_TIMESTAMP,'0','${coId}',${mspo.mspoRegNo})`;
+    VALUES ('${mspo.mspoCertNo}','${mspo.expiredDate}','${mspo.mspoStandard}',CURRENT_TIMESTAMP,'0','${coId}','${mspo.mspoRegNo}')`;
 
     //console.log(firstquery);
 
