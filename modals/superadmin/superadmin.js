@@ -39,10 +39,11 @@ exports.createsuperadmin = function (req, cb) {
     comp.username = comp.username ? [].concat(comp.username) : [''];
     comp.password = comp.password ? [].concat(comp.password) : [''];
     comp.maxUsers = comp.maxUsers ? [].concat(comp.maxUsers) : [''];
+    comp.maxCust = comp.maxCust ? [].concat(comp.maxCust) : [''];
 
     let firstquery = `INSERT INTO company 
-  (coName,coAdd,coTel, deactivated, createdDate,maxUsers)
-  VALUES ('${comp.compname}','${comp.compadd}','${comp.comptel}','0',CURRENT_TIMESTAMP,'${comp.maxUsers}')`;
+  (coName,coAdd,coTel, deactivated, createdDate,maxUsers,maxCust)
+  VALUES ('${comp.compname}','${comp.compadd}','${comp.comptel}','0',CURRENT_TIMESTAMP,'${comp.maxUsers}','${comp.maxCust}')`;
 
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {

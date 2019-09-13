@@ -17,7 +17,8 @@
                 (superadmin_s[i].deactivated == 1)?"DEACTIVE":"ACTIVE",
                 changeToDateFormat(createdDate),
                 '',
-                superadmin_s[i].maxUsers
+                superadmin_s[i].maxUsers,
+                superadmin_s[i].maxCust
             ]);
         }
         var table = $('#superadmin_s_view').DataTable({
