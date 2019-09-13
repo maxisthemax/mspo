@@ -54,9 +54,9 @@ exports.createCustomer = function(req, cb) {
         cust.custAdd1 = cust.custAdd1 ? [].concat(cust.custAdd1) : [''];
         cust.custAdd2 = cust.custAdd2 ? [].concat(cust.custAdd2) : [''];
         cust.custAdd3 = cust.custAdd3 ? [].concat(cust.custAdd3) : [''];
+        cust.compNo = cust.compNo ? [].concat(cust.compNo) : [''];
 
-
-        let firstquery = "INSERT INTO `customers` (`coId`,`custNo`, `custName`, `custIC`, `custTel`, `custAdd1`, `custAdd2`, `custAdd3`, `deactivated`, `createdDate`) VALUES (" +
+        let firstquery = "INSERT INTO `customers` (`coId`,`custNo`, `custName`, `custIC`, `custTel`, `custAdd1`, `custAdd2`, `custAdd3`, `deactivated`,`compNo`, `createdDate`) VALUES (" +
             "" + coId + "," +
             "'" + cust.custNo[0] + "'," +
             "'" + cust.custName[0] + "'," +
@@ -66,6 +66,7 @@ exports.createCustomer = function(req, cb) {
             "'" + cust.custAdd2[0] + "'," +
             "'" + cust.custAdd3[0] + "'," +
             "'" + "0" + "'," +
+            "'" + cust.compNo[0] + "'," +
             "" + "CURRENT_TIMESTAMP" +
             ")";
 
@@ -113,7 +114,7 @@ exports.editCustomer = function(cust, cb) {
         cust.custAdd1 = cust.custAdd1 ? [].concat(cust.custAdd1) : [''];
         cust.custAdd2 = cust.custAdd2 ? [].concat(cust.custAdd2) : [''];
         cust.custAdd3 = cust.custAdd3 ? [].concat(cust.custAdd3) : [''];
-
+        cust.compNo = cust.compNo ? [].concat(cust.compNo) : [''];
 
         let firstquery = "UPDATE `customers` SET" +
             "`custNo` = '" + cust.custNo[0] + "'," +
@@ -122,7 +123,8 @@ exports.editCustomer = function(cust, cb) {
             "`custTel` = '" + cust.custTel[0] + "'," +
             "`custAdd1` = '" + cust.custAdd1[0] + "'," +
             "`custAdd2` = '" + cust.custAdd2[0] + "'," +
-            "`custAdd3` = '" + cust.custAdd3[0] + "'" +
+            "`custAdd3` = '" + cust.custAdd3[0] + "'," +
+            "`compNo` = '" + cust.compNo[0] + "'" +
             " where custId=" + cust.custId[0];
 
             

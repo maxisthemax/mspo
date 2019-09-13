@@ -52,7 +52,7 @@ exports.createsuperadmin = function (req, cb) {
         var thisId = result.insertId;
         let secondquery = `INSERT INTO users (username,userpassword,displayname,deactivated,administrator,coId) VALUES (
                       '${comp.username}','${comp.password}','${comp.compname}','0','1',${thisId})`;
-  
+
         con.query(secondquery, function (err, result, fields) {
           if (result) result = JSON.parse(JSON.stringify(result));
           if (result && result.insertId) {
@@ -67,15 +67,15 @@ exports.createsuperadmin = function (req, cb) {
     });
   });
 }
-exports.deactivateCompany = function (mode,coId, cb) {
+exports.deactivateCompany = function (mode, coId, cb) {
 
-  if(mode == "deactivate")
-  var modeNo = 1;
+  if (mode == "deactivate")
+    var modeNo = 1;
   else if (mode == "activate")
-  var modeNo = 0;
+    var modeNo = 0;
 
   process.nextTick(function () {
-    var  firstquery = `UPDATE company SET deactivated = ${modeNo} WHERE coId = ${coId}`;
+    var firstquery = `UPDATE company SET deactivated = ${modeNo} WHERE coId = ${coId}`;
 
     con.query(firstquery, function (err, result, fields) {
       if (result) {
@@ -97,12 +97,14 @@ exports.editsuperadmin = function (req, cb) {
     company.compadd = company.compadd ? [].concat(company.compadd) : [''];
     company.comptel = company.comptel ? [].concat(company.comptel) : [''];
     company.maxUsers = company.maxUsers ? [].concat(company.maxUsers) : [''];
+    company.maxCust = company.maxCust ? [].concat(company.maxCust) : [''];
 
     let firstquery = `UPDATE company SET 
     coName = "${company.compname[0]}",
     coAdd = "${company.compadd[0]}",
     coTel = "${company.comptel[0]}",
-    maxUsers = "${company.maxUsers[0]}"
+    maxUsers = "${company.maxUsers[0]}",
+    maxCust= "${company.maxCust[0]}"
     where coId= "${company.coId[0]}"`
     //console.log(firstquery);
     con.query(firstquery, function (err, result, fields) {

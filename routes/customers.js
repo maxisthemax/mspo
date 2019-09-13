@@ -1,4 +1,5 @@
 var cust = require("../modals/customers");
+var comp = require("../modals/company");
 var fs = require("fs");
 var ejs = require("ejs");
 var formidable = require('formidable');
@@ -11,16 +12,18 @@ module.exports = {
 
         var htmlContent = fs.readFileSync('./views/customers/customersbutton.ejs', 'utf8');
         var htmlContent2 = fs.readFileSync('./views/customers/customersbutton2.ejs', 'utf8');
-
-        cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
-            cust.customers.queryAllCustomersDisabled(req.user.coId, function (err, cust_s_disabled) {
-                res.render('customers/customers.ejs', {
-                    successFlash: req.flash('success'),
-                    errorFlash: req.flash('error'),
-                    cust_s: (cust_s) ? cust_s : [],
-                    cust_s_disabled: (cust_s_disabled) ? cust_s_disabled : [],
-                    editcustomerhtml: htmlContent,
-                    editcustomerhtml2: htmlContent2,
+        comp.company.queryCompany(req.user.coId, function (err, company) {
+            cust.customers.queryAllCustomers(req.user.coId, function (err, cust_s) {
+                cust.customers.queryAllCustomersDisabled(req.user.coId, function (err, cust_s_disabled) {
+                    res.render('customers/customers.ejs', {
+                        successFlash: req.flash('success'),
+                        errorFlash: req.flash('error'),
+                        cust_s: (cust_s) ? cust_s : [],
+                        cust_s_disabled: (cust_s_disabled) ? cust_s_disabled : [],
+                        editcustomerhtml: htmlContent,
+                        editcustomerhtml2: htmlContent2,
+                        company: (company) ? company : [],
+                    });
                 });
             });
         });
