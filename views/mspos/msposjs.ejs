@@ -24,6 +24,10 @@
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
+            "rowCallback": function( row, data, index ) {
+                if (new Date(data[2])<new Date())
+                $('td', row).css('background-color', 'Red');
+            },
             "responsive": {
                 "details": {
                     "renderer": function(api, rowIdx, columns) {
