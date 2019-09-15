@@ -157,6 +157,10 @@
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
+            "rowCallback": function( row, data, index ) {
+                if (new Date(data[1])<new Date())
+                $('td', row).css('background-color', '#ff6666');
+            },            
             "responsive": {
                 "details": {
                     "renderer": function(api, rowIdx, columns) {

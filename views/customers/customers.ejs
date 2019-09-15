@@ -114,12 +114,12 @@
                         <label for="textInput">Customer IC</label>
                         <input type='text' pattern="[0-9]{6}[-]{1}[0-9]{2}[-]{1}[0-9]{4}"
                             oninvalid="alert('Please Enter The IC in XXXXX-XX-XXX format');" id="custIC" name="custIC"
-                            class="form-control mb-4" required placeholder="Enter Customer IC Here">
+                            class="form-control mb-4" required placeholder="Enter Customer IC Here" onblur="byPassIc();">
                     </div>
                     <div class="col-sm-3">
                         <label for="textInput">Company No</label>
-                        <input type='text' id="compNo" name="compNo" class="form-control mb-4" required placeholder="Key In None To Skip"
-                            placeholder="Enter Company No Here">
+                        <input type='text' id="compNo" name="compNo" class="form-control mb-4" required
+                            placeholder="Key In None To Skip" placeholder="Enter Company No Here">
                     </div>
                     <div class="col-sm-6">
                         <label for="textInput">Customer Tel.</label>
@@ -244,6 +244,21 @@
                 }
             }
             document.getElementById("uploadpreview").innerHTML = txt;
-        }    
+        }
+
+        function byPassIc() {
+            ic = document.getElementById('custIC');
+            if (ic.value.trim() == 'NONE') {
+                $('#custIC').removeAttr('oninvalid pattern');
+            } else {
+                $('#custIC').attr('pattern', '[0-9]{6}[-]{1}[0-9]{2}[-]{1}[0-9]{4}');
+                $('#custIC').attr('oninvalid', 'alert("Please Enter The IC in XXXXX-XX-XXX format");');
+            }
+        }
+        $(document).ready(function () {
+            byPassIc();
+        })
+
+
     </script>
     <% include customers/customersjs.ejs %>

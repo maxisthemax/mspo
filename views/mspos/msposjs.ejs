@@ -26,7 +26,7 @@
             ],
             "rowCallback": function( row, data, index ) {
                 if (new Date(data[2])<new Date())
-                $('td', row).css('background-color', 'Red');
+                $('td', row).css('background-color', '#ff6666');
             },
             "responsive": {
                 "details": {
@@ -144,6 +144,10 @@
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
+            "rowCallback": function( row, data, index ) {
+                if (new Date(data[2])<new Date())
+                $('td', row).css('background-color', '#ff6666');
+            },            
             "responsive": {
                 "details": {
                     "renderer": function(api, rowIdx, columns) {
