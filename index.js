@@ -1,6 +1,15 @@
 const express = require('express');
 const path = require('path');
 var con = require('./db');
+const dotenv = require('dotenv');
+dotenv.config();
+const Sentry = require('@sentry/node');
+
+if (process.env.NODE_ENV != "development")
+{
+Sentry.init({ dsn: 'https://03ec9993c0604a3b8a0be1e5de08c444@sentry.io/1727788' });
+}
+
 global.con = con;
 
 var flash = require('express-flash');
