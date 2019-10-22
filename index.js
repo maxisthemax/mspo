@@ -5,9 +5,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 const Sentry = require('@sentry/node');
 
-if (process.env.NODE_ENV != "development")
-{
-Sentry.init({ dsn: 'https://03ec9993c0604a3b8a0be1e5de08c444@sentry.io/1727788' });
+if (process.env.NODE_ENV != "development") {
+    Sentry.init({ dsn: 'https://03ec9993c0604a3b8a0be1e5de08c444@sentry.io/1727788' });
 }
 
 global.con = con;
@@ -40,7 +39,7 @@ const { getTransportersPage, getEditTransportersPage, getTransportersDocPage,
     uploadTransporterDocuments, createTransporter, editTransporter, disabledDeleteTransporter } = require('./routes/transporters');
 const { getSalesPage, getEditSalesPage, getSalesDocPage,
     uploadSaleDocuments, createSale, editSale, disabledDeleteSale } = require('./routes/sales');
-
+const { getReportsPage } = require('./routes/reports');
 
 // Create a new Express application.
 var app = express();
@@ -537,6 +536,11 @@ app.all('/company*', ensureLoggedIn('/login'), checkToken());
 app.get('/company/', getCompanyPage);
 app.post('/company/edit', saveCompany);
 /* company */
+
+/* reports */
+app.all('/reports*', ensureLoggedIn('/login'), checkToken());
+app.get('/reports/', getReportsPage);
+/* reports */
 
 /* test */
 

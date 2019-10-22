@@ -1,0 +1,41 @@
+<script src="../vendor/ejs/ejs.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var reports = <%- JSON.stringify(reports)%>;
+        var data = [];
+        for (var i = 0; i < reports.length; i++) {
+            data.push([
+                i, reports[i].custName,reports[i].mpobLicNo,reports[i].mukim,reports[i].gpsLocationLat,
+                reports[i].gpsLocationLng,reports[i].area,reports[i].area
+            ]);
+        }
+
+        var table = $('#land_report_view').DataTable({
+            aaSorting: [],
+            dom: 'Blfrtip',
+            data: data,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+
+        });
+
+        // Handle click on "Expand All" button
+        $('#btn-show-all-children').on('click', function () {
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('#btn-hide-all-children').on('click', function () {
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+    })
+    function changeToDateFormat(date) {
+        var datenew = new Date(date);
+        datenew = moment(datenew).format('YYYY/MM/DD');
+        return datenew;
+    }    
+</script>

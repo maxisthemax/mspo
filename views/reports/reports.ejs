@@ -1,0 +1,131 @@
+<% include partials/header.ejs %>
+<div class="container-fluid">
+    <div class="tab">
+        <button class="tablinks" onclick="openTabs(event, 'land_report')" value=land_report>Land Report</button>
+
+    </div>
+    <div class="" style="border:1px solid">
+        <div id="land_report" class="tabcontent">
+            <div class="panel-heading">
+                <h3>Land Report</h3>
+            </div>
+            <div class="panel-body">
+                <table id="land_report_view" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">No</th>
+                            <th colspan="2">Smallholder</th> 
+                            <th rowspan="2">Location of Planted Area (District)</th>
+                            <th colspan="2">GPS Coordinates</th> 
+                            <th rowspan="2">Certified Area (Ha)</th>
+                            <th rowspan="2">Certified Area (Ha)</th>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>MPOB License</th>
+                            <th>Latitude(N)</th>
+                            <th>Longitude(E)</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr><th>No</th>
+                            <th>Name</th>
+                            <th>Location of Planted Area (District)</th>
+                            <th>MPOB License</th>
+                            <th>Latitude(N)</th>
+                            <th>Longitude(E)</th>
+                            <th>Certified Area (Ha)</th>
+                            <th>Planted Area (Ha)</th>                       
+                        </tr>
+                    </tfoot>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<% include partials/footer.ejs %>
+
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+</body>
+
+</html>
+<script>
+    function openTabs(evt, tabname) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabname).style.display = "block";
+        evt.currentTarget.className += " active";
+        localStorage.setItem('activereports_Tab', tabname);
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            $('a').each(function () {
+                if ($(this).prop('href') == window.location.href) {
+                    $(this).addClass('active'); $(this).parents('li').addClass('active');
+                }
+            });
+        });
+
+        tablinks = document.getElementsByClassName('tablinks');
+        var activereports_Tab = localStorage.getItem('activereports_Tab');
+        if (activereports_Tab === null || activereports_Tab == '') {
+            tablinks[0].click();
+        } else {
+            for (i = 0; i < tablinks.length; i++) {
+                if (tablinks[i].value == activereports_Tab)
+                    tablinks[i].click();
+            }
+        }      
+    });
+$(document).ready(function () {
+    $("#custId").select2({
+        placeholder: "Select a Customer",
+        width: 'resolve',
+    });
+    $("#buyerId").select2({
+        placeholder: "Select a Buyer",
+        width: 'resolve',
+    });
+    $("#transporterId").select2({
+        placeholder: "Select a Transporter",
+        width: 'resolve',
+    }); 
+    $("#landId").select2({
+        placeholder: "Select a Land",
+        width: 'resolve',
+    });     
+});       
+function calculateNettWeight(){
+    var firstWeight = $('#firstWeight').val();
+    var secondWeight =  $('#secondWeight').val();
+    var deduction =  $('#deduction').val();
+    var nettWeight = firstWeight-secondWeight-deduction;
+
+    $('#nettWeight').val(nettWeight.toFixed(2));
+
+    var priceMt = $('#priceMt').val();
+    var totalPrice = priceMt * nettWeight;
+    $('#totalPrice').val(totalPrice.toFixed(2));    
+}
+function calculateTotalWeight(){
+    var priceMt = $('#priceMt').val();
+    var nettWeight =  $('#nettWeight').val();
+    var totalPrice = priceMt * nettWeight;
+    $('#totalPrice').val(totalPrice.toFixed(2));
+} 
+</script>
+<% include reports/reportsjs.ejs %>
