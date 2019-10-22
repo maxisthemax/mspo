@@ -11,7 +11,7 @@ var glob = require("glob");
 
 module.exports = {
     getReportsPage: (req, res) => {
-        reports.reports.queryLandsWithMpobs(function (err, reports) {
+        reports.reports.queryLandsWithMpobs(req.user.coId,function (err, reports) {
             res.render('reports/reports.ejs', {
                 successFlash: req.flash('success'),
                 errorFlash: req.flash('error'),
