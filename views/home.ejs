@@ -1,14 +1,16 @@
 <% include partials/header.ejs %>
-
+<style>
+    .pdfobject-container { height: 50rem; border: 1rem solid rgba(0,0,0,.1); }
+    </style>
 <div class="container-fluid p-5 h-100 text-center">
 
     <div>
         <h1> WELCOME TO MYEZGM</h1>
     </div>
-
+    <div id="example1"></div>
 </div>
 <% include partials/footer.ejs %>
-
+<script>PDFObject.embed("pdf/MSPO000029.pdf", "#example1");</script>
 
 </div>
 <!-- /#page-content-wrapper -->
