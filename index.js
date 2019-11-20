@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-var con = require('./db');
+var con = require('./.db');
 const dotenv = require('dotenv');
 dotenv.config();
 const Sentry = require('@sentry/node');
