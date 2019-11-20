@@ -1,40 +1,16 @@
 <% include partials/header.ejs %>
 <style>
-    div.gallery {
-        margin: 5px;
-        border: 1px solid #ccc;
-        float: left;
-        width: 360px;
-    }
-
-    div.gallery:hover {
-        border: 1px solid #777;
-    }
-
-    div.gallery img {
-        width: 100%;
-        height: auto;
-    }
-
-    div.desc {
-        padding: 15px;
-        text-align: center;
-    }
-</style>
+    .pdfobject-container { height: 50rem; border: 1rem solid rgba(0,0,0,.1); }
+    </style>
 <div class="container-fluid p-5 h-100 text-center">
 
     <div>
         <h1> WELCOME TO MYEZGM</h1>
     </div>
-    <div class="gallery">
-        <a target="_blank" href="images/MSPO000029.jpg">
-            <img src="images/MSPO000029.jpg" alt="Cinque Terre" width="100%" height="100%">
-        </a>
-        <div class="desc">MSPO 000029</div>
-    </div>
-
+    <div id="example1"></div>
 </div>
 <% include partials/footer.ejs %>
+<script>PDFObject.embed("pdf/MSPO000029.pdf", "#example1");</script>
 
 </div>
 <!-- /#page-content-wrapper -->
