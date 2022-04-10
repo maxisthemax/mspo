@@ -22,10 +22,11 @@
     }
 </style>
 <div class="container-fluid p-5 h-100 text-center">
-    <%if(company?.coId===2){%>
+
     <div>
         <h1> WELCOME TO MYEZGM</h1>
-    </div>
+    </div>    
+    <%if(company && company?.coId===2){%>
     <div class="gallery">
         <a target="_blank" href="images/MSPO000089.jpg">
             <img src="images/MSPO000089.jpg" alt="Cinque Terre" width="100%" height="100%">
